@@ -12,7 +12,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/content"
+        android:id="@+id/rippleBackground"
         app:rb_color="#9000FF00"
         app:rb_radius="20dp"
         app:rb_rippleAmount="3"

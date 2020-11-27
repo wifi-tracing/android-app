@@ -1,4 +1,5 @@
 package com.example.prj_android_app;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -16,20 +17,23 @@ import androidx.core.app.NotificationCompat;
 
 public class WifiScanningService extends Service {
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
-    private static final int DELAY_MILLIS = 30001; //only once every 30s as for Android 9+ (four times in a 2 minute period)
-    private HandlerThread handlerThread;
-    private Handler handler;
+    private static final int DELAY_MILLIS = 6000; //only once every 30s as for Android 9+ (four times in a 2 minute period)
+    private static HandlerThread handlerThread;
+    private static Handler handler;
+    private static WifiScanner wifiScanner;
+
     @Override
     public void onCreate() {
-        super.onCreate();        
+        super.onCreate();
     }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String input = intent.getStringExtra("inputExtra");
         createNotificationChannel();
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
+
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Wifi Contact Tracing enabled")
                 .setContentText("Do not close the app")
@@ -37,26 +41,29 @@ public class WifiScanningService extends Service {
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground((int) System.currentTimeMillis(), notification);
-        handlerThread = new HandlerThread("MyLocationThread");
+
+        handlerThread = new HandlerThread("WifiScanningThread");
         handlerThread.setDaemon(true);
         handlerThread.start();
         handler = new Handler(handlerThread.getLooper());
-        handler.postDelayed(getScanWifiRunnable(handler) , 0);
-            
+        if (wifiScanner == null) {
+            wifiScanner = new WifiScanner(getApplicationContext());
+        }
+
+        getScanWifiRunnable(handler).run();
         return START_STICKY;
     }
 
     private Runnable getScanWifiRunnable(Handler handler) {
-      Runnable  scanWifi = new Runnable() {
+        Runnable scanWifi = new Runnable() {
             @Override
             public void run() {
                 Log.d("wifi", "running scan");
-                WifiScanner wifi = new WifiScanner(getApplicationContext());
-                wifi.startScan();
+                wifiScanner.startScan();
                 handler.postDelayed(this, DELAY_MILLIS);
             }
         };
-        
+
         return scanWifi;
     }
 
@@ -65,6 +72,7 @@ public class WifiScanningService extends Service {
         super.onDestroy();
         handlerThread.quit();
     }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {

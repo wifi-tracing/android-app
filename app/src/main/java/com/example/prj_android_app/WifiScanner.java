@@ -11,12 +11,12 @@ import android.util.Log;
 import java.util.List;
 
 public class WifiScanner {
-    private Context context;
-    private WifiManager wifiManager;
+    private static WifiManager wifiManager;
+    private final Context context;
     private List<ScanResult> results;
     private boolean success;
 
-    public WifiScanner(Context context){
+    public WifiScanner(Context context) {
         this.context = context;
 
         wifiManager = (WifiManager)
@@ -41,7 +41,8 @@ public class WifiScanner {
         context.registerReceiver(wifiScanReceiver, intentFilter);
     }
 
-    public void startScan(){
+    public void startScan() {
+
         boolean success = wifiManager.startScan();
         if (!success) {
             // scan failure handling
@@ -49,13 +50,14 @@ public class WifiScanner {
         }
     }
 
-    public WifiManager getWifiManager(){
+    public WifiManager getWifiManager() {
         return wifiManager;
     }
+
     private void scanSuccess() {
         results = wifiManager.getScanResults();
         Log.d("wifi", "Found " + results.size() + " results");
-            }
+    }
 
 
     private void scanFailure() {
