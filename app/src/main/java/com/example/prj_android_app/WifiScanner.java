@@ -55,16 +55,14 @@ public class WifiScanner {
     private void scanSuccess() {
         results = wifiManager.getScanResults();
         Log.d("wifi", "Found " + results.size() + " results");
-        for (ScanResult result: results) {
-            Log.d("wifi", "Result BSSID: " + result.BSSID);
-        }
-    }
+            }
 
 
     private void scanFailure() {
         // handle failure: new scan did NOT succeed
         // consider using old scan results: these are the OLD results!
         List<ScanResult> results = wifiManager.getScanResults();
+        Log.d("wifi", "Failed scan");
     }
 
 

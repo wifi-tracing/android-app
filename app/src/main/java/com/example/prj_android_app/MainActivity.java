@@ -8,7 +8,11 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.skyfishjy.library.RippleBackground;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         checkPermission(Manifest.permission.CHANGE_WIFI_STATE, 102);
 
         startWifiService();
+
     }
     public void checkPermission(String permission, int requestCode)
     {
@@ -42,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
         Intent serviceIntent = new Intent(this, WifiScanningService.class);
         serviceIntent.putExtra("inputExtra", "Wifi Scanning Service");
         ContextCompat.startForegroundService(this, serviceIntent);
+
+
+        final RippleBackground rippleBackground=(RippleBackground)findViewById(R.id.content);
+        rippleBackground.startRippleAnimation();
     }
     public void stopWifiService() {
         Intent serviceIntent = new Intent(this, WifiScanningService.class);

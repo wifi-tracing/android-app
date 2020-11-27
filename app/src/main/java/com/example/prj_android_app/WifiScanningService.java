@@ -16,7 +16,7 @@ import androidx.core.app.NotificationCompat;
 
 public class WifiScanningService extends Service {
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
-    private static final int DELAY_MILLIS = 5000;
+    private static final int DELAY_MILLIS = 30001; //only once every 30s as for Android 9+ (four times in a 2 minute period)
     private HandlerThread handlerThread;
     private Handler handler;
     @Override
@@ -33,18 +33,15 @@ public class WifiScanningService extends Service {
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Wifi Contact Tracing enabled")
                 .setContentText("Do not close the app")
-                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setSmallIcon(R.drawable.ic_coronavirus)
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground((int) System.currentTimeMillis(), notification);
-        //do heavy work on a background thread
-        //stopSelf();
-
         handlerThread = new HandlerThread("MyLocationThread");
         handlerThread.setDaemon(true);
         handlerThread.start();
         handler = new Handler(handlerThread.getLooper());
-        handler.postDelayed(getScanWifiRunnable(handler) , 1000);
+        handler.postDelayed(getScanWifiRunnable(handler) , 0);
             
         return START_STICKY;
     }
@@ -53,6 +50,7 @@ public class WifiScanningService extends Service {
       Runnable  scanWifi = new Runnable() {
             @Override
             public void run() {
+                Log.d("wifi", "running scan");
                 WifiScanner wifi = new WifiScanner(getApplicationContext());
                 wifi.startScan();
                 handler.postDelayed(this, DELAY_MILLIS);
