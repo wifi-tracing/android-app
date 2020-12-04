@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.prj_android_app">
+    package="com.prj.app">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -17,14 +17,14 @@
         android:theme="@style/Theme.Prjandroidapp"
         android:usesCleartextTraffic="true"
         android:fullBackupContent="@xml/backup_descriptor">
-        <activity android:name=".DevUtils" />
+        <activity android:name="com.prj.app.DevUtils" />
 
         <service
-            android:name=".WifiScanningService"
+            android:name="com.prj.app.WifiScanningService"
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name="com.prj.app.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

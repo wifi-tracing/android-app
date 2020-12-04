@@ -1,4 +1,4 @@
-package com.example.prj_android_app;
+package com.prj.app;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
