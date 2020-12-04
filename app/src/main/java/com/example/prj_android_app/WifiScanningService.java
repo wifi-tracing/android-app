@@ -1,5 +1,6 @@
 package com.example.prj_android_app;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -10,7 +11,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -19,7 +19,7 @@ public class WifiScanningService extends Service {
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
     private static final int DELAY_MILLIS = 30001; //only once every 30s as for Android 9+ (four times in a 2 minute period)
     private static HandlerThread handlerThread;
-    private static Handler handler;
+    @SuppressLint("StaticFieldLeak")
     private static WifiScanner wifiScanner;
 
     @Override
@@ -45,7 +45,7 @@ public class WifiScanningService extends Service {
         handlerThread = new HandlerThread("WifiScanningThread");
         handlerThread.setDaemon(true);
         handlerThread.start();
-        handler = new Handler(handlerThread.getLooper());
+        Handler handler = new Handler(handlerThread.getLooper());
         if (wifiScanner == null) {
             wifiScanner = new WifiScanner(getApplicationContext());
         }
@@ -55,15 +55,14 @@ public class WifiScanningService extends Service {
     }
 
     private Runnable getScanWifiRunnable(Handler handler) {
-        Runnable scanWifi = new Runnable() {
+
+        return new Runnable() {
             @Override
             public void run() {
                 wifiScanner.startScan();
                 handler.postDelayed(this, DELAY_MILLIS);
             }
         };
-
-        return scanWifi;
     }
 
     @Override

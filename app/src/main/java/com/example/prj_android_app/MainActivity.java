@@ -3,9 +3,8 @@ package com.example.prj_android_app;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Credentials;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -13,9 +12,9 @@ import androidx.core.content.ContextCompat;
 
 import com.skyfishjy.library.RippleBackground;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,11 +23,11 @@ public class MainActivity extends AppCompatActivity {
     private Intent wifiScanningIntent;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_main);
 
         wifiScanningIntent = new Intent(this, WifiScanningService.class);
@@ -80,10 +79,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String @NotNull [] permissions, int @NotNull [] grantResults) {
         if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
             startScanning = false;
         }
     }
 
+    public void openDevUtils(View view) {
+        startActivity(new Intent(this, DevUtils.class));
+    }
 }

@@ -14,7 +14,8 @@ public class WifiScanner {
     private final Context context;
     private List<ScanResult> results;
     private boolean success;
-    private  DatabaseManager databaseManager;
+    private final DatabaseManager databaseManager;
+
     public WifiScanner(Context context) {
         this.context = context;
 
