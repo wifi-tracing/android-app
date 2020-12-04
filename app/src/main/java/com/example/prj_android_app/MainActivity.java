@@ -3,7 +3,9 @@ package com.example.prj_android_app;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Credentials;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -11,14 +13,21 @@ import androidx.core.content.ContextCompat;
 
 import com.skyfishjy.library.RippleBackground;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
+
 public class MainActivity extends AppCompatActivity {
 
     private static boolean isScanning = false;
     private boolean startScanning = false;
     private Intent wifiScanningIntent;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -64,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
                             MainActivity.this,
                             new String[]{permission},
                             requestCode);
-
         } else {
             startScanning = true;
             if (!isScanning)

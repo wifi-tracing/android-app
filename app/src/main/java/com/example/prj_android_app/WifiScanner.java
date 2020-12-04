@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.util.Log;
-
 import java.util.List;
 
 public class WifiScanner {
@@ -15,7 +14,7 @@ public class WifiScanner {
     private final Context context;
     private List<ScanResult> results;
     private boolean success;
-
+    private  DatabaseManager databaseManager;
     public WifiScanner(Context context) {
         this.context = context;
 
@@ -39,6 +38,8 @@ public class WifiScanner {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
         context.registerReceiver(wifiScanReceiver, intentFilter);
+
+        databaseManager = new DatabaseManager(context);
     }
 
     public void startScan() {
@@ -56,6 +57,7 @@ public class WifiScanner {
 
     private void scanSuccess() {
         results = wifiManager.getScanResults();
+        databaseManager.addScan(results);
         Log.d("wifi", "Found " + results.size() + " results");
     }
 
