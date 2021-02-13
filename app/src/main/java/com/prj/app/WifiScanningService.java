@@ -17,8 +17,9 @@ import androidx.core.app.NotificationCompat;
 
 public class WifiScanningService extends Service {
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
-    private static final int DELAY_MILLIS = 30001; //only once every 30s as for Android 9+ (four times in a 2 minute period)
+    private static final int DELAY_MILLIS = 31000; //only once every 30s as for Android 9+ (four times in a 2 minute period)
     private static HandlerThread handlerThread;
+    private static Notification notification;
     @SuppressLint("StaticFieldLeak")
     private static WifiScanner wifiScanner;
 
@@ -30,27 +31,30 @@ public class WifiScanningService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         createNotificationChannel();
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                0, notificationIntent, 0);
+        if (notification == null) {
+            Intent notificationIntent = new Intent(this, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                    0, notificationIntent, 0);
 
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Wifi Contact Tracing enabled")
-                .setContentText("Exposure notifications are active")
-                .setSmallIcon(R.drawable.ic_coronavirus)
-                .setContentIntent(pendingIntent)
-                .build();
-        startForeground((int) System.currentTimeMillis(), notification);
-
-        handlerThread = new HandlerThread("WifiScanningThread");
-        handlerThread.setDaemon(true);
-        handlerThread.start();
-        Handler handler = new Handler(handlerThread.getLooper());
-        if (wifiScanner == null) {
-            wifiScanner = new WifiScanner(getApplicationContext());
+            notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setContentTitle("Wifi Contact Tracing enabled")
+                    .setContentText("Exposure notifications are active")
+                    .setSmallIcon(R.drawable.ic_coronavirus)
+                    .setContentIntent(pendingIntent)
+                    .build();
         }
+        startForeground((int) System.currentTimeMillis(), notification);
+        if (handlerThread == null) {
+            handlerThread = new HandlerThread("WifiScanningThread");
+            handlerThread.setDaemon(true);
+            handlerThread.start();
+            Handler handler = new Handler(handlerThread.getLooper());
+            if (wifiScanner == null) {
+                wifiScanner = new WifiScanner(getApplicationContext());
+            }
 
-        getScanWifiRunnable(handler).run();
+            getScanWifiRunnable(handler).run();
+        }
         return START_STICKY;
     }
 
@@ -82,7 +86,7 @@ public class WifiScanningService extends Service {
             NotificationChannel serviceChannel = new NotificationChannel(
                     CHANNEL_ID,
                     "Foreground Service Channel",
-                    NotificationManager.IMPORTANCE_DEFAULT
+                    NotificationManager.IMPORTANCE_HIGH
             );
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(serviceChannel);

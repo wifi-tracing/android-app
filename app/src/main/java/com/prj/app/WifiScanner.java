@@ -39,17 +39,12 @@ public class WifiScanner {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
         context.registerReceiver(wifiScanReceiver, intentFilter);
-
         databaseManager = new DatabaseManager(context);
     }
 
     public void startScan() {
-
-        boolean success = wifiManager.startScan();
-        if (!success) {
-            // scan failure handling
-            scanFailure();
-        }
+        boolean result = wifiManager.startScan(); //true if scan was successful
+        Log.d("wifi", "startScan() " + result);
     }
 
     public WifiManager getWifiManager() {

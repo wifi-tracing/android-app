@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static boolean isScanning = false;
     private boolean startScanning = false;
-    private Intent wifiScanningIntent;
+    private static Intent wifiScanningIntent;
 
 
     @Override
@@ -29,13 +29,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_main);
-
-        wifiScanningIntent = new Intent(this, WifiScanningService.class);
-        wifiScanningIntent.putExtra("inputExtra", "Wifi Scanning Service");
-
         handlePermission(Manifest.permission.ACCESS_FINE_LOCATION, 100);
         handlePermission(Manifest.permission.ACCESS_WIFI_STATE, 101);
         handlePermission(Manifest.permission.CHANGE_WIFI_STATE, 102);
+        if (wifiScanningIntent == null) {
+            wifiScanningIntent = new Intent(this, WifiScanningService.class);
+            wifiScanningIntent.putExtra("inputExtra", "Wifi Scanning Service");
+        }
     }
 
 
