@@ -30,8 +30,8 @@ public class WifiScanningService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        createNotificationChannel();
         if (notification == null) {
+            createNotificationChannel();
             Intent notificationIntent = new Intent(this, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(this,
                     0, notificationIntent, 0);
@@ -54,8 +54,9 @@ public class WifiScanningService extends Service {
             }
 
             getScanWifiRunnable(handler).run();
+            return START_NOT_STICKY;
         }
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     private Runnable getScanWifiRunnable(Handler handler) {

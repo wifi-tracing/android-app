@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,7 +46,9 @@ public class MainActivity extends AppCompatActivity {
         if (isScanning && !startScanning) {
             stopService(wifiScanningIntent);
             isScanning = false;
-        } else if (startScanning) {
+        }
+        else if (startScanning && !isScanning) {
+            Log.d("wifi", "Started Scanning.");
             ContextCompat.startForegroundService(this, wifiScanningIntent);
             isScanning = true;
         }
@@ -73,8 +76,6 @@ public class MainActivity extends AppCompatActivity {
                             requestCode);
         } else {
             startScanning = true;
-            if (!isScanning)
-                isScanning = true;
         }
     }
 
