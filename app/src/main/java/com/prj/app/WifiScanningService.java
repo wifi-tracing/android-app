@@ -37,6 +37,7 @@ public class WifiScanningService extends Service {
     public LocationManager locationManager;
     public Intent intent;
     public CustomLocationListener listener;
+    private DatabaseManager databaseManager;
 
     @Override
     public void onCreate() {
@@ -46,6 +47,7 @@ public class WifiScanningService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         this.intent = intent;
+        databaseManager = new DatabaseManager(getApplicationContext());
         if (notification == null) {
             createNotificationChannel();
             Intent notificationIntent = new Intent(this, MainActivity.class);
@@ -81,6 +83,21 @@ public class WifiScanningService extends Service {
             @Override
             public void run() {
                 wifiScanner.startScan(previousBestLocation);
+
+                if (databaseManager.canSaveHotspotLocation()) {
+                    if (locationManager == null) {
+                        initialiseLocationListener();
+                        Log.d("wifi", "Registered location listener");
+                    }
+                } else {
+                    if (locationManager != null && listener != null) {
+                        locationManager.removeUpdates(listener);
+                        locationManager = null;
+                        listener = null;
+                        Log.d("wifi", "Turned off location logging.");
+                    }
+                }
+
                 handler.postDelayed(this, DELAY_MILLIS);
             }
         };
@@ -94,8 +111,8 @@ public class WifiScanningService extends Service {
                 && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 0, (LocationListener) listener);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 0, listener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, DELAY_MILLIS, 0, listener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, DELAY_MILLIS, 0, listener);
     }
 
     @Override
@@ -184,8 +201,10 @@ public class WifiScanningService extends Service {
             if (isBetterLocation(loc, previousBestLocation)) {
                 loc.getLatitude();
                 loc.getLongitude();
-                Log.d("wifi", "New Location: lat: " + loc.getLatitude() + " lon: " + loc.getLongitude() + ", accuracy: " + loc.getAccuracy());
+                Log.d("wifi", "New Location: " + loc.getLatitude() + ", " + loc.getLongitude() + ", accuracy: " + loc.getAccuracy());
                 previousBestLocation = loc;
+            } else {
+                previousBestLocation = null;
             }
         }
 
