@@ -46,8 +46,7 @@ public class MainActivity extends AppCompatActivity {
         if (isScanning && !startScanning) {
             stopService(wifiScanningIntent);
             isScanning = false;
-        }
-        else if (startScanning && !isScanning) {
+        } else if (startScanning && !isScanning) {
             Log.d("wifi", "Started Scanning.");
             ContextCompat.startForegroundService(this, wifiScanningIntent);
             isScanning = true;

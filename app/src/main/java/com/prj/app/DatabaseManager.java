@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.location.Location;
 import android.net.wifi.ScanResult;
 import android.util.Log;
 
@@ -58,6 +59,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+
+    }
+
+    public void addLocationData(List<ScanResult> results, Location location) {
 
     }
 
@@ -153,4 +158,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
         Timestamp timestamp = new Timestamp(date.getTime());
         return sdf.format(timestamp);
     }
+
+
 }
