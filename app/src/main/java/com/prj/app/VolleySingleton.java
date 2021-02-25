@@ -8,7 +8,7 @@ import com.android.volley.toolbox.Volley;
 public class VolleySingleton {
     public static final String API_URL = "http://192.168.1.10:4683/api/v1/";
     private static VolleySingleton instance;
-    private RequestQueue requestQueue;
+    private final RequestQueue requestQueue;
 
     private VolleySingleton(Context context) {
         requestQueue = Volley.newRequestQueue(context.getApplicationContext());
@@ -18,10 +18,10 @@ public class VolleySingleton {
         if (instance == null) {
             instance = new VolleySingleton(context);
         }
-        return  instance;
+        return instance;
     }
 
-    public RequestQueue getRequestQueue(){
+    public RequestQueue getRequestQueue() {
         return requestQueue;
     }
 }

@@ -19,9 +19,8 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
 
     private static boolean isScanning = false;
-    private boolean startScanning = false;
     private static Intent wifiScanningIntent;
-
+    private boolean startScanning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

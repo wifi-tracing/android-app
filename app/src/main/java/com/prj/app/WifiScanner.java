@@ -7,14 +7,15 @@ import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.util.Log;
+
 import java.util.List;
 
 public class WifiScanner {
     private static WifiManager wifiManager;
     private final Context context;
+    private final DatabaseManager databaseManager;
     private List<ScanResult> results;
     private boolean success;
-    private final DatabaseManager databaseManager;
 
     public WifiScanner(Context context) {
         this.context = context;

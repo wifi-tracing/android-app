@@ -114,14 +114,14 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return results;
     }
 
-    public void setSaveHotspotLocation(boolean value){
+    public void setSaveHotspotLocation(boolean value) {
         int valueToInsert = value ? 1 : 0;
-        String query = "UPDATE "+ SETTINGS_TAB + " SET VALUE = " + value + " WHERE NAME = 'SAVE_HOTSPOT_LOCATION'";
+        String query = "UPDATE " + SETTINGS_TAB + " SET VALUE = " + value + " WHERE NAME = 'SAVE_HOTSPOT_LOCATION'";
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(query);
     }
 
-    public boolean canSaveHotspotLocation(){
+    public boolean canSaveHotspotLocation() {
         ArrayList<Integer> results = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT VALUE FROM SETTINGS_TAB WHERE NAME = 'SAVE_HOTSPOT_LOCATION'";
@@ -136,7 +136,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         cursor.close();
-        if(results.size() == 0){
+        if (results.size() == 0) {
             return false;
         }
         return results.get(0) == 1;
