@@ -53,7 +53,7 @@ public class DevUtils extends AppCompatActivity {
         requestQueue = new RequestQueue(cache, network);
 
         requestQueue.start();
-        String URL = "http://192.168.1.102:3000/api/v1/scans/matchBSSID";
+        String URL = "http://192.168.1.10:4683/api/v1/scans/get/matchBSSID";
         sendPOST(URL, requestQueue, jsonBody);
     }
 
