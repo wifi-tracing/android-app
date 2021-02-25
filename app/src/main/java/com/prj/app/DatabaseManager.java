@@ -21,6 +21,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String COLUMN_ID = "ID";
     private static final String COLUMN_TIMESTAMP = "TIMESTAMP";
     private static final String BSSID_SCAN_TAB = "BSSID_SCAN_TAB";
+    private static final String SETTINGS_TAB = "SETTINGS_TAB";
 
     public DatabaseManager(@Nullable Context context) {
         super(context, "prj-app-db.db", null, 1);
@@ -43,6 +44,16 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 ");";
 
         db.execSQL(createTableStatement);
+
+        createTableStatement = "CREATE TABLE " + SETTINGS_TAB + " (\n" +
+                "\t NAME TEXT PRIMARY KEY,\n" +
+                "\t VALUE TEXT NOT NULL \n" +
+                ");";
+
+
+        db.execSQL(createTableStatement);
+        String insertSettingsQuery = "INSERT INTO " + SETTINGS_TAB + " (NAME, VALUE) VALUES ('SAVE_HOTSPOT_LOCATION', 0)";
+        db.execSQL(insertSettingsQuery);
     }
 
     @Override
@@ -50,9 +61,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     }
 
-    public boolean addScan(List<ScanResult> scanList) {
+    public void addScan(List<ScanResult> scanList) {
         if (scanList.size() < 1) {
-            return false;
+            return;
         }
         SQLiteDatabase db = this.getWritableDatabase(); //locking database when using writable
         db.execSQL("INSERT INTO SCAN_RESULT_TAB DEFAULT VALUES;");  //INSERT NEW SCAN RESULT ID AND TIMESTAMP
@@ -67,7 +78,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
         queryString.setLength(queryString.length() - 2); //remove last ,\n
         db.execSQL(queryString.toString());
         db.close();
-        return true;
     }
 
     public int getLastScanResultId(SQLiteDatabase db) {
@@ -102,7 +112,34 @@ public class DatabaseManager extends SQLiteOpenHelper {
         }
         cursor.close();
         return results;
+    }
 
+    public void setSaveHotspotLocation(boolean value){
+        int valueToInsert = value ? 1 : 0;
+        String query = "UPDATE "+ SETTINGS_TAB + " SET VALUE = " + value + " WHERE NAME = 'SAVE_HOTSPOT_LOCATION'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(query);
+    }
+
+    public boolean canSaveHotspotLocation(){
+        ArrayList<Integer> results = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT VALUE FROM SETTINGS_TAB WHERE NAME = 'SAVE_HOTSPOT_LOCATION'";
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            try {
+                results.add(cursor.getInt(0));
+            } catch (Exception e) {
+                Log.d("TAG_NAME", e.getMessage());
+            }
+            cursor.moveToNext();
+        }
+        cursor.close();
+        if(results.size() == 0){
+            return false;
+        }
+        return results.get(0) == 1;
     }
 
     public double calculateDistance(double signalLevelInDb, double freqInMHz) {
