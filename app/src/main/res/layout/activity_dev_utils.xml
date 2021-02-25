@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:onClick="toggleLocationSwitch"
     tools:context=".DevUtils">
 
     <Button
@@ -46,11 +47,22 @@
 
     <TextView
         android:id="@+id/resultTextView"
-        android:layout_width="381dp"
-        android:layout_height="538dp"
-        android:layout_marginTop="176dp"
+        android:layout_width="385dp"
+        android:layout_height="284dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.384"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Switch
+        android:id="@+id/locationSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="196dp"
+        android:onClick="toggleLocationSwitch"
+        android:text="Enable Location Logging"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

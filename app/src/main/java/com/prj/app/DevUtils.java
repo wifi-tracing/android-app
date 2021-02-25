@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,13 +23,30 @@ import org.json.JSONObject;
 import java.util.List;
 import java.util.Objects;
 
+@SuppressLint({"UseSwitchCompatOrMaterialCode", "SetTextI18n"})
 public class DevUtils extends AppCompatActivity {
+    private DatabaseManager databaseManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_dev_utils);
+        databaseManager = new DatabaseManager(this);
+
+        initialiseSettings();
+    }
+
+    public void toggleLocationSwitch(View view) {
+        Switch switchView = (Switch) findViewById(R.id.locationSwitch);
+        boolean newValue = !databaseManager.canSaveHotspotLocation();
+        databaseManager.setSaveHotspotLocation(newValue);
+        switchView.setChecked(newValue);
+    }
+
+    private void initialiseSettings() {
+        Switch switchView = (Switch) findViewById(R.id.locationSwitch);
+        switchView.setChecked(databaseManager.canSaveHotspotLocation());
     }
 
     @SuppressLint("SetTextI18n")
@@ -46,6 +64,12 @@ public class DevUtils extends AppCompatActivity {
 
         TextView resultTextView = (TextView) findViewById(R.id.resultTextView);
         resultTextView.setText("Getting matching BSSIDs");
+
+        String URL = "http://192.168.1.10:4683/api/v1/scans/get/matchBSSID";
+        sendPOST(URL, jsonBody);
+    }
+
+    private void sendPOST(String URL, JSONObject jsonBody) {
         RequestQueue requestQueue;
         DiskBasedCache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024 * 1024); // 1MB cap
 
@@ -53,11 +77,6 @@ public class DevUtils extends AppCompatActivity {
         requestQueue = new RequestQueue(cache, network);
 
         requestQueue.start();
-        String URL = "http://192.168.1.10:4683/api/v1/scans/get/matchBSSID";
-        sendPOST(URL, requestQueue, jsonBody);
-    }
-
-    private void sendPOST(String URL, RequestQueue requestQueue, JSONObject jsonBody) {
         TextView resultTextView = (TextView) findViewById(R.id.resultTextView);
 
         try {
@@ -81,9 +100,8 @@ public class DevUtils extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("SetTextI18n")
     public void uploadScans(View view) {
-        Log.d("debug", "uploading scans");
+        Log.d("debug", "Uploading scans");
         TextView resultTextView = (TextView) findViewById(R.id.resultTextView);
         resultTextView.setText("Uploading scans");
     }
