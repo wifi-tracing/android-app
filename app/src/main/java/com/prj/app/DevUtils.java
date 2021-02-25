@@ -9,12 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HurlStack;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,7 +44,6 @@ public class DevUtils extends AppCompatActivity {
         switchView.setChecked(databaseManager.canSaveHotspotLocation());
     }
 
-    @SuppressLint("SetTextI18n")
     public void getMatchingBSSIDs(View view) {
         DatabaseManager databaseManager = new DatabaseManager(this);
         List<String> results = databaseManager.getScanBSSIDs();
@@ -65,23 +59,15 @@ public class DevUtils extends AppCompatActivity {
         TextView resultTextView = (TextView) findViewById(R.id.resultTextView);
         resultTextView.setText("Getting matching BSSIDs");
 
-        String URL = "http://192.168.1.10:4683/api/v1/scans/get/matchBSSID";
-        sendPOST(URL, jsonBody);
+        String URL = VolleySingleton.API_URL + "scans/get/matchBSSID";
+        sendMatchingBSSIDsPOST(URL, jsonBody);
     }
 
-    private void sendPOST(String URL, JSONObject jsonBody) {
-        RequestQueue requestQueue;
-        DiskBasedCache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024 * 1024); // 1MB cap
-
-        BasicNetwork network = new BasicNetwork(new HurlStack());
-        requestQueue = new RequestQueue(cache, network);
-
-        requestQueue.start();
+    private void sendMatchingBSSIDsPOST(String URL, JSONObject jsonBody) {
         TextView resultTextView = (TextView) findViewById(R.id.resultTextView);
-
         try {
             long startTime = System.nanoTime();
-            @SuppressLint("SetTextI18n") CustomJsonArrayRequest customJsonArrayRequest = new CustomJsonArrayRequest(
+            CustomJsonArrayRequest customJsonArrayRequest = new CustomJsonArrayRequest(
                     Request.Method.POST,
                     URL,
                     jsonBody,
@@ -90,11 +76,9 @@ public class DevUtils extends AppCompatActivity {
                                     "Found " + response.length() + " results\n" +
                                     "Time: " + ((System.nanoTime() - startTime) / 1000000) + "ms\n\n"),
                     Throwable::printStackTrace);
-            customJsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    10000000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            requestQueue.add(customJsonArrayRequest);
+
+            VolleySingleton.getInstance(this).getRequestQueue().add(customJsonArrayRequest);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
