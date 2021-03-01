@@ -137,6 +137,30 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return results;
     }
 
+    public List<String[]> getRawScanData() {
+        ArrayList<String[]> results = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT B.BSSID, B.DISTANCE, A.TIMESTAMP \n" +
+                "FROM   " + BSSID_SCAN_TAB + " B\n" +
+                "       INNER JOIN " + SCAN_RESULT_TAB + " A\n" +
+                "               ON B.SCAN_RESULT_ID = A.ID\n" +
+                "WHERE  Cast (( JULIANDAY(CURRENT_TIMESTAMP) - JULIANDAY(A.TIMESTAMP) ) AS\n" +
+                "             INTEGER) < 14";
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            try {
+                String[] row = {cursor.getString(0), cursor.getString(1), cursor.getString(2)};
+                results.add(row);
+            } catch (Exception e) {
+                Log.d("TAG_NAME", e.getMessage());
+            }
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return results;
+    }
+
     public List<Scan> getScanData() {
         ArrayList<Scan> results = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -151,9 +175,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         while (!cursor.isAfterLast()) {
             try {
                 DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-
                 ZonedDateTime zdt = ZonedDateTime.parse(cursor.getString(2), formatter);
-
                 Scan row = new Scan(cursor.getString(0), cursor.getDouble(1), Date.from(zdt.toInstant()));
                 results.add(row);
             } catch (Exception e) {

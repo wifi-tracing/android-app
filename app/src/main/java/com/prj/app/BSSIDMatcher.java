@@ -25,9 +25,9 @@ import java.util.stream.Collectors;
 @SuppressLint({"UseSwitchCompatOrMaterialCode", "SetTextI18n", "SimpleDateFormat"})
 
 public class BSSIDMatcher {
-    private final double MINIMUM_TIME_DIFFERENCE = 31.5; //in seconds
+    private final double MINIMUM_TIME_DIFFERENCE = 35; //in seconds
     private final double MINIMUM_DISTANCE_DIFFERENCE = 2; //in meters
-    private final double MINIMUM_NUMBER_OF_NEAR_HOTSPOTS = 3; //number of hotspots needed to correctly triangulate referential position
+    private final double MINIMUM_NUMBER_OF_NEAR_HOTSPOTS = 2; //number of hotspots needed to correctly triangulate referential position
     private final double MINIMUM_NUMBER_OF_CONSECUTIVE_TIMESTAMPS = 4; //number of consecutive timestamps needed to confirm contact
     private final DatabaseManager databaseManager;
     private final TextView resultTextView;
@@ -99,7 +99,7 @@ public class BSSIDMatcher {
         //sort by timestamp
         localScans.sort(Comparator.comparing(Scan::getTimestamp));
         localScans = removeNonConcurrentScans(localScans); //filter out scans that don't have at least 2 mins of the same bssid
-
+        remoteScans.sort(Comparator.comparing(Scan::getTimestamp));
         //todo: change removeNonConcurrentScans to keep sorted Scans
         localScans.sort(Comparator.comparing(Scan::getTimestamp));
 
