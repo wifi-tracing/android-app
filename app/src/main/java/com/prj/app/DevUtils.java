@@ -38,10 +38,10 @@ public class DevUtils extends AppCompatActivity {
     }
 
     public void getMatchingBSSIDs(View view) {
-        MatchMaker matchMaker = new MatchMaker(databaseManager,
+        BSSIDMatcher BSSIDMatcher = new BSSIDMatcher(databaseManager,
                 findViewById(R.id.resultTextView),
                 this.getApplicationContext());
-        matchMaker.getMatchingBSSIDs();
+        BSSIDMatcher.getMatchingBSSIDs();
     }
 
 

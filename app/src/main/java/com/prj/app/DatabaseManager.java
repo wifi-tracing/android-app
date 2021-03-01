@@ -70,6 +70,11 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Add wifi scan result to database
+     *
+     * @param scanList list of ScanResult objects
+     */
     public void addScan(List<ScanResult> scanList) {
         if (scanList.size() < 1) {
             return;
@@ -92,6 +97,12 @@ public class DatabaseManager extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Get the last ID used in the SCAN_RESULT_TAB
+     *
+     * @param db database
+     * @return the last ID use in SCAN_RESULT_TAB
+     */
     public int getLastScanResultId(SQLiteDatabase db) {
         String query = "SELECT MAX(ID) AS ID FROM " + SCAN_RESULT_TAB;
         Cursor cursor = db.rawQuery(query, null);

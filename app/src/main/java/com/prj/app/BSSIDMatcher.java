@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("FieldCanBeLocal")
 @SuppressLint({"UseSwitchCompatOrMaterialCode", "SetTextI18n", "SimpleDateFormat"})
 
-public class MatchMaker {
+public class BSSIDMatcher {
     private final double MINIMUM_TIME_DIFFERENCE = 31.5; //in seconds
     private final double MINIMUM_DISTANCE_DIFFERENCE = 2; //in meters
     private final double MINIMUM_NUMBER_OF_NEAR_HOTSPOTS = 3; //number of hotspots needed to correctly triangulate referential position
@@ -40,7 +40,7 @@ public class MatchMaker {
      * @param resultTextView  a TextView object to modify to show user progress and results
      * @param context         application context
      */
-    public MatchMaker(DatabaseManager databaseManager, TextView resultTextView, Context context) {
+    public BSSIDMatcher(DatabaseManager databaseManager, TextView resultTextView, Context context) {
         this.databaseManager = databaseManager;
         this.resultTextView = resultTextView;
         this.context = context;
@@ -328,6 +328,4 @@ public class MatchMaker {
     public boolean containsString(final List<Scan> list, final Scan scan) {
         return list.parallelStream().anyMatch(o -> o.getBssid().equals(scan.getBssid()));
     }
-
-
 }
