@@ -13,10 +13,14 @@ import androidx.annotation.Nullable;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@SuppressLint("SimpleDateFormat")
 public class DatabaseManager extends SQLiteOpenHelper {
     private static final String SCAN_RESULT_TAB = "SCAN_RESULT_TAB";
     private static final String COLUMN_ID = "ID";
@@ -32,7 +36,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String createTableStatement = "CREATE TABLE " + SCAN_RESULT_TAB + " (\n" +
                 "\t" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-                "\t" + COLUMN_TIMESTAMP + " DATE(1) NOT NULL DEFAULT CURRENT_TIMESTAMP\n" +
+                "\t" + COLUMN_TIMESTAMP + " TEXT NOT NULL\n" +
                 ")";
 
         db.execSQL(createTableStatement);
@@ -70,10 +74,13 @@ public class DatabaseManager extends SQLiteOpenHelper {
         if (scanList.size() < 1) {
             return;
         }
+        String isoTimestamp = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT);
         SQLiteDatabase db = this.getWritableDatabase(); //locking database when using writable
-        db.execSQL("INSERT INTO SCAN_RESULT_TAB DEFAULT VALUES;");  //INSERT NEW SCAN RESULT ID AND TIMESTAMP
+        db.execSQL("INSERT INTO SCAN_RESULT_TAB (" + COLUMN_TIMESTAMP + ") VALUES ('" + isoTimestamp + "');");  //INSERT NEW SCAN RESULT ID AND TIMESTAMP
         int lastScanResultId = getLastScanResultId(db);
         StringBuilder queryString = new StringBuilder();
+
+
         queryString.append("INSERT INTO " + BSSID_SCAN_TAB + " (BSSID, DISTANCE, SCAN_RESULT_ID)\nVALUES\n");
         for (ScanResult scan : scanList) {
             queryString.append("(");
@@ -110,6 +117,34 @@ public class DatabaseManager extends SQLiteOpenHelper {
         while (!cursor.isAfterLast()) {
             try {
                 results.add(cursor.getString(0));
+            } catch (Exception e) {
+                Log.d("TAG_NAME", e.getMessage());
+            }
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return results;
+    }
+
+    public List<Scan> getScanData() {
+        ArrayList<Scan> results = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT DISTINCT B.BSSID, B.DISTANCE, A.TIMESTAMP \n" +
+                "FROM   " + BSSID_SCAN_TAB + " B\n" +
+                "       INNER JOIN " + SCAN_RESULT_TAB + " A\n" +
+                "               ON B.SCAN_RESULT_ID = A.ID\n" +
+                "WHERE  Cast (( JULIANDAY(CURRENT_TIMESTAMP) - JULIANDAY(A.TIMESTAMP) ) AS\n" +
+                "             INTEGER) < 14";
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+
+                ZonedDateTime zdt = ZonedDateTime.parse(cursor.getString(2), formatter);
+
+                Scan row = new Scan(cursor.getString(0), cursor.getDouble(1), Date.from(zdt.toInstant()));
+                results.add(row);
             } catch (Exception e) {
                 Log.d("TAG_NAME", e.getMessage());
             }
