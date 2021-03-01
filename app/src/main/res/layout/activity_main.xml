@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
     <com.skyfishjy.library.RippleBackground
+        android:id="@+id/rippleBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/rippleBackground"
         app:rb_color="#9000FF00"
+        app:rb_duration="3000"
         app:rb_radius="20dp"
         app:rb_rippleAmount="3"
-        app:rb_duration="3000"
         app:rb_scale="6">
 
         <ImageView
@@ -38,4 +37,4 @@
             app:icon="@android:drawable/ic_menu_manage"
             app:iconTint="#6200EE" />
     </com.skyfishjy.library.RippleBackground>
-  </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
