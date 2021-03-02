@@ -70,6 +70,12 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     }
 
+    public void deleteData() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + BSSID_SCAN_TAB + ";");
+        db.execSQL("DELETE FROM " + SCAN_RESULT_TAB + ";");
+    }
+
     /**
      * Add wifi scan result to database
      *
