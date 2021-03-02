@@ -2,6 +2,7 @@ package com.prj.app;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Pair;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -10,8 +11,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,13 +28,13 @@ import java.util.stream.Collectors;
 @SuppressLint({"UseSwitchCompatOrMaterialCode", "SetTextI18n", "SimpleDateFormat"})
 
 public class BSSIDMatcher {
-    private final double MINIMUM_TIME_DIFFERENCE = 35; //in seconds
-    private final double MINIMUM_DISTANCE_DIFFERENCE = 2; //in meters
-    private final double MINIMUM_NUMBER_OF_NEAR_HOTSPOTS = 2; //number of hotspots needed to correctly triangulate referential position
-    private final double MINIMUM_NUMBER_OF_CONSECUTIVE_TIMESTAMPS = 4; //number of consecutive timestamps needed to confirm contact
     private final DatabaseManager databaseManager;
     private final TextView resultTextView;
     private final Context context;
+    private double MAX_TIME_DIFFERENCE = 35; //in seconds
+    private double MAX_DISTANCE_DIFFERENCE = 2; //in meters
+    private double MIN_NUMBER_OF_NEAR_HOTSPOTS = 4; //number of hotspots needed to correctly triangulate referential position
+    private double MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS = 4; //number of consecutive timestamps needed to confirm contact
 
     /**
      * Contains functions to fetch and match positive scans with locally stored data
@@ -105,15 +108,26 @@ public class BSSIDMatcher {
 
         Map<Scan, List<Scan>> map = getScanMap(localScans, remoteScans);
         TreeMap<Date, List<Scan>> timeMap = getDateMap(map);
-        List<Date> positiveResultDates = getFirstPositiveResult(timeMap);
+        List<Pair<Date, List<Scan>>> positiveResultDates = getFirstPositiveResult(timeMap);
 
         if (positiveResultDates.size() != 0) {
+
+            StringBuilder out = new StringBuilder();
+
+            for(Pair<Date, List<Scan>> scan : positiveResultDates){
+                SimpleDateFormat formatter= new SimpleDateFormat("HH:mm:ss");
+                out.append("\n\n Found group at ").append(formatter.format(scan.second.get(0).getTimestamp()));
+                for(Scan hotspot : scan.second){
+                    out.append("\n").append(hotspot.toString());
+                }
+            }
+
             resultTextView.setText(
-                    "Found a match! " + positiveResultDates.size() +
-                            " consecutive scans of > 2 matching hotspots.\n\n" + positiveResultDates.toString());
+                    "Found a match! " + positiveResultDates.size() + "/" + MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS +
+                            " consecutive scans of " + MIN_NUMBER_OF_NEAR_HOTSPOTS + " or more matching hotspots.\n\n" + out.toString());
         } else {
             resultTextView.setText(
-                    "Cross referenced 5,000,000 scans\n" +
+                    "Cross referenced "+ remoteScans.size() +" scans.\n" +
                             "No matches found\n");
         }
 
@@ -126,28 +140,28 @@ public class BSSIDMatcher {
      * @param timeMap the timeMap as returned by the getDateMap method
      * @return an array of Date objects, if there are positive contacts, empty if there are none
      */
-    private List<Date> getFirstPositiveResult(TreeMap<Date, List<Scan>> timeMap) {
-        List<Date> dateStorage = new ArrayList<>();
+    private List<Pair<Date, List<Scan>>> getFirstPositiveResult(TreeMap<Date, List<Scan>> timeMap) {
+        List<Pair<Date, List<Scan>>> dateStorage = new ArrayList<>();
 
         for (Date timestamp : timeMap.keySet()) {
             if (dateStorage.size() == 0) {
-                dateStorage.add(timestamp);
+                dateStorage.add(new Pair(timestamp, timeMap.get(timestamp)));
             } else {
-                Date lastTimestamp = dateStorage.get(dateStorage.size() - 1);
+                Date lastTimestamp = dateStorage.get(dateStorage.size() - 1).first;
                 double timeDiff = Math.abs(lastTimestamp.getTime() - timestamp.getTime()) / 1000.0;
-                if (timeDiff <= MINIMUM_TIME_DIFFERENCE) {
-                    dateStorage.add(timestamp);
-                    if (dateStorage.size() >= MINIMUM_NUMBER_OF_CONSECUTIVE_TIMESTAMPS) {
+                if (timeDiff <= MAX_TIME_DIFFERENCE) {
+                    dateStorage.add(new Pair(timestamp, timeMap.get(timestamp)));
+                    if (dateStorage.size() >= MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS) {
                         return dateStorage;
                     }
                 } else {
                     dateStorage.clear();
-                    dateStorage.add(timestamp);
+                    dateStorage.add(new Pair(timestamp, timeMap.get(timestamp)));
                 }
             }
         }
 
-        if (dateStorage.size() <= MINIMUM_NUMBER_OF_CONSECUTIVE_TIMESTAMPS) {
+        if (dateStorage.size() <= MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS) {
             dateStorage.clear();
         }
         return dateStorage;
@@ -172,7 +186,7 @@ public class BSSIDMatcher {
                     List<Scan> list = tempTimeMap.get(scan.getTimestamp());
                     if (list != null) {
                         list.add(scan);
-                        if (list.size() >= MINIMUM_NUMBER_OF_NEAR_HOTSPOTS) {
+                        if (list.size() >= MIN_NUMBER_OF_NEAR_HOTSPOTS) {
                             timeMap.put(scan.getTimestamp(), list);
                         }
                     } else {
@@ -208,9 +222,9 @@ public class BSSIDMatcher {
             for (Scan remoteScan : remoteScans) {
                 if (remoteScan.getBssid().equals(localScan.getBssid())) {
                     double differenceInSeconds = scanTimeDifference(remoteScan, localScan);
-                    if (differenceInSeconds <= MINIMUM_TIME_DIFFERENCE) {
+                    if (differenceInSeconds <= MAX_TIME_DIFFERENCE) {
                         double differenceInMeters = Math.abs(remoteScan.getDistance() - localScan.getDistance());
-                        if (differenceInMeters <= MINIMUM_DISTANCE_DIFFERENCE) {
+                        if (differenceInMeters <= MAX_DISTANCE_DIFFERENCE) {
                             if (map.containsKey(localScan)) {
                                 map.get(localScan).add(remoteScan);
                             } else {
@@ -248,10 +262,10 @@ public class BSSIDMatcher {
                         //get last element found for this bssid
                         Scan lastScan = storageList.get(storageList.size() - 1);
 
-                        if (scanTimeDifference(lastScan, current) <= MINIMUM_TIME_DIFFERENCE) {
+                        if (scanTimeDifference(lastScan, current) <= MAX_TIME_DIFFERENCE) {
                             storageList.add(current);
                         } else {
-                            if (storageList.size() >= MINIMUM_NUMBER_OF_CONSECUTIVE_TIMESTAMPS) {
+                            if (storageList.size() >= MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS) {
                                 validScans.addAll(storageList);
                             }
                             storageList.clear();
@@ -272,7 +286,7 @@ public class BSSIDMatcher {
 
         }
         for (ArrayList<Scan> scans : storage.values()) {
-            if (scans.size() >= MINIMUM_NUMBER_OF_CONSECUTIVE_TIMESTAMPS) {
+            if (scans.size() >= MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS) {
                 validScans.addAll(scans);
             }
         }
@@ -282,8 +296,7 @@ public class BSSIDMatcher {
 
 
     private double scanTimeDifference(Scan scan1, Scan scan2) {
-        double difference = Math.abs(scan1.getTimestamp().getTime() - scan2.getTimestamp().getTime()) / 1000.0;
-        return difference;
+        return Math.abs(scan1.getTimestamp().getTime() - scan2.getTimestamp().getTime()) / 1000.0;
     }
 
     /**
@@ -296,7 +309,7 @@ public class BSSIDMatcher {
      * @return a list of Scan objects
      * @throws JSONException if JSON objects are not properly formatted
      */
-    private List<Scan> parseScans(JSONArray jsonArray) throws JSONException {
+    public List<Scan> parseScans(JSONArray jsonArray) throws JSONException {
         List<Scan> result = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject scan = jsonArray.getJSONObject(i);
@@ -328,4 +341,37 @@ public class BSSIDMatcher {
     public boolean containsString(final List<Scan> list, final Scan scan) {
         return list.parallelStream().anyMatch(o -> o.getBssid().equals(scan.getBssid()));
     }
+
+    public double getMAX_TIME_DIFFERENCE() {
+        return MAX_TIME_DIFFERENCE;
+    }
+
+    public void setMAX_TIME_DIFFERENCE(double MAX_TIME_DIFFERENCE) {
+        this.MAX_TIME_DIFFERENCE = MAX_TIME_DIFFERENCE;
+    }
+
+    public double getMAX_DISTANCE_DIFFERENCE() {
+        return MAX_DISTANCE_DIFFERENCE;
+    }
+
+    public void setMAX_DISTANCE_DIFFERENCE(double MAX_DISTANCE_DIFFERENCE) {
+        this.MAX_DISTANCE_DIFFERENCE = MAX_DISTANCE_DIFFERENCE;
+    }
+
+    public double getMIN_NUMBER_OF_NEAR_HOTSPOTS() {
+        return MIN_NUMBER_OF_NEAR_HOTSPOTS;
+    }
+
+    public void setMIN_NUMBER_OF_NEAR_HOTSPOTS(double MIN_NUMBER_OF_NEAR_HOTSPOTS) {
+        this.MIN_NUMBER_OF_NEAR_HOTSPOTS = MIN_NUMBER_OF_NEAR_HOTSPOTS;
+    }
+
+    public double getMIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS() {
+        return MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS;
+    }
+
+    public void setMIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS(double MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS) {
+        this.MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS = MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS;
+    }
+
 }
