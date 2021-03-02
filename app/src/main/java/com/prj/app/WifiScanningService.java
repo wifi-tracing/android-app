@@ -27,7 +27,7 @@ import androidx.core.app.NotificationCompat;
 
 public class WifiScanningService extends Service {
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
-    private static final int DELAY_MILLIS = 31000; //only once every 30s as for Android 9+ (four times in a 2 minute period)
+    private static final int DELAY_MILLIS = 30001; //only once every 30s as for Android 9+ (four times in a 2 minute period)
     private static final int MINIMUM_ACCURACY = 50; //accuracy in meters needed to log location data
     private static HandlerThread handlerThread;
     private static Notification notification;
