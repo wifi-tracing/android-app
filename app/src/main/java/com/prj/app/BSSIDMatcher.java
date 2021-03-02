@@ -14,7 +14,6 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -114,10 +113,10 @@ public class BSSIDMatcher {
 
             StringBuilder out = new StringBuilder();
 
-            for(Pair<Date, List<Scan>> scan : positiveResultDates){
-                SimpleDateFormat formatter= new SimpleDateFormat("HH:mm:ss");
+            for (Pair<Date, List<Scan>> scan : positiveResultDates) {
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
                 out.append("\n\n Found group at ").append(formatter.format(scan.second.get(0).getTimestamp()));
-                for(Scan hotspot : scan.second){
+                for (Scan hotspot : scan.second) {
                     out.append("\n").append(hotspot.toString());
                 }
             }
@@ -127,7 +126,7 @@ public class BSSIDMatcher {
                             " consecutive scans of " + MIN_NUMBER_OF_NEAR_HOTSPOTS + " or more matching hotspots.\n\n" + out.toString());
         } else {
             resultTextView.setText(
-                    "Cross referenced "+ remoteScans.size() +" scans.\n" +
+                    "Cross referenced " + remoteScans.size() + " scans.\n" +
                             "No matches found\n");
         }
 

@@ -2,7 +2,6 @@ package com.prj.app;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Calendar;
 import java.util.Date;
 
 public class Scan implements Comparable<Scan> {
@@ -43,7 +42,7 @@ public class Scan implements Comparable<Scan> {
     @Override
     @NotNull
     public String toString() {
-        return bssid + " | " + distance +"m";
+        return bssid + " | " + distance + "m";
     }
 
     @Override
