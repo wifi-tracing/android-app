@@ -87,7 +87,7 @@ public class UploadDataActivity extends AppCompatActivity {
 
                 new AlertDialog.Builder(this)
                         .setTitle("You have uploaded your data.")
-                        .setMessage("Your data will help reduce contagion and save lives. Thank you")
+                        .setMessage("Your data will help reduce contagion and save lives.\nThank you")
                 .setCancelable(false)
                  .setPositiveButton("OK", ((dialog, which) -> {finish();})).show();
 
