@@ -61,8 +61,10 @@ public class BSSIDMatcher {
             e.printStackTrace();
         }
 
-        resultTextView.setText("Checking matching BSSIDs");
+        if (resultTextView != null) {
 
+            resultTextView.setText("Checking matching BSSIDs");
+        }
         String URL = VolleySingleton.API_URL + "scans/get/matchBSSID";
         sendMatchingBSSIDsPOST(URL, jsonBody);
     }
@@ -94,8 +96,11 @@ public class BSSIDMatcher {
             remoteScans = parseScans(matchingScans);
         } catch (JSONException jsonException) {
             jsonException.printStackTrace();
-            resultTextView.setText(
-                    "There was an error. Could not parse incoming JSON payload correctly.");
+
+            if (resultTextView != null) {
+                resultTextView.setText(
+                        "There was an error. Could not parse incoming JSON payload correctly.");
+            }
         }
         localScans = removeUnusedLocalScans(localScans, remoteScans);
         //sort by timestamp
@@ -120,14 +125,19 @@ public class BSSIDMatcher {
                     out.append("\n").append(hotspot.toString());
                 }
             }
+            if (resultTextView != null) {
 
-            resultTextView.setText(
-                    "Found a match! " + positiveResultDates.size() + "/" + MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS +
-                            " consecutive scans of " + MIN_NUMBER_OF_NEAR_HOTSPOTS + " or more matching hotspots.\n\n" + out.toString());
+                resultTextView.setText(
+                        "Found a match! " + positiveResultDates.size() + "/" + MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS +
+                                " consecutive scans of " + MIN_NUMBER_OF_NEAR_HOTSPOTS + " or more matching hotspots.\n\n" + out.toString());
+            }
         } else {
-            resultTextView.setText(
-                    "Cross referenced " + remoteScans.size() + " scans.\n" +
-                            "No matches found\n");
+            if (resultTextView != null) {
+
+                resultTextView.setText(
+                        "Cross referenced " + remoteScans.size() + " scans.\n" +
+                                "No matches found\n");
+            }
         }
 
     }
