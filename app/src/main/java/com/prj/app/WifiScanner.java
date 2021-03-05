@@ -13,14 +13,11 @@ import java.util.List;
 
 public class WifiScanner {
     private static WifiManager wifiManager;
-    private final Context context;
     private final DatabaseManager databaseManager;
-    private List<ScanResult> results;
     private Location location;
     private boolean success;
 
     public WifiScanner(Context context) {
-        this.context = context;
 
         wifiManager = (WifiManager)
                 context.getSystemService(Context.WIFI_SERVICE);
@@ -33,7 +30,6 @@ public class WifiScanner {
                 if (success) {
                     scanSuccess();
                 } else {
-                    // scan failure handling
                     scanFailure();
                 }
             }
@@ -48,7 +44,7 @@ public class WifiScanner {
     public void startScan(Location location) {
         this.location = location; //update latest location
         boolean result = wifiManager.startScan(); //true if scan was successful
-        Log.d("wifi", "startScan() " + result);
+        Log.d("wifi", "Started New WiFi Scan: " + result);
     }
 
     public WifiManager getWifiManager() {
@@ -56,14 +52,13 @@ public class WifiScanner {
     }
 
     private void scanSuccess() {
-        results = wifiManager.getScanResults();
+        List<ScanResult> results = wifiManager.getScanResults();
         databaseManager.addScan(results);
         if (location != null) {
             databaseManager.addLocationData(results, location);
         }
-        Log.d("wifi", "Found " + results.size() + " results");
+        Log.d("wifi", "Found " + results.size() + " WiFi results");
     }
-
 
     private void scanFailure() {
         // handle failure: new scan did NOT succeed
