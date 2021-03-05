@@ -10,12 +10,16 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.skyfishjy.library.RippleBackground;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,8 +40,20 @@ public class MainActivity extends AppCompatActivity {
             wifiScanningIntent = new Intent(this, WifiScanningService.class);
             wifiScanningIntent.putExtra("inputExtra", "Wifi Scanning Service");
         }
+        startExposureWorker();
     }
 
+    /**
+     * Enqueue a unique request for exposure checks
+     */
+    private void startExposureWorker() {
+        PeriodicWorkRequest.Builder myWorkBuilder =
+                new PeriodicWorkRequest.Builder(ExposureWorker.class, 12, TimeUnit.HOURS); //run every 12 hours
+        PeriodicWorkRequest exposureRequest = myWorkBuilder.build();
+        WorkManager.getInstance(getApplicationContext())
+                //If there is existing pending (uncompleted) work with the same unique name, do nothing
+                .enqueueUniquePeriodicWork("EXPOSURE_CHECK", ExistingPeriodicWorkPolicy.KEEP, exposureRequest);
+    }
 
     @Override
     protected void onResume() {
@@ -85,6 +101,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openDevUtils(View view) {
-        startActivity(new Intent(this, DevUtils.class));
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 }
