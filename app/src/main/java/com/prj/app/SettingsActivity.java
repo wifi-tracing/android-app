@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Objects;
 
 @SuppressLint({"UseSwitchCompatOrMaterialCode", "SetTextI18n", "SimpleDateFormat"})
-public class DevUtils extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity {
     private DatabaseManager databaseManager;
     private BSSIDMatcher bssidMatcher;
 
