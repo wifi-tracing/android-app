@@ -17,14 +17,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Prjandroidapp"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.prj.app.SettingsActivity" />
-
+        <activity android:name=".SettingsActivity" />
+        <activity
+            android:name=".UploadDataActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http"
+                    android:host="www.prj-android-app.com"
+                    android:pathPrefix="/upload" />
+            </intent-filter>
+        </activity>
         <service
-            android:name="com.prj.app.WifiScanningService"
+            android:name=".WifiScanningService"
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name="com.prj.app.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -6,7 +6,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 public class VolleySingleton {
-    public static final String API_URL = "http://192.168.1.10:4683/api/v1/";
+    public static final String API_URL = "http://192.168.1.138:4683/api/v1/";
     private static VolleySingleton instance;
     private final RequestQueue requestQueue;
 

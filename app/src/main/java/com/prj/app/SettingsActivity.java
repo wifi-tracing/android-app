@@ -120,7 +120,7 @@ public class SettingsActivity extends AppCompatActivity {
         JSONObject jsonBody = new JSONObject();
         List<JSONObject> scans = null;
         try {
-            scans = mapScansToJSON(results);
+            scans = Scan.mapScansToJSON(results);
             jsonBody.put("scans", new JSONArray(scans));
         } catch (JSONException e) {
             resultTextView.setText("There was an error." + e.getMessage());
@@ -151,7 +151,7 @@ public class SettingsActivity extends AppCompatActivity {
         JSONObject jsonBody = new JSONObject();
         List<JSONObject> scans = null;
         try {
-            scans = mapScansToJSON(results);
+            scans = Scan.mapScansToJSON(results);
             jsonBody.put("scans", new JSONArray(scans));
         } catch (JSONException e) {
             resultTextView.setText("There was an error." + e.getMessage());
@@ -162,19 +162,6 @@ public class SettingsActivity extends AppCompatActivity {
         sendPOST(URL, null);
 
         resultTextView.setText("Deleted scans.");
-    }
-
-    private List<JSONObject> mapScansToJSON(List<String[]> scans) throws JSONException {
-        List<JSONObject> result = new ArrayList<>();
-        for (String[] scan : scans) {
-            JSONObject object = new JSONObject();
-            object.put("d", "false");
-            object.put("t", scan[2]);
-            object.put("l", Double.parseDouble(scan[1]));
-            object.put("b", scan[0]);
-            result.add(object);
-        }
-        return result;
     }
 
     private void sendPOST(String URL, JSONObject jsonBody) {
