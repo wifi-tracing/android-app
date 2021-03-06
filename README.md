@@ -17,8 +17,6 @@
   <p align="center">
     WiFi-based contact tracing app, developed as part of <a href="https://github.com/danilo-delbusso"><b>@danilo-delbusso</b></a>'s a final year project
     <br />
-    <a href="https://github.com/6CCS3PRJ/android-app">View Demo</a>
-    ·
     <a href="https://github.com/6CCS3PRJ/android-app/issues">Report Bug</a>
   </p>
 </p>
@@ -64,7 +62,8 @@ To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+In order to run a local copy, you'll need to install the following:
+
 * [Android Studio](https://developer.android.com/studio/install)
 
 ### Installation
