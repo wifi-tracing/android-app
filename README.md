@@ -51,7 +51,7 @@
 &nbsp; &nbsp; 
   <img alt="Dark" src="docs/screenshot-2.jpg" width="30%">
   &nbsp; &nbsp;
-    <img alt="Dark" src="docs/screenshot-3.jpg" width="30%">
+    <img alt="Dark" src="docs/screenshot-3.gif" width="30%">
 
 </p>
 
