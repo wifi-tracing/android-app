@@ -1,18 +1,11 @@
 <resources>
-    <string name="app_name">prj-android-app</string>
-    <string name="welcome">Welcome</string>
-    <string name="title_activity_dev_utilities">DevUtilities</string>
-    <!--
-    This string is used for square devices and overridden by hello_world in
-    values-round/strings.xml for round devices.
-    -->
-    <string name="hello_world">Hello Square World!</string>
+    <string name="app_name">6CCS3PRJ</string>
     <string name="title_activity_dev_utils">DevUtils</string>
     <string name="coronavirus_icon">coronavirus icon</string>
     <string name="get_matching_bssids">Get Matching BSSIDs</string>
     <string name="upload_scans">Upload Scans</string>
-    <string name="by_confirming_you_will_be_uploading_all_data_collected_in_the_past_14_days_n_n_this_means_that_the_provider_of_this_service_will_be_able_to_see_all_wifi_signals_you_ve_been_near_in_the_past_14_days_n_this_information_could_be_used_to_triangulate_your_location_for_this_period_of_time_n_n_we_kindly_ask_you_to_also_support_the_contact_tracing_effort_by_uploading_location_data_which_will_anonymously_inform_others_of_where_contagion_is_spreading">By confirming, you will be uploading ALL data collected in the past 14 days. \n\n This means that the provider of this service will be able to see all WiFi signals you\'ve been near in the past 14 days. \n This information could be used to triangulate your location for this period of time. \n\n We kindly ask you to also support the contact tracing effort by uploading location data, which will anonymously inform others of where contagion is spreading.</string>
-    <string name="upload_all_scan_data">Upload All Scan Data</string>
-    <string name="i_also_want_to_upload_all_my_location_data">I also want to upload all my location data</string>
-    <string name="yes_i_want_to_upload_my_data">Yes, I want to upload my data</string>
+    <string name="upload_info">By confirming, you will be uploading ALL data collected in the past 14 days. \n\n This means that the provider of this service will be able to see all WiFi signals you\'ve been near in the past 14 days. \n This information could be used to triangulate your location for this period of time. \n\n We kindly ask you to also support the contact tracing effort by uploading location data, which will anonymously inform others of where contagion is spreading.</string>
+    <string name="upload_title">Upload All Scan Data</string>
+    <string name="upload_location">I also want to upload all my location data</string>
+    <string name="upload_button">Yes, I want to upload my data</string>
 </resources>
