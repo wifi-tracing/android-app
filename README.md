@@ -15,7 +15,7 @@
   <h3 align="center">Android App</h3>
 
   <p align="center">
-    WiFi-based contact tracing app, developed as part of @danilo-delbusso 's a final year project
+    WiFi-based contact tracing app, developed as part of <a href="https://github.com/danilo-delbusso"><b>@danilo-delbusso</b></a>'s a final year project
     <br />
     <a href="https://github.com/6CCS3PRJ/android-app">View Demo</a>
     ·
