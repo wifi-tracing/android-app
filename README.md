@@ -46,12 +46,20 @@
 
 ## About The Project
 
+The app scans for WiFi signals around the user every 30 seconds, collecting relative location to WiFi hotspots locally.
+
+The user can also decide to collect location data, which is used to localise hotspots and provide contagion spread data.
+
+This data can be uploaded by scanning a specific QR code, aiding in contact tracing efforts.
+
+Daily, the app downloads a copy of relevant scans from the [ingestion service](https://www.github.com/6CCS3PRJ/server), which will then be used to check for possible exposure to the virus.
+
 <p align="center">
-  <img alt="Light" src="docs/screenshot-1.jpg" width="30%">
+  <img alt="upload data page" src="docs/screenshot-1.jpg" width="30%">
 &nbsp; &nbsp; 
-  <img alt="Dark" src="docs/screenshot-2.jpg" width="30%">
+  <img alt="developer settings page" src="docs/screenshot-2.jpg" width="30%">
   &nbsp; &nbsp;
-    <img alt="Dark" src="docs/screenshot-3.gif" width="30%">
+    <img alt="main page" src="docs/screenshot-3.gif" width="30%">
 
 </p>
 
