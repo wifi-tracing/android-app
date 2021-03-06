@@ -11,8 +11,11 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
+import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,6 +30,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String COLUMN_TIMESTAMP = "TIMESTAMP";
     private static final String BSSID_SCAN_TAB = "BSSID_SCAN_TAB";
     private static final String SETTINGS_TAB = "SETTINGS_TAB";
+    private static final String LOCATION_TAB = "LOCATION_TAB";
+    private static final int COORDINATES_PRECISION = 5;
 
     public DatabaseManager(@Nullable Context context) {
         super(context, "prj-app-db.db", null, 1);
@@ -34,30 +39,22 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableStatement = "CREATE TABLE " + SCAN_RESULT_TAB + " (\n" +
-                "\t" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-                "\t" + COLUMN_TIMESTAMP + " TEXT NOT NULL\n" +
-                ")";
+        String createTableStatement = String.format("CREATE TABLE %s (\n\t%s INTEGER PRIMARY KEY AUTOINCREMENT,\n\t%s TEXT NOT NULL\n)", SCAN_RESULT_TAB, COLUMN_ID, COLUMN_TIMESTAMP);
 
         db.execSQL(createTableStatement);
 
-        createTableStatement = "CREATE TABLE " + BSSID_SCAN_TAB + " (\n" +
-                "\t ID INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-                "\t SCAN_RESULT_ID INTEGER NOT NULL,\n" +
-                "\t BSSID TEXT NOT NULL,\n" +
-                "\t DISTANCE NUMERIC NOT NULL\n" +
-                ");";
+        createTableStatement = String.format("CREATE TABLE %s (\n\t ID INTEGER PRIMARY KEY AUTOINCREMENT,\n\t SCAN_RESULT_ID INTEGER NOT NULL,\n\t BSSID TEXT NOT NULL,\n\t DISTANCE NUMERIC NOT NULL\n);", BSSID_SCAN_TAB);
 
         db.execSQL(createTableStatement);
 
-        createTableStatement = "CREATE TABLE " + SETTINGS_TAB + " (\n" +
-                "\t NAME TEXT PRIMARY KEY,\n" +
-                "\t VALUE TEXT NOT NULL \n" +
-                ");";
-
+        createTableStatement = String.format("CREATE TABLE %s (\n\t NAME TEXT PRIMARY KEY,\n\t VALUE TEXT NOT NULL \n);", SETTINGS_TAB);
 
         db.execSQL(createTableStatement);
-        String insertSettingsQuery = "INSERT INTO " + SETTINGS_TAB + " (NAME, VALUE) VALUES ('SAVE_HOTSPOT_LOCATION', 0)";
+
+        createTableStatement = String.format("CREATE TABLE %s (\n\t bssid TEXT PRIMARY KEY,\n\t lat NUMBER NOT NULL, \n\t lng NUMBER NOT NULL \n);", LOCATION_TAB);
+        db.execSQL(createTableStatement);
+
+        String insertSettingsQuery = String.format("INSERT INTO %s (NAME, VALUE) VALUES ('SAVE_HOTSPOT_LOCATION', 0)", SETTINGS_TAB);
         db.execSQL(insertSettingsQuery);
     }
 
@@ -67,13 +64,45 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     public void addLocationData(List<ScanResult> results, Location location) {
+        SQLiteDatabase readableDb = this.getReadableDatabase();
+        SQLiteDatabase writeableDb = this.getWritableDatabase();
 
+        for (ScanResult result : results) {
+
+            String bssid = result.BSSID.replaceAll(":", "").toUpperCase();
+
+            String query = String.format("SELECT * FROM %s WHERE bssid = '%s'", LOCATION_TAB, bssid);
+            Cursor cursor = readableDb.rawQuery(query, null);
+            List<LatLng> list = new ArrayList<>();
+            if (cursor.moveToFirst() && cursor.getCount() == 1) {
+                list.add(new LatLng(cursor.getDouble(1), cursor.getDouble(2)));
+            } else if (cursor.getCount() == 0) {
+                String insertQuery = String.format("INSERT INTO %s (bssid, lat, lng) VALUES ('%s',%s,%s)",
+                        LOCATION_TAB,
+                        bssid,
+                        Util.round(location.getLatitude(), COORDINATES_PRECISION),
+                        Util.round(location.getLongitude(), COORDINATES_PRECISION));
+                writeableDb.execSQL(insertQuery);
+                continue;
+            }
+            cursor.close();
+
+            list.add(new LatLng(location.getLatitude(), location.getLongitude()));
+            LatLng average = Util.getLocationAverage(list);
+
+            String updateQuery = String.format("UPDATE %s SET lat = %s, lng = %s WHERE bssid = '%s'",
+                    LOCATION_TAB,
+                    Util.round(average.latitude, COORDINATES_PRECISION),
+                    Util.round(average.longitude, COORDINATES_PRECISION),
+                    bssid);
+            writeableDb.execSQL(updateQuery);
+        }
     }
 
     public void deleteData() {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM " + BSSID_SCAN_TAB + ";");
-        db.execSQL("DELETE FROM " + SCAN_RESULT_TAB + ";");
+        db.execSQL(String.format("DELETE FROM %s;", BSSID_SCAN_TAB));
+        db.execSQL(String.format("DELETE FROM %s;", SCAN_RESULT_TAB));
     }
 
     /**
@@ -143,6 +172,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return results;
     }
 
+
     public List<String[]> getRawScanData() {
         ArrayList<String[]> results = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -159,7 +189,29 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 String[] row = {cursor.getString(0), cursor.getString(1), cursor.getString(2)};
                 results.add(row);
             } catch (Exception e) {
-                Log.d("TAG_NAME", e.getMessage());
+                Log.d("wifi", e.getMessage());
+            }
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return results;
+    }
+
+    public JSONArray getRawLocationData() {
+        JSONArray results = new JSONArray();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = String.format("SELECT * FROM %s", LOCATION_TAB);
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            try {
+                JSONObject row = new JSONObject();
+                row.put("bssid", cursor.getString(0));
+                row.put("lat", cursor.getDouble(1));
+                row.put("lng", cursor.getDouble((2)));
+                results.put(row);
+            } catch (Exception e) {
+                Log.d("wifi", e.getMessage());
             }
             cursor.moveToNext();
         }
@@ -225,13 +277,4 @@ public class DatabaseManager extends SQLiteOpenHelper {
         double exp = (27.55 - (20 * Math.log10(freqInMHz)) + Math.abs(signalLevelInDb)) / 20.0;
         return Math.floor(Math.pow(10.0, exp) * 100) / 100;
     }
-
-
-    private String getSQLiteDate(Date date) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Timestamp timestamp = new Timestamp(date.getTime());
-        return sdf.format(timestamp);
-    }
-
-
 }

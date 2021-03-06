@@ -60,6 +60,7 @@ public class WifiScanner {
         Log.d("wifi", "Found " + results.size() + " WiFi results");
     }
 
+
     private void scanFailure() {
         // handle failure: new scan did NOT succeed
         // consider using old scan results: these are the OLD results!

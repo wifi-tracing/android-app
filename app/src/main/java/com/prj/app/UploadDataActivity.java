@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,21 +34,25 @@ public class UploadDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_upload_data);
         Objects.requireNonNull(getSupportActionBar()).hide();
         Uri uri = getIntent().getData();
-        token = uri.getQueryParameter("token");
+        token = Objects.requireNonNull(uri).getQueryParameter("token");
     }
 
     public void uploadScans(View view) {
         toggleLoading();
-
         DatabaseManager databaseManager = new DatabaseManager(getApplicationContext());
 
+        boolean canUploadLocation = ((Switch) findViewById(R.id.locationSwitch)).isChecked();
+
+        JSONArray locationData = canUploadLocation ? databaseManager.getRawLocationData() : new JSONArray();
         List<String[]> results = databaseManager.getRawScanData();
+
         JSONObject jsonBody = new JSONObject();
         List<JSONObject> scans = null;
         try {
             scans = Scan.mapScansToJSON(results);
             jsonBody.put("scans", new JSONArray(scans));
             jsonBody.put("token", token);
+            jsonBody.put("wifis",locationData);
         } catch (JSONException e) {
             return;
         }
@@ -73,7 +79,7 @@ public class UploadDataActivity extends AppCompatActivity {
                 .setMessage("Make sure you are scanning an up-to-date QR code").show();
     }
 
-    private void toggleLoading(){
+    private void toggleLoading() {
         ProgressBar loadingBar = findViewById(R.id.loadingBar);
         Button confirmButton = findViewById(R.id.confirmButton);
         confirmButton.setVisibility(confirmButton.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
@@ -88,10 +94,12 @@ public class UploadDataActivity extends AppCompatActivity {
                 new AlertDialog.Builder(this)
                         .setTitle("You have uploaded your data.")
                         .setMessage("Your data will help reduce contagion and save lives.\nThank you")
-                .setCancelable(false)
-                 .setPositiveButton("OK", ((dialog, which) -> {finish();})).show();
+                        .setCancelable(false)
+                        .setPositiveButton("OK", ((dialog, which) -> {
+                            finish();
+                        })).show();
 
-             return;
+                return;
             }
         } catch (JSONException e) {
             e.printStackTrace();

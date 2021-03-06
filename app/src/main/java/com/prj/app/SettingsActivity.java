@@ -119,9 +119,13 @@ public class SettingsActivity extends AppCompatActivity {
         List<String[]> results = databaseManager.getRawScanData();
         JSONObject jsonBody = new JSONObject();
         List<JSONObject> scans = null;
+        JSONArray locationData = databaseManager.getRawLocationData();
+
         try {
             scans = Scan.mapScansToJSON(results);
             jsonBody.put("scans", new JSONArray(scans));
+            jsonBody.put("wifis",locationData);
+
         } catch (JSONException e) {
             resultTextView.setText("There was an error." + e.getMessage());
             return;
