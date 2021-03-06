@@ -19,6 +19,19 @@ public class Scan implements Comparable<Scan> {
         this.timestamp = timestamp;
     }
 
+    public static List<JSONObject> mapScansToJSON(List<String[]> scans) throws JSONException {
+        List<JSONObject> result = new ArrayList<>();
+        for (String[] scan : scans) {
+            JSONObject object = new JSONObject();
+            object.put("d", "false");
+            object.put("t", scan[2]);
+            object.put("l", Double.parseDouble(scan[1]));
+            object.put("b", scan[0]);
+            result.add(object);
+        }
+        return result;
+    }
+
     public String getBssid() {
         return bssid;
     }
@@ -42,18 +55,7 @@ public class Scan implements Comparable<Scan> {
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
-    public static List<JSONObject> mapScansToJSON(List<String[]> scans) throws JSONException {
-        List<JSONObject> result = new ArrayList<>();
-        for (String[] scan : scans) {
-            JSONObject object = new JSONObject();
-            object.put("d", "false");
-            object.put("t", scan[2]);
-            object.put("l", Double.parseDouble(scan[1]));
-            object.put("b", scan[0]);
-            result.add(object);
-        }
-        return result;
-    }
+
     @Override
     @NotNull
     public String toString() {

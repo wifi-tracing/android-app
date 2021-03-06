@@ -37,6 +37,7 @@ public class Util {
 
         return new LatLng(centralLatitude * 180 / Math.PI, centralLongitude * 180 / Math.PI);
     }
+
     public static Double round(Double val, int decimalPlaces) {
         return new BigDecimal(val.toString()).setScale(decimalPlaces, RoundingMode.HALF_UP).doubleValue();
     }

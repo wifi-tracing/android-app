@@ -19,7 +19,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -124,7 +123,7 @@ public class SettingsActivity extends AppCompatActivity {
         try {
             scans = Scan.mapScansToJSON(results);
             jsonBody.put("scans", new JSONArray(scans));
-            jsonBody.put("wifis",locationData);
+            jsonBody.put("wifis", locationData);
 
         } catch (JSONException e) {
             resultTextView.setText("There was an error." + e.getMessage());

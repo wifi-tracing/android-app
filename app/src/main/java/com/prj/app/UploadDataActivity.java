@@ -19,7 +19,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,7 +51,7 @@ public class UploadDataActivity extends AppCompatActivity {
             scans = Scan.mapScansToJSON(results);
             jsonBody.put("scans", new JSONArray(scans));
             jsonBody.put("token", token);
-            jsonBody.put("wifis",locationData);
+            jsonBody.put("wifis", locationData);
         } catch (JSONException e) {
             return;
         }
