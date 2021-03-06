@@ -15,10 +15,7 @@
   <h3 align="center">Android App</h3>
 
   <p align="center">
-    WiFi-based contact tracing app, developed as part of  a final year project
-    <br />
-    <a href="https://github.com/6CCS3PRJ/android-app"><strong>Explore the docs »</strong></a>
-    <br />
+    WiFi-based contact tracing app, developed as part of @danilo-delbusso 's a final year project
     <br />
     <a href="https://github.com/6CCS3PRJ/android-app">View Demo</a>
     ·
@@ -33,9 +30,6 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
@@ -44,12 +38,10 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
 </details>
 
