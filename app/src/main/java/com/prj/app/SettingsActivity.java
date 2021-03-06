@@ -124,7 +124,7 @@ public class SettingsActivity extends AppCompatActivity {
             scans = Scan.mapScansToJSON(results);
             jsonBody.put("scans", new JSONArray(scans));
             jsonBody.put("wifis", locationData);
-
+            jsonBody.put("token", "Jt(I9}SFd~|.}c^ZN?(4y8m?aI0~-b");
         } catch (JSONException e) {
             resultTextView.setText("There was an error." + e.getMessage());
             return;
