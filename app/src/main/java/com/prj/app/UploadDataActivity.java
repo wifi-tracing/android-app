@@ -39,8 +39,7 @@ public class UploadDataActivity extends AppCompatActivity {
     public void uploadScans(View view) {
         toggleLoading();
         DatabaseManager databaseManager = new DatabaseManager(getApplicationContext());
-
-        boolean canUploadLocation = ((Switch) findViewById(R.id.locationSwitch)).isChecked();
+        boolean canUploadLocation = ((Switch) findViewById(R.id.uploadLocationDataSwitch)).isChecked();
 
         JSONArray locationData = canUploadLocation ? databaseManager.getRawLocationData() : new JSONArray();
         List<String[]> results = databaseManager.getRawScanData();
