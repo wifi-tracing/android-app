@@ -1,9 +1,16 @@
 package com.prj.app;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.util.Pair;
 import android.widget.TextView;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.android.volley.Request;
 
@@ -62,7 +69,6 @@ public class BSSIDMatcher {
         }
 
         if (resultTextView != null) {
-
             resultTextView.setText("Checking matching BSSIDs");
         }
         String URL = VolleySingleton.API_URL + "scans/get/matchBSSID";
@@ -131,6 +137,9 @@ public class BSSIDMatcher {
                         "Found a match! " + positiveResultDates.size() + "/" + MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS +
                                 " consecutive scans of " + MIN_NUMBER_OF_NEAR_HOTSPOTS + " or more matching hotspots.\n\n" + out.toString());
             }
+
+            NotificationManager.showExposureNotification(context);
+
         } else {
             if (resultTextView != null) {
 
@@ -141,6 +150,9 @@ public class BSSIDMatcher {
         }
 
     }
+
+
+
 
     /**
      * Return an array of Date objects corresponding to timestamps of concurrent positive results, if there
