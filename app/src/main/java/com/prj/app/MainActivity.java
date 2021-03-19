@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.ExistingWorkPolicy;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -19,6 +21,7 @@ import com.skyfishjy.library.RippleBackground;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,6 +44,20 @@ public class MainActivity extends AppCompatActivity {
             wifiScanningIntent.putExtra("inputExtra", "Wifi Scanning Service");
         }
         startExposureWorker();
+        startDummyUploadsWorker();
+    }
+
+    /**
+     * Enqueue a unique request for dummy uploads
+     */
+    private void startDummyUploadsWorker() {
+        Random random = new Random();
+
+        OneTimeWorkRequest.Builder myWorkBuilder =
+                new OneTimeWorkRequest.Builder(DummyUploadWorker.class).setInitialDelay(random.nextInt(7), TimeUnit.MINUTES); //between 0 and 128 minutes from now
+        OneTimeWorkRequest uploadRequest = myWorkBuilder.build();
+        WorkManager.getInstance(getApplicationContext())
+                .enqueueUniqueWork("DUMMY_UPLOAD", ExistingWorkPolicy.KEEP, uploadRequest);
     }
 
     /**
