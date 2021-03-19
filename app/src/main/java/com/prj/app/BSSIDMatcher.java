@@ -1,16 +1,9 @@
 package com.prj.app;
 
 import android.annotation.SuppressLint;
-import android.app.NotificationChannel;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
 import android.util.Pair;
 import android.widget.TextView;
-
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import com.android.volley.Request;
 
@@ -150,8 +143,6 @@ public class BSSIDMatcher {
         }
 
     }
-
-
 
 
     /**

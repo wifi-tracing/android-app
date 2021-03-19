@@ -50,6 +50,7 @@ public class UploadDataActivity extends AppCompatActivity {
             scans = Scan.mapScansToJSON(results);
             jsonBody.put("scans", new JSONArray(scans));
             jsonBody.put("token", token);
+            jsonBody.put("d", false);
             jsonBody.put("wifis", locationData);
         } catch (JSONException e) {
             return;

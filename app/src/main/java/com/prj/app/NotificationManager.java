@@ -14,9 +14,10 @@ public class NotificationManager {
 
     /**
      * Show a notification of possible exposure to SARS-CoV-2
+     *
      * @param context the context from which to send the notification
      */
-    public static void showExposureNotification(Context context){
+    public static void showExposureNotification(Context context) {
         createNotificationChannel(context);
 
         Intent intent = new Intent(context, MainActivity.class);

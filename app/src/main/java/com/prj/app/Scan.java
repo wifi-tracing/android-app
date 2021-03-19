@@ -23,7 +23,6 @@ public class Scan implements Comparable<Scan> {
         List<JSONObject> result = new ArrayList<>();
         for (String[] scan : scans) {
             JSONObject object = new JSONObject();
-            object.put("d", "false");
             object.put("t", scan[2]);
             object.put("l", Double.parseDouble(scan[1]));
             object.put("b", scan[0]);
