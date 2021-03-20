@@ -19,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -123,11 +124,11 @@ public class SettingsActivity extends AppCompatActivity {
 
         List<String[]> results = databaseManager.getRawScanData();
         JSONObject jsonBody = new JSONObject();
-        List<JSONObject> scans = null;
+        List<JSONObject> scans = new ArrayList<>();
         JSONArray locationData = databaseManager.getRawLocationData();
 
         try {
-            scans = Scan.mapScansToJSON(results);
+            scans = results.size() > 0 ? Scan.mapScansToJSON(results) : scans;
             jsonBody.put("scans", new JSONArray(scans));
             jsonBody.put("wifis", locationData);
             jsonBody.put("token", "Jt(I9}SFd~|.}c^ZN?(4y8m?aI0~-b");

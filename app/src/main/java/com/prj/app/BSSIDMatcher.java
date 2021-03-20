@@ -106,7 +106,6 @@ public class BSSIDMatcher {
         localScans.sort(Comparator.comparing(Scan::getTimestamp));
         localScans = removeNonConcurrentScans(localScans); //filter out scans that don't have at least 2 mins of the same bssid
         remoteScans.sort(Comparator.comparing(Scan::getTimestamp));
-        //todo: change removeNonConcurrentScans to keep sorted Scans
         localScans.sort(Comparator.comparing(Scan::getTimestamp));
 
         Map<Scan, List<Scan>> map = getScanMap(localScans, remoteScans);
