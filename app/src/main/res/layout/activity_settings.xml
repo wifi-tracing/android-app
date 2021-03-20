@@ -26,7 +26,7 @@
         android:id="@+id/getMatchingBSSIDsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="144dp"
         android:onClick="getMatchingBSSIDs"
         android:text="@string/get_matching_bssids"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,11 +38,10 @@
         android:id="@+id/uploadScansButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="28dp"
         android:onClick="uploadScans"
         android:text="@string/upload_scans"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,23 +49,22 @@
         android:id="@+id/deleteDataButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="428dp"
+        android:layout_marginTop="424dp"
+        android:layout_marginEnd="44dp"
         android:onClick="deleteData"
         android:text="Delete Data"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.813"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/saveConstantsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="428dp"
+        android:layout_marginTop="424dp"
         android:onClick="updateSettings"
         android:text="Save"
         app:layout_constraintEnd_toStartOf="@+id/deleteDataButton"
-        app:layout_constraintHorizontal_bias="0.309"
+        app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -74,7 +72,7 @@
         android:id="@+id/deleteCollectionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="184dp"
+        android:layout_marginTop="88dp"
         android:onClick="deleteCollection"
         android:text="Delete Collection"
         app:layout_constraintEnd_toEndOf="parent"
@@ -84,15 +82,15 @@
 
     <TextView
         android:id="@+id/resultTextView"
-        android:layout_width="307dp"
-        android:layout_height="228dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="380dp"
+        android:layout_height="300dp"
+        android:background="#61D8D8D8"
         android:fontFamily="monospace"
         android:scrollbars="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/saveConstantsButton" />
 
     <Switch
         android:id="@+id/locationSwitch"
@@ -119,6 +117,22 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/locationSwitch" />
+
+    <EditText
+        android:id="@+id/apiUrlEditText"
+        android:layout_width="219dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:ems="10"
+        android:hint="API_URL"
+        android:inputType="textUri"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/locationSwitch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/getMatchingBSSIDsButton" />
 
     <EditText
         android:id="@+id/maxDistEditText"

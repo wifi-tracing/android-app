@@ -2,7 +2,7 @@
     <string name="app_name">6CCS3PRJ</string>
     <string name="title_activity_dev_utils">DevUtils</string>
     <string name="coronavirus_icon">coronavirus icon</string>
-    <string name="get_matching_bssids">Get Matching BSSIDs</string>
+    <string name="get_matching_bssids">Check Exposure</string>
     <string name="upload_scans">Upload Scans</string>
     <string name="upload_info">By confirming, you will be uploading ALL data collected in the past 14 days. \n\n This means that the provider of this service will be able to see all WiFi signals you\'ve been near in the past 14 days. \n This information could be used to triangulate your location for this period of time. \n\n We kindly ask you to also support the contact tracing effort by uploading location data, which will anonymously inform others of where contagion is spreading.</string>
     <string name="upload_title">Upload All Scan Data</string>

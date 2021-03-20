@@ -32,7 +32,7 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).hide();
-        setContentView(R.layout.activity_dev_utils);
+        setContentView(R.layout.activity_settings);
         databaseManager = new DatabaseManager(this);
         bssidMatcher = new BSSIDMatcher(databaseManager,
                 findViewById(R.id.resultTextView),
@@ -55,6 +55,7 @@ public class SettingsActivity extends AppCompatActivity {
         EditText maxTimeEditText = findViewById(R.id.maxTimeEditText);
         EditText minHotspotsEditText = findViewById(R.id.minHotspotsEditExt);
         EditText minTimestampsEditText = findViewById(R.id.minTimestampsEditText);
+        EditText apiUrlEditText = findViewById(R.id.apiUrlEditText);
 
         TextView resultTextView = findViewById(R.id.resultTextView);
         resultTextView.setMovementMethod(new ScrollingMovementMethod());
@@ -63,7 +64,7 @@ public class SettingsActivity extends AppCompatActivity {
         maxTimeEditText.setHint("TIME " + bssidMatcher.getMAX_TIME_DIFFERENCE() + "s");
         minHotspotsEditText.setHint("HOTSPOTS " + bssidMatcher.getMIN_NUMBER_OF_NEAR_HOTSPOTS());
         minTimestampsEditText.setHint("TIMESTAMPS " + bssidMatcher.getMIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS());
-
+        apiUrlEditText.setText(VolleySingleton.API_URL.split("/")[2]);
     }
 
     public void updateSettings(View view) {
@@ -71,6 +72,7 @@ public class SettingsActivity extends AppCompatActivity {
         EditText maxTimeEditText = findViewById(R.id.maxTimeEditText);
         EditText minHotspotsEditText = findViewById(R.id.minHotspotsEditExt);
         EditText minTimestampsEditText = findViewById(R.id.minTimestampsEditText);
+        EditText apiUrlEditText = findViewById(R.id.apiUrlEditText);
 
         if (maxDistEditText.getText().toString().length() > 0) {
             double newMaxDist = Double.parseDouble(maxDistEditText.getText().toString());
@@ -91,6 +93,10 @@ public class SettingsActivity extends AppCompatActivity {
             double newMinTimestamps = Double.parseDouble(minTimestampsEditText.getText().toString());
             bssidMatcher.setMIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS(newMinTimestamps);
             minTimestampsEditText.setText(null);
+        }
+        if(apiUrlEditText.getText().toString().length() >0){
+            VolleySingleton.setAPI_URL(apiUrlEditText.getText().toString());
+            apiUrlEditText.setText(null);
         }
         initialiseSettings();
         InputMethodManager inputMethodManager =
