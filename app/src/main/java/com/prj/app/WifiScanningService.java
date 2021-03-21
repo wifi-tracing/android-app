@@ -44,7 +44,7 @@ public class WifiScanningService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         this.intent = intent;
-        databaseManager = new DatabaseManager(getApplicationContext());
+        databaseManager = DatabaseManager.getInstance(getApplicationContext());
         if (notification == null) {
             createNotificationChannel();
             Intent notificationIntent = new Intent(this, MainActivity.class);

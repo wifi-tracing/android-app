@@ -38,7 +38,7 @@ public class WifiScanner {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
         context.registerReceiver(wifiScanReceiver, intentFilter);
-        databaseManager = new DatabaseManager(context);
+        databaseManager = DatabaseManager.getInstance(context.getApplicationContext());
     }
 
     public void startScan(Location location) {

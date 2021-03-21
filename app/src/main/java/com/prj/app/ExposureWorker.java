@@ -20,7 +20,7 @@ public class ExposureWorker extends Worker {
     public @NotNull Result doWork() {
         // Do the work here--in this case, upload the images.
         Log.d("wifi", "Starting Exposure Check");
-        BSSIDMatcher bssidMatcher = new BSSIDMatcher(new DatabaseManager(getApplicationContext()), null, getApplicationContext());
+        BSSIDMatcher bssidMatcher = new BSSIDMatcher(DatabaseManager.getInstance(getApplicationContext()), null, getApplicationContext());
         bssidMatcher.getMatchingBSSIDs(); //this will take care of sending a notification
         return Result.success();
     }

@@ -32,7 +32,7 @@ public class DummyUploadWorker extends Worker {
 
     @Override
     public @NotNull Result doWork() {
-        DatabaseManager databaseManager = new DatabaseManager(getApplicationContext());
+        DatabaseManager databaseManager = DatabaseManager.getInstance(getApplicationContext());
         List<String[]> results = databaseManager.getRawScanData(); //get the actual data in order to have consistent request sizes
         //create dummy data
         for (String[] row : results) {

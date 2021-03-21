@@ -34,7 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_settings);
-        databaseManager = new DatabaseManager(this);
+        databaseManager = DatabaseManager.getInstance(getApplicationContext());
         bssidMatcher = new BSSIDMatcher(databaseManager,
                 findViewById(R.id.resultTextView),
                 this.getApplicationContext());

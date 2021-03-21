@@ -3,8 +3,6 @@ package com.prj.app;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
 import android.net.wifi.ScanResult;
 import android.util.Log;
@@ -13,9 +11,14 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteOpenHelper;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@SuppressLint("SimpleDateFormat")
+@SuppressLint({"StaticFieldLeak", "SimpleDateFormat"})
 public class DatabaseManager extends SQLiteOpenHelper {
     private static final String SCAN_RESULT_TAB = "SCAN_RESULT_TAB";
     private static final String COLUMN_ID = "ID";
@@ -32,25 +35,32 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String SETTINGS_TAB = "SETTINGS_TAB";
     private static final String LOCATION_TAB = "LOCATION_TAB";
     private static final int COORDINATES_PRECISION = 5;
+    private static final String DB_PATH = "prj-app-db.db";
+    private static DatabaseManager instance;
 
-    public DatabaseManager(@Nullable Context context) {
-        super(context, "prj-app-db.db", null, 1);
+    private final Context context;
+
+    private DatabaseManager(@Nullable Context context) {
+        super(context, DB_PATH, null, 1);
+        this.context = context;
+        InitializeSQLCipher();
+    }
+
+    public static DatabaseManager getInstance(Context context) {
+        if (instance == null) {
+            instance = new DatabaseManager(context);
+        }
+        return instance;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTableStatement = String.format("CREATE TABLE %s (\n\t%s INTEGER PRIMARY KEY AUTOINCREMENT,\n\t%s TEXT NOT NULL\n)", SCAN_RESULT_TAB, COLUMN_ID, COLUMN_TIMESTAMP);
-
         db.execSQL(createTableStatement);
-
         createTableStatement = String.format("CREATE TABLE %s (\n\t ID INTEGER PRIMARY KEY AUTOINCREMENT,\n\t SCAN_RESULT_ID INTEGER NOT NULL,\n\t BSSID TEXT NOT NULL,\n\t DISTANCE NUMERIC NOT NULL\n);", BSSID_SCAN_TAB);
-
         db.execSQL(createTableStatement);
-
         createTableStatement = String.format("CREATE TABLE %s (\n\t NAME TEXT PRIMARY KEY,\n\t VALUE TEXT NOT NULL \n);", SETTINGS_TAB);
-
         db.execSQL(createTableStatement);
-
         createTableStatement = String.format("CREATE TABLE %s (\n\t bssid TEXT PRIMARY KEY,\n\t lat NUMBER NOT NULL, \n\t lng NUMBER NOT NULL \n);", LOCATION_TAB);
         db.execSQL(createTableStatement);
 
@@ -58,14 +68,29 @@ public class DatabaseManager extends SQLiteOpenHelper {
         db.execSQL(insertSettingsQuery);
     }
 
+    /**
+     * Initialise an encrypted SQLite database if it doesn't exist
+     */
+    private void InitializeSQLCipher() {
+        try {
+            CryptoManager.generateDatabasePassword(context);
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
+        SQLiteDatabase.loadLibs(context);
+        String databaseFile = context.getDatabasePath(DB_PATH).getPath();
+        SQLiteDatabase.openOrCreateDatabase(databaseFile, CryptoManager.getDatabasePassword(context), null);
+    }
+
+
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
 
     public void addLocationData(List<ScanResult> results, Location location) {
-        SQLiteDatabase readableDb = this.getReadableDatabase();
-        SQLiteDatabase writeableDb = this.getWritableDatabase();
+        SQLiteDatabase readableDb = this.getReadableDatabase(CryptoManager.getDatabasePassword(context));
+        SQLiteDatabase writeableDb = this.getWritableDatabase(CryptoManager.getDatabasePassword(context));
 
         for (ScanResult result : results) {
 
@@ -100,7 +125,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     public void deleteData() {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase(CryptoManager.getDatabasePassword(context));
         db.execSQL(String.format("DELETE FROM %s;", BSSID_SCAN_TAB));
         db.execSQL(String.format("DELETE FROM %s;", SCAN_RESULT_TAB));
     }
@@ -115,7 +140,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
             return;
         }
         String isoTimestamp = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT);
-        SQLiteDatabase db = this.getWritableDatabase(); //locking database when using writable
+        SQLiteDatabase db = this.getWritableDatabase(CryptoManager.getDatabasePassword(context)); //locking database when using writable
         db.execSQL("INSERT INTO SCAN_RESULT_TAB (" + COLUMN_TIMESTAMP + ") VALUES ('" + isoTimestamp + "');");  //INSERT NEW SCAN RESULT ID AND TIMESTAMP
         int lastScanResultId = getLastScanResultId(db);
         StringBuilder queryString = new StringBuilder();
@@ -151,7 +176,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     public List<String> getScanBSSIDs() {
         ArrayList<String> results = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase(CryptoManager.getDatabasePassword(context));
         String query = "SELECT DISTINCT B.BSSID\n" +
                 "FROM   " + BSSID_SCAN_TAB + " B\n" +
                 "       INNER JOIN " + SCAN_RESULT_TAB + " A\n" +
@@ -175,7 +200,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     public List<String[]> getRawScanData() {
         ArrayList<String[]> results = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase(CryptoManager.getDatabasePassword(context));
         String query = "SELECT B.BSSID, B.DISTANCE, A.TIMESTAMP \n" +
                 "FROM   " + BSSID_SCAN_TAB + " B\n" +
                 "       INNER JOIN " + SCAN_RESULT_TAB + " A\n" +
@@ -199,7 +224,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     public JSONArray getRawLocationData() {
         JSONArray results = new JSONArray();
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase(CryptoManager.getDatabasePassword(context));
         String query = String.format("SELECT * FROM %s", LOCATION_TAB);
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
@@ -221,7 +246,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     public List<Scan> getScanData() {
         ArrayList<Scan> results = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase(CryptoManager.getDatabasePassword(context));
         String query = "SELECT DISTINCT B.BSSID, B.DISTANCE, A.TIMESTAMP \n" +
                 "FROM   " + BSSID_SCAN_TAB + " B\n" +
                 "       INNER JOIN " + SCAN_RESULT_TAB + " A\n" +
@@ -248,13 +273,13 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public void setSaveHotspotLocation(boolean value) {
         int valueToInsert = value ? 1 : 0;
         String query = "UPDATE " + SETTINGS_TAB + " SET VALUE = " + value + " WHERE NAME = 'SAVE_HOTSPOT_LOCATION'";
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase(CryptoManager.getDatabasePassword(context));
         db.execSQL(query);
     }
 
     public boolean canSaveHotspotLocation() {
         ArrayList<Integer> results = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase(CryptoManager.getDatabasePassword(context));
         String query = "SELECT VALUE FROM SETTINGS_TAB WHERE NAME = 'SAVE_HOTSPOT_LOCATION'";
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
