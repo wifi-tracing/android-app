@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">6CCS3PRJ</string>
-    <string name="title_activity_dev_utils">DevUtils</string>
     <string name="coronavirus_icon">coronavirus icon</string>
     <string name="get_matching_bssids">Check Exposure</string>
     <string name="upload_scans">Upload Scans</string>
@@ -9,4 +8,13 @@
     <string name="upload_location">I also want to upload all my location data</string>
     <string name="upload_button">Yes, I want to upload my data</string>
     <string name="preference_file_key">com.prj.app.PREFERENCE_FILE_KEY</string>
+    <string name="delete_data">Delete Data</string>
+    <string name="delete_collection">Delete Collection</string>
+    <string name="enable_location_logging">Enable Location Logging</string>
+    <string name="max_time">MAX_TIME</string>
+    <string name="api_url">API_URL</string>
+    <string name="max_dist">MAX_DIST</string>
+    <string name="min_timestamps">MIN_TIMESTAMPS</string>
+    <string name="min_hotspots">MIN_HOTSPOTS</string>
+    <string name="save">Save</string>
 </resources>

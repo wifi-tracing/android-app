@@ -8,7 +8,6 @@
     tools:context=".ui.SettingsActivity">
 
     <Button
-        android:id="@+id/devUtilsButton2"
         android:layout_width="54dp"
         android:layout_height="49dp"
         android:layout_alignParentTop="true"
@@ -35,7 +34,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/uploadScansButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -52,7 +50,7 @@
         android:layout_marginTop="424dp"
         android:layout_marginEnd="44dp"
         android:onClick="deleteData"
-        android:text="Delete Data"
+        android:text="@string/delete_data"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,19 +60,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="424dp"
         android:onClick="updateSettings"
-        android:text="Save"
+        android:text="@string/save"
         app:layout_constraintEnd_toStartOf="@+id/deleteDataButton"
         app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/deleteCollectionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="88dp"
         android:onClick="deleteCollection"
-        android:text="Delete Collection"
+        android:text="@string/delete_collection"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -98,11 +95,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="268dp"
         android:onClick="toggleLocationSwitch"
-        android:text="Enable Location Logging"
+        android:text="@string/enable_location_logging"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <EditText
         android:id="@+id/maxTimeEditText"
@@ -110,7 +108,8 @@
         android:layout_height="44dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="MAX_TIME"
+        android:hint="@string/max_time"
+        android:importantForAutofill="no"
         android:inputType="numberDecimal"
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/maxDistEditText"
@@ -125,7 +124,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
         android:ems="10"
-        android:hint="API_URL"
+        android:hint="@string/api_url"
+        android:importantForAutofill="no"
         android:inputType="textUri"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/locationSwitch"
@@ -140,7 +140,8 @@
         android:layout_height="44dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="MAX_DIST"
+        android:hint="@string/max_dist"
+        android:importantForAutofill="no"
         android:inputType="numberDecimal"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -154,7 +155,8 @@
         android:layout_height="44dp"
         android:layout_marginTop="72dp"
         android:ems="10"
-        android:hint="MIN_TIMESTAMPS"
+        android:hint="@string/min_timestamps"
+        android:importantForAutofill="no"
         android:inputType="numberDecimal"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -168,7 +170,8 @@
         android:layout_height="44dp"
         android:layout_marginTop="72dp"
         android:ems="10"
-        android:hint="MIN_HOTSPOTS"
+        android:hint="@string/min_hotspots"
+        android:importantForAutofill="no"
         android:inputType="numberDecimal"
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/minTimestampsEditText"

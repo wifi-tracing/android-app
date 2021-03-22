@@ -8,8 +8,6 @@ import android.location.Location;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 
-import com.prj.app.managers.DatabaseManager;
-
 import java.util.List;
 
 public class ScanManager {

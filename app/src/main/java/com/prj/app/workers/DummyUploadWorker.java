@@ -12,9 +12,9 @@ import androidx.work.WorkerParameters;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.prj.app.api.VolleySingleton;
 import com.prj.app.managers.DatabaseManager;
 import com.prj.app.util.Scan;
-import com.prj.app.api.VolleySingleton;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;

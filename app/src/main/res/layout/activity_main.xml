@@ -17,7 +17,6 @@
         app:rb_scale="6">
 
         <ImageView
-            android:id="@+id/centerImage"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_centerInParent="true"
@@ -25,7 +24,6 @@
             android:src="@drawable/ic_coronavirus" />
 
         <Button
-            android:id="@+id/devUtilsButton"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"

@@ -6,9 +6,9 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.prj.app.services.WifiScanningService;
 import com.prj.app.managers.DatabaseManager;
 import com.prj.app.managers.NotificationManager;
+import com.prj.app.services.WifiScanningService;
 import com.prj.app.ui.MainActivity;
 
 import org.jetbrains.annotations.NotNull;

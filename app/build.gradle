@@ -4,11 +4,12 @@ plugins {
 
 android {
     compileSdkVersion 28
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.example.prj_android_app"
         minSdkVersion 26
+        //noinspection OldTargetApi
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"

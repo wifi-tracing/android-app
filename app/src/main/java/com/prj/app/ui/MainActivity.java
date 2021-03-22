@@ -16,11 +16,11 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
+import com.prj.app.R;
+import com.prj.app.managers.NotificationManager;
+import com.prj.app.services.WifiScanningService;
 import com.prj.app.workers.DummyUploadWorker;
 import com.prj.app.workers.ExposureWorker;
-import com.prj.app.managers.NotificationManager;
-import com.prj.app.R;
-import com.prj.app.services.WifiScanningService;
 import com.skyfishjy.library.RippleBackground;
 
 import org.jetbrains.annotations.NotNull;

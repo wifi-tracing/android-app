@@ -21,7 +21,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/infoTextView"
         android:layout_width="308dp"
         android:layout_height="418dp"
         android:layout_marginBottom="14dp"

@@ -9,9 +9,9 @@ import java.util.Date;
 import java.util.List;
 
 public class Scan implements Comparable<Scan> {
-    String bssid;
-    Double distance;
-    Date timestamp;
+    final String bssid;
+    final Double distance;
+    final Date timestamp;
 
     public Scan(String bssid, Double distance, Date timestamp) {
         this.bssid = bssid;

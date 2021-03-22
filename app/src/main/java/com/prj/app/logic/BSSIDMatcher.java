@@ -6,11 +6,11 @@ import android.util.Pair;
 import android.widget.TextView;
 
 import com.android.volley.Request;
-import com.prj.app.util.Scan;
 import com.prj.app.api.CustomJsonArrayRequest;
 import com.prj.app.api.VolleySingleton;
 import com.prj.app.managers.DatabaseManager;
 import com.prj.app.managers.NotificationManager;
+import com.prj.app.util.Scan;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -91,7 +91,7 @@ public class BSSIDMatcher {
     /**
      * Match given JSONArray of scan data with local storage
      *
-     * @param matchingScans a JSONArray of remote postive scans;
+     * @param matchingScans a JSONArray of remote positive scans;
      */
     private void matchResult(@NotNull JSONArray matchingScans) {
         List<Scan> localScans = databaseManager.getScanData();
@@ -110,7 +110,7 @@ public class BSSIDMatcher {
         localScans = removeUnusedLocalScans(localScans, remoteScans);
         //sort by timestamp
         localScans.sort(Comparator.comparing(Scan::getTimestamp));
-        localScans = removeNonConcurrentScans(localScans); //filter out scans that don't have at least 2 mins of the same bssid
+        localScans = removeNonConcurrentScans(localScans); //filter out scans that don't have at least 2 minutes of the same bssid
 
         remoteScans.sort(Comparator.comparing(Scan::getTimestamp));
         localScans.sort(Comparator.comparing(Scan::getTimestamp));
