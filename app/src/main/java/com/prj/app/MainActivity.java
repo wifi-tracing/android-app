@@ -1,10 +1,10 @@
 package com.prj.app;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,26 +26,41 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static boolean isScanning = false;
     private static Intent wifiScanningIntent;
-    private boolean startScanning = false;
+    private static RippleBackground rippleBackground;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_main);
-        handlePermission(Manifest.permission.ACCESS_FINE_LOCATION, 100);
-        handlePermission(Manifest.permission.ACCESS_WIFI_STATE, 101);
-        handlePermission(Manifest.permission.CHANGE_WIFI_STATE, 102);
+        rippleBackground = findViewById(R.id.rippleBackground);
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat
+                    .requestPermissions(
+                            MainActivity.this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            100);
+        }else{
+            initialiseActivity();
+        }
+    }
+
+    private void initialiseActivity (){
         if (wifiScanningIntent == null) {
             wifiScanningIntent = new Intent(this, WifiScanningService.class);
             wifiScanningIntent.putExtra("inputExtra", "Wifi Scanning Service");
+            NotificationManager.getInstance(getApplicationContext()).setIsScanningVisible(true);
+            ContextCompat.startForegroundService(this, wifiScanningIntent);
         }
+        updateRippleAnimation(getApplicationContext());
         startExposureWorker();
         startDummyUploadsWorker();
     }
+
 
     /**
      * Enqueue a unique request for dummy uploads
@@ -59,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         WorkManager.getInstance(getApplicationContext())
                 .enqueueUniqueWork("DUMMY_UPLOAD", ExistingWorkPolicy.KEEP, uploadRequest);
     }
+
 
     /**
      * Enqueue a unique request for exposure checks
@@ -75,47 +91,30 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        updateRippleAnimation(getApplicationContext());
+    }
 
-        if (isScanning && !startScanning) {
-            stopService(wifiScanningIntent);
-            isScanning = false;
-        } else if (startScanning && !isScanning) {
-            Log.d("wifi", "Started Scanning.");
-            ContextCompat.startForegroundService(this, wifiScanningIntent);
-            isScanning = true;
-        }
-
-        RippleBackground rippleBackground = findViewById(R.id.rippleBackground);
+    public static void updateRippleAnimation(@NotNull Context context){
+        NotificationManager notificationManager =  NotificationManager.getInstance(context);
 
         if (rippleBackground != null) {
-            if (isScanning && !rippleBackground.isRippleAnimationRunning()) {
+            if (notificationManager.getIsScanningVisible() && !rippleBackground.isRippleAnimationRunning()) {
                 rippleBackground.startRippleAnimation();
-            } else if (!isScanning && rippleBackground.isRippleAnimationRunning()) {
+            } else if (!notificationManager.getIsScanningVisible() && rippleBackground.isRippleAnimationRunning()) {
                 rippleBackground.stopRippleAnimation();
             }
         }
     }
 
-    public void handlePermission(String permission, int requestCode) {
-        if (ContextCompat.checkSelfPermission(MainActivity.this,
-                permission)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat
-                    .requestPermissions(
-                            MainActivity.this,
-                            new String[]{permission},
-                            requestCode);
-        } else {
-            startScanning = true;
-        }
-    }
-
     public void onRequestPermissionsResult(int requestCode, String @NotNull [] permissions, int @NotNull [] grantResults) {
         if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-            startScanning = false;
+            NotificationManager.getInstance(getApplicationContext()).setIsScanningVisible(false);
+            updateRippleAnimation(getApplicationContext());
+        }else{
+            initialiseActivity();
         }
     }
+
 
     public void openDevUtils(View view) {
         startActivity(new Intent(this, SettingsActivity.class));

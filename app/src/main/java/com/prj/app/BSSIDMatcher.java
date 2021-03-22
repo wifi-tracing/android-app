@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.android.volley.Request;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +24,6 @@ import java.util.Objects;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("FieldCanBeLocal")
 @SuppressLint({"UseSwitchCompatOrMaterialCode", "SetTextI18n", "SimpleDateFormat"})
 
 public class BSSIDMatcher {
@@ -42,7 +42,7 @@ public class BSSIDMatcher {
      * @param resultTextView  a TextView object to modify to show user progress and results
      * @param context         application context
      */
-    public BSSIDMatcher(DatabaseManager databaseManager, TextView resultTextView, Context context) {
+    public BSSIDMatcher(@NotNull DatabaseManager databaseManager, TextView resultTextView, @NotNull Context context) {
         this.databaseManager = databaseManager;
         this.resultTextView = resultTextView;
         this.context = context;
@@ -71,10 +71,10 @@ public class BSSIDMatcher {
     /**
      * Send POST request to API to fetch scans containing the same BSSID as the ones locally stored
      *
-     * @param URL
-     * @param jsonBody
+     * @param URL      the URL of the POST request
+     * @param jsonBody the body of the POST request
      */
-    private void sendMatchingBSSIDsPOST(String URL, JSONObject jsonBody) {
+    private void sendMatchingBSSIDsPOST(@NotNull String URL, @NotNull JSONObject jsonBody) {
         try {
             CustomJsonArrayRequest customJsonArrayRequest = new CustomJsonArrayRequest(Request.Method.POST, URL, jsonBody, this::matchResult, Throwable::printStackTrace);
             VolleySingleton.getInstance(context).getRequestQueue().add(customJsonArrayRequest);
@@ -88,9 +88,9 @@ public class BSSIDMatcher {
      *
      * @param matchingScans a JSONArray of remote postive scans;
      */
-    private void matchResult(JSONArray matchingScans) {
+    private void matchResult(@NotNull JSONArray matchingScans) {
         List<Scan> localScans = databaseManager.getScanData();
-        List<Scan> remoteScans = null;
+        List<Scan> remoteScans;
         try {
             remoteScans = parseScans(matchingScans);
         } catch (JSONException jsonException) {
@@ -100,11 +100,13 @@ public class BSSIDMatcher {
                 resultTextView.setText(
                         "There was an error. Could not parse incoming JSON payload correctly.");
             }
+            return;
         }
         localScans = removeUnusedLocalScans(localScans, remoteScans);
         //sort by timestamp
         localScans.sort(Comparator.comparing(Scan::getTimestamp));
         localScans = removeNonConcurrentScans(localScans); //filter out scans that don't have at least 2 mins of the same bssid
+
         remoteScans.sort(Comparator.comparing(Scan::getTimestamp));
         localScans.sort(Comparator.comparing(Scan::getTimestamp));
 
@@ -130,7 +132,7 @@ public class BSSIDMatcher {
                                 " consecutive scans of " + MIN_NUMBER_OF_NEAR_HOTSPOTS + " or more matching hotspots.\n\n" + out.toString());
             }
 
-            NotificationManager.showExposureNotification(context);
+            NotificationManager.getInstance(context).showExposureNotification();
 
         } else {
             if (resultTextView != null) {
@@ -151,23 +153,23 @@ public class BSSIDMatcher {
      * @param timeMap the timeMap as returned by the getDateMap method
      * @return an array of Date objects, if there are positive contacts, empty if there are none
      */
-    private List<Pair<Date, List<Scan>>> getFirstPositiveResult(TreeMap<Date, List<Scan>> timeMap) {
+    private List<Pair<Date, List<Scan>>> getFirstPositiveResult(@NotNull TreeMap<Date, List<Scan>> timeMap) {
         List<Pair<Date, List<Scan>>> dateStorage = new ArrayList<>();
 
         for (Date timestamp : timeMap.keySet()) {
             if (dateStorage.size() == 0) {
-                dateStorage.add(new Pair(timestamp, timeMap.get(timestamp)));
+                dateStorage.add(new Pair<>(timestamp, timeMap.get(timestamp)));
             } else {
                 Date lastTimestamp = dateStorage.get(dateStorage.size() - 1).first;
                 double timeDiff = Math.abs(lastTimestamp.getTime() - timestamp.getTime()) / 1000.0;
                 if (timeDiff <= MAX_TIME_DIFFERENCE) {
-                    dateStorage.add(new Pair(timestamp, timeMap.get(timestamp)));
+                    dateStorage.add(new Pair<>(timestamp, timeMap.get(timestamp)));
                     if (dateStorage.size() >= MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS) {
                         return dateStorage;
                     }
                 } else {
                     dateStorage.clear();
-                    dateStorage.add(new Pair(timestamp, timeMap.get(timestamp)));
+                    dateStorage.add(new Pair<>(timestamp, timeMap.get(timestamp)));
                 }
             }
         }
@@ -185,7 +187,7 @@ public class BSSIDMatcher {
      * @param map the scan map as returned by getScanMap
      * @return the time map containing timestamps and the number of scan results in it which have positive contacts
      */
-    private TreeMap<Date, List<Scan>> getDateMap(Map<Scan, List<Scan>> map) {
+    private TreeMap<Date, List<Scan>> getDateMap(@NotNull Map<Scan, List<Scan>> map) {
         Map<Date, List<Scan>> tempTimeMap = new HashMap<>(); //temporary time map to keep count  of scan results and positive values
         TreeMap<Date, List<Scan>> timeMap = new TreeMap<>();
 
@@ -224,7 +226,7 @@ public class BSSIDMatcher {
      * @param remoteScans a list of Scan objects which contains the positive scans fetched from the server
      * @return local scans mapped to an array of remote scans that are within time and distance boundaries for contact
      */
-    private Map<Scan, List<Scan>> getScanMap(List<Scan> localScans, List<Scan> remoteScans) {
+    private Map<Scan, List<Scan>> getScanMap(@NotNull List<Scan> localScans, @NotNull List<Scan> remoteScans) {
 
         Map<Scan, List<Scan>> map = new HashMap<>();
 
@@ -237,7 +239,7 @@ public class BSSIDMatcher {
                         double differenceInMeters = Math.abs(remoteScan.getDistance() - localScan.getDistance());
                         if (differenceInMeters <= MAX_DISTANCE_DIFFERENCE) {
                             if (map.containsKey(localScan)) {
-                                map.get(localScan).add(remoteScan);
+                                Objects.requireNonNull(map.get(localScan)).add(remoteScan);
                             } else {
                                 ArrayList<Scan> container = new ArrayList<>();
                                 container.add(remoteScan);
@@ -260,7 +262,7 @@ public class BSSIDMatcher {
      * @param localScans the array of Scan objects to filter
      * @return the filtered array of Scan objects
      */
-    private List<Scan> removeNonConcurrentScans(List<Scan> localScans) {
+    private List<Scan> removeNonConcurrentScans(@NotNull List<Scan> localScans) {
         ArrayList<Scan> validScans = new ArrayList<>();
         Map<String, ArrayList<Scan>> storage = new HashMap<>();
         // we assume sorted by timestamp ascending
@@ -306,7 +308,7 @@ public class BSSIDMatcher {
     }
 
 
-    private double scanTimeDifference(Scan scan1, Scan scan2) {
+    private double scanTimeDifference(@NotNull Scan scan1, @NotNull Scan scan2) {
         return Math.abs(scan1.getTimestamp().getTime() - scan2.getTimestamp().getTime()) / 1000.0;
     }
 
@@ -338,7 +340,7 @@ public class BSSIDMatcher {
      * @param remoteScans the scan list to search for matching BSSIDs
      * @return a list of scans that have BSSIDs found in remote scans
      */
-    private List<Scan> removeUnusedLocalScans(List<Scan> localScans, List<Scan> remoteScans) {
+    private List<Scan> removeUnusedLocalScans(@NotNull List<Scan> localScans, @NotNull List<Scan> remoteScans) {
         return localScans.parallelStream().filter(scan -> containsString(remoteScans, scan)).collect(Collectors.toList());
     }
 

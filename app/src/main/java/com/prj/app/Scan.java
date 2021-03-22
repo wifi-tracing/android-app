@@ -35,24 +35,12 @@ public class Scan implements Comparable<Scan> {
         return bssid;
     }
 
-    public void setBssid(String bssid) {
-        this.bssid = bssid;
-    }
-
     public Double getDistance() {
         return distance;
     }
 
-    public void setDistance(Double distance) {
-        this.distance = distance;
-    }
-
     public Date getTimestamp() {
         return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
     }
 
     @Override

@@ -7,8 +7,6 @@ import com.yakivmospan.scytale.Crypto;
 import com.yakivmospan.scytale.Options;
 import com.yakivmospan.scytale.Store;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.UUID;
 
 import javax.crypto.SecretKey;
@@ -19,13 +17,11 @@ public class CryptoManager {
     private static final String STORE_ALIAS = "SQLITE_KEY";
 
     /**
-     * Generate a new key for SQLite encryption if it doens't exit. Key is unique per app install and
+     * Generate a new key for SQLite encryption if it doesn't exit. Key is unique per app install and
      * all data is lost when key is deleted
      * @param context the context that will store the encrypted key
-     * @throws GeneralSecurityException
-     * @throws IOException
      */
-    public static void generateDatabasePassword(Context context) throws GeneralSecurityException, IOException {
+    public static void generateDatabasePassword(Context context) {
         Store store = new Store(context);
         SharedPreferences sharedPref = context.getSharedPreferences(
                 context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);

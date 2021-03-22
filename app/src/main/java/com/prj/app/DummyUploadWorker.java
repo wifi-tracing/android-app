@@ -42,7 +42,7 @@ public class DummyUploadWorker extends Worker {
         }
 
         JSONObject jsonBody = new JSONObject();
-        List<JSONObject> scans = null;
+        List<JSONObject> scans;
         try {
             scans = Scan.mapScansToJSON(results);
             jsonBody.put("scans", new JSONArray(scans));
@@ -88,5 +88,4 @@ public class DummyUploadWorker extends Worker {
 
     private void response(JSONObject jsonObject) {
     }
-
 }

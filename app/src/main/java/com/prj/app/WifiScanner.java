@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.location.Location;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
-import android.util.Log;
 
 import java.util.List;
 
@@ -15,7 +14,6 @@ public class WifiScanner {
     private static WifiManager wifiManager;
     private final DatabaseManager databaseManager;
     private Location location;
-    private boolean success;
 
     public WifiScanner(Context context) {
 
@@ -44,11 +42,6 @@ public class WifiScanner {
     public void startScan(Location location) {
         this.location = location; //update latest location
         boolean result = wifiManager.startScan(); //true if scan was successful
-        Log.d("wifi", "Started New WiFi Scan: " + result);
-    }
-
-    public WifiManager getWifiManager() {
-        return wifiManager;
     }
 
     private void scanSuccess() {
@@ -57,15 +50,11 @@ public class WifiScanner {
         if (location != null) {
             databaseManager.addLocationData(results, location);
         }
-        Log.d("wifi", "Found " + results.size() + " WiFi results");
     }
 
 
     private void scanFailure() {
-        // handle failure: new scan did NOT succeed
-        // consider using old scan results: these are the OLD results!
-        List<ScanResult> results = wifiManager.getScanResults();
-        Log.d("wifi", "Failed scan");
+
     }
 
 

@@ -45,7 +45,7 @@ public class UploadDataActivity extends AppCompatActivity {
         List<String[]> results = databaseManager.getRawScanData();
 
         JSONObject jsonBody = new JSONObject();
-        List<JSONObject> scans = null;
+        List<JSONObject> scans;
         try {
             scans = Scan.mapScansToJSON(results);
             jsonBody.put("scans", new JSONArray(scans));
@@ -94,9 +94,7 @@ public class UploadDataActivity extends AppCompatActivity {
                         .setTitle("You have uploaded your data.")
                         .setMessage("Your data will help reduce contagion and save lives.\nThank you")
                         .setCancelable(false)
-                        .setPositiveButton("OK", ((dialog, which) -> {
-                            finish();
-                        })).show();
+                        .setPositiveButton("OK", ((dialog, which) -> finish())).show();
 
                 return;
             }

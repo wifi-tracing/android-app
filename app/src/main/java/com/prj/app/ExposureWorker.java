@@ -1,8 +1,6 @@
 package com.prj.app;
 
 import android.content.Context;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
@@ -18,8 +16,6 @@ public class ExposureWorker extends Worker {
 
     @Override
     public @NotNull Result doWork() {
-        // Do the work here--in this case, upload the images.
-        Log.d("wifi", "Starting Exposure Check");
         BSSIDMatcher bssidMatcher = new BSSIDMatcher(DatabaseManager.getInstance(getApplicationContext()), null, getApplicationContext());
         bssidMatcher.getMatchingBSSIDs(); //this will take care of sending a notification
         return Result.success();

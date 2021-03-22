@@ -1,14 +1,19 @@
 package com.prj.app;
 
+import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
+
+import org.jetbrains.annotations.NotNull;
 
 public class CustomLocationListener implements LocationListener {
     private final WifiScanningService wifiScanningService;
     private final int minimumAccuracy;
+    private final NotificationManager notificationManager;
+    private final DatabaseManager databaseManager;
+    private final Context context;
     private final int delayMillis;
 
     /**
@@ -18,21 +23,25 @@ public class CustomLocationListener implements LocationListener {
      * @param minimumAccuracy     the minimum accuracy (in meters) needed for a location scan to be registered
      * @param delayMillis         the minimum time gap (in milliseconds) between location scans for a scan to be registered
      */
-    public CustomLocationListener(WifiScanningService wifiScanningService, int minimumAccuracy, int delayMillis) {
+    public CustomLocationListener(@NotNull WifiScanningService wifiScanningService, int minimumAccuracy, int delayMillis, @NotNull Context context) {
         this.wifiScanningService = wifiScanningService;
         this.minimumAccuracy = minimumAccuracy;
         this.delayMillis = delayMillis;
+        this.context = context;
+        databaseManager = DatabaseManager.getInstance(context);
+        notificationManager = NotificationManager.getInstance(context);
     }
 
     public void onLocationChanged(final Location loc) {
-        Log.d("wifi", "Location changed");
-        if (isBetterLocation(loc, wifiScanningService.previousBestLocation)) {
-            loc.getLatitude();
-            loc.getLongitude();
-            Log.d("wifi", "New Location: " + loc.getLatitude() + ", " + loc.getLongitude() + ", accuracy: " + loc.getAccuracy());
-            wifiScanningService.previousBestLocation = loc;
-        } else {
-            wifiScanningService.previousBestLocation = null;
+        if (databaseManager.canSaveHotspotLocation()) {
+            if (isBetterLocation(loc, wifiScanningService.previousBestLocation)) {
+                loc.getLatitude();
+                loc.getLongitude();
+                Log.d("wifi", "New Location: " + loc.getLatitude() + ", " + loc.getLongitude() + ", accuracy: " + loc.getAccuracy());
+                wifiScanningService.previousBestLocation = loc;
+            } else {
+                wifiScanningService.previousBestLocation = null;
+            }
         }
     }
 
@@ -42,22 +51,31 @@ public class CustomLocationListener implements LocationListener {
     }
 
     public void onProviderDisabled(String provider) {
-        Toast.makeText(wifiScanningService.getApplicationContext(), "Gps Disabled. Location data will not be saved.", Toast.LENGTH_SHORT).show();
+        notificationManager.setIsScanningVisible(false);
+        notificationManager.updateScanningNotification();
+        MainActivity.updateRippleAnimation(context);
     }
-
 
     public void onProviderEnabled(String provider) {
-        Toast.makeText(wifiScanningService.getApplicationContext(), "Gps Enabled", Toast.LENGTH_SHORT).show();
+        notificationManager.setIsScanningVisible(true);
+        notificationManager.updateScanningNotification();
+        MainActivity.updateRippleAnimation(context);
     }
 
-    private boolean isBetterLocation(Location location, Location currentBestLocation) {
+    /**
+     * Check if a location object is better then another. It compares delay between the locations and
+     * accuracy in order to decide.
+     *
+     * @param location            the new location to compare
+     * @param currentBestLocation the location to compare it to
+     * @return true if location is better then currentBestLocation
+     * @see <a href="https://stackoverflow.com/a/6280851">Stack Overflow</a>
+     */
+    private boolean isBetterLocation(@NotNull Location location, Location currentBestLocation) {
         if (location.getAccuracy() > minimumAccuracy) {
-            Log.d("wifi", "Location accuracy was insufficient (" + location.getAccuracy() + ").");
             return false;
         }
-
         if (currentBestLocation == null) {
-            // A new location is always better than no location
             return true;
         }
 

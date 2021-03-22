@@ -78,33 +78,33 @@ public class SettingsActivity extends AppCompatActivity {
         if (maxDistEditText.getText().toString().length() > 0) {
             double newMaxDist = Double.parseDouble(maxDistEditText.getText().toString());
             bssidMatcher.setMAX_DISTANCE_DIFFERENCE(newMaxDist);
-            maxDistEditText.setText(null);
+            maxDistEditText.setText("");
         }
         if (maxTimeEditText.getText().toString().length() > 0) {
             double newMaxTime = Double.parseDouble(maxTimeEditText.getText().toString());
             bssidMatcher.setMAX_TIME_DIFFERENCE(newMaxTime);
-            maxTimeEditText.setText(null);
+            maxTimeEditText.setText("");
         }
         if (minHotspotsEditText.getText().toString().length() > 0) {
             double newMinHotspots = Double.parseDouble(minHotspotsEditText.getText().toString());
             bssidMatcher.setMIN_NUMBER_OF_NEAR_HOTSPOTS(newMinHotspots);
-            minHotspotsEditText.setText(null);
+            minHotspotsEditText.setText("");
         }
         if (minTimestampsEditText.getText().toString().length() > 0) {
             double newMinTimestamps = Double.parseDouble(minTimestampsEditText.getText().toString());
             bssidMatcher.setMIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS(newMinTimestamps);
-            minTimestampsEditText.setText(null);
+            minTimestampsEditText.setText("");
         }
         if(apiUrlEditText.getText().toString().length() >0){
             VolleySingleton.setAPI_URL(apiUrlEditText.getText().toString());
-            apiUrlEditText.setText(null);
+            apiUrlEditText.setText("");
         }
         initialiseSettings();
         InputMethodManager inputMethodManager =
                 (InputMethodManager) this.getSystemService(
                         Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(
-                this.getCurrentFocus().getWindowToken(), 0);
+                Objects.requireNonNull(this.getCurrentFocus()).getWindowToken(), 0);
     }
 
     public void getMatchingBSSIDs(View view) {
@@ -147,6 +147,7 @@ public class SettingsActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        assert uploadedScans != null;
         uploadedScans.sort(Comparator.comparing(Scan::getTimestamp));
         for (Scan scan : uploadedScans) {
             out.append("\n").append(scan.toString());
@@ -159,7 +160,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         List<String[]> results = databaseManager.getRawScanData();
         JSONObject jsonBody = new JSONObject();
-        List<JSONObject> scans = null;
+        List<JSONObject> scans;
         try {
             scans = Scan.mapScansToJSON(results);
             jsonBody.put("scans", new JSONArray(scans));

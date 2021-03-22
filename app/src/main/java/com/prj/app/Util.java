@@ -9,9 +9,8 @@ import java.util.List;
 public class Util {
 
     /**
-     * Extrapolate Latitude and Longitude of the average between two poins that lieon a great-circle. This method uses the Haversine formula for the great-circle distance between two points.
-     * As taken from https://stackoverflow.com/questions/6671183/calculate-the-center-point-of-multiple-latitude-longitude-coordinate-pairs?lq=1
-     *
+     * Extrapolate Latitude and Longitude of the average between two points that lie on a great-circle. This method uses the Haversine formula for the great-circle distance between two points.
+     *  @see <a href="https://stackoverflow.com/a/14231286">Stack Overflow</a>
      * @param locations List of LatLng object corresponding to the locations to average
      * @return a LatLng object representing the average point of all input LatLng objects
      */

@@ -17,8 +17,6 @@ import net.sqlcipher.database.SQLiteOpenHelper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -72,11 +70,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
      * Initialise an encrypted SQLite database if it doesn't exist
      */
     private void InitializeSQLCipher() {
-        try {
-            CryptoManager.generateDatabasePassword(context);
-        } catch (GeneralSecurityException | IOException e) {
-            e.printStackTrace();
-        }
+        CryptoManager.generateDatabasePassword(context);
         SQLiteDatabase.loadLibs(context);
         String databaseFile = context.getDatabasePath(DB_PATH).getPath();
         SQLiteDatabase.openOrCreateDatabase(databaseFile, CryptoManager.getDatabasePassword(context), null);
@@ -271,7 +265,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     public void setSaveHotspotLocation(boolean value) {
-        int valueToInsert = value ? 1 : 0;
         String query = "UPDATE " + SETTINGS_TAB + " SET VALUE = " + value + " WHERE NAME = 'SAVE_HOTSPOT_LOCATION'";
         SQLiteDatabase db = this.getWritableDatabase(CryptoManager.getDatabasePassword(context));
         db.execSQL(query);
