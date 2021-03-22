@@ -50,10 +50,13 @@ public class NotificationManager {
         }
     }
 
+    public boolean getIsScanningVisible() {
+        return isScanningVisible;
+    }
+
     public void setIsScanningVisible(boolean isScanningVisible) {
         this.isScanningVisible = isScanningVisible;
     }
-    public boolean getIsScanningVisible(){return isScanningVisible;}
 
     /**
      * Show a notification of possible exposure to SARS-CoV-2
@@ -103,10 +106,9 @@ public class NotificationManager {
         }
     }
 
-    public void updateScanningNotification(){
-            notificationManager.notify(FOREGROUND_NOTIFICATION_ID, getScanningNotification());
+    public void updateScanningNotification() {
+        notificationManager.notify(FOREGROUND_NOTIFICATION_ID, getScanningNotification());
     }
-
 
 
 }

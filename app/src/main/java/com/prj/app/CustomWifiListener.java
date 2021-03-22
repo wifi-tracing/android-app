@@ -3,7 +3,6 @@ package com.prj.app;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-
 import android.net.wifi.WifiManager;
 
 public class CustomWifiListener extends BroadcastReceiver {
@@ -13,8 +12,7 @@ public class CustomWifiListener extends BroadcastReceiver {
         NotificationManager notificationManager = NotificationManager.getInstance(context);
         int extraWifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN);
 
-        switch (extraWifiState)
-        {
+        switch (extraWifiState) {
             case WifiManager.WIFI_STATE_DISABLED:
             case WifiManager.WIFI_STATE_DISABLING:
                 notificationManager.setIsScanningVisible(false);

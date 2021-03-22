@@ -29,6 +29,18 @@ public class MainActivity extends AppCompatActivity {
     private static Intent wifiScanningIntent;
     private static RippleBackground rippleBackground;
 
+    public static void updateRippleAnimation(@NotNull Context context) {
+        NotificationManager notificationManager = NotificationManager.getInstance(context);
+
+        if (rippleBackground != null) {
+            if (notificationManager.getIsScanningVisible() && !rippleBackground.isRippleAnimationRunning()) {
+                rippleBackground.startRippleAnimation();
+            } else if (!notificationManager.getIsScanningVisible() && rippleBackground.isRippleAnimationRunning()) {
+                rippleBackground.stopRippleAnimation();
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,12 +56,12 @@ public class MainActivity extends AppCompatActivity {
                             MainActivity.this,
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                             100);
-        }else{
+        } else {
             initialiseActivity();
         }
     }
 
-    private void initialiseActivity (){
+    private void initialiseActivity() {
         if (wifiScanningIntent == null) {
             wifiScanningIntent = new Intent(this, WifiScanningService.class);
             wifiScanningIntent.putExtra("inputExtra", "Wifi Scanning Service");
@@ -60,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         startExposureWorker();
         startDummyUploadsWorker();
     }
-
 
     /**
      * Enqueue a unique request for dummy uploads
@@ -74,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         WorkManager.getInstance(getApplicationContext())
                 .enqueueUniqueWork("DUMMY_UPLOAD", ExistingWorkPolicy.KEEP, uploadRequest);
     }
-
 
     /**
      * Enqueue a unique request for exposure checks
@@ -94,23 +104,11 @@ public class MainActivity extends AppCompatActivity {
         updateRippleAnimation(getApplicationContext());
     }
 
-    public static void updateRippleAnimation(@NotNull Context context){
-        NotificationManager notificationManager =  NotificationManager.getInstance(context);
-
-        if (rippleBackground != null) {
-            if (notificationManager.getIsScanningVisible() && !rippleBackground.isRippleAnimationRunning()) {
-                rippleBackground.startRippleAnimation();
-            } else if (!notificationManager.getIsScanningVisible() && rippleBackground.isRippleAnimationRunning()) {
-                rippleBackground.stopRippleAnimation();
-            }
-        }
-    }
-
     public void onRequestPermissionsResult(int requestCode, String @NotNull [] permissions, int @NotNull [] grantResults) {
         if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
             NotificationManager.getInstance(getApplicationContext()).setIsScanningVisible(false);
             updateRippleAnimation(getApplicationContext());
-        }else{
+        } else {
             initialiseActivity();
         }
     }

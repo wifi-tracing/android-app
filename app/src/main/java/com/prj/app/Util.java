@@ -10,9 +10,10 @@ public class Util {
 
     /**
      * Extrapolate Latitude and Longitude of the average between two points that lie on a great-circle. This method uses the Haversine formula for the great-circle distance between two points.
-     *  @see <a href="https://stackoverflow.com/a/14231286">Stack Overflow</a>
+     *
      * @param locations List of LatLng object corresponding to the locations to average
      * @return a LatLng object representing the average point of all input LatLng objects
+     * @see <a href="https://stackoverflow.com/a/14231286">Stack Overflow</a>
      */
     public static LatLng getLocationAverage(List<LatLng> locations) {
         if (locations.size() == 1) {

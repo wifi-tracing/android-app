@@ -95,7 +95,7 @@ public class SettingsActivity extends AppCompatActivity {
             bssidMatcher.setMIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS(newMinTimestamps);
             minTimestampsEditText.setText("");
         }
-        if(apiUrlEditText.getText().toString().length() >0){
+        if (apiUrlEditText.getText().toString().length() > 0) {
             VolleySingleton.setAPI_URL(apiUrlEditText.getText().toString());
             apiUrlEditText.setText("");
         }

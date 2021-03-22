@@ -17,6 +17,7 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+
 @SuppressLint("StaticFieldLeak")
 public class WifiScanningService extends Service {
     private static final int DELAY_MILLIS = 30001; //only once every 30s as for Android 9+ (four times in a 2 minute period)
@@ -79,7 +80,7 @@ public class WifiScanningService extends Service {
      * Register a wifi state listener. Used to check the status of wifi services.
      */
     private void registerWiFiListener() {
-        if(wifiListener == null){
+        if (wifiListener == null) {
             wifiListener = new CustomWifiListener();
             getApplicationContext().registerReceiver(wifiListener, new IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION));
         }

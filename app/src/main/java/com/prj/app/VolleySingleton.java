@@ -25,7 +25,7 @@ public class VolleySingleton {
         API_URL = String.format("http://%s/api/v1/", newUrl);
 
     }
-    
+
     public RequestQueue getRequestQueue() {
         return requestQueue;
     }
