@@ -1,4 +1,4 @@
-package com.prj.app;
+package com.prj.app.util;
 
 import com.google.android.gms.maps.model.LatLng;
 

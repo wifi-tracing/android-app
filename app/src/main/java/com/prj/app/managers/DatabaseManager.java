@@ -1,4 +1,4 @@
-package com.prj.app;
+package com.prj.app.managers;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,6 +10,8 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.prj.app.util.Scan;
+import com.prj.app.util.Util;
 
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteOpenHelper;

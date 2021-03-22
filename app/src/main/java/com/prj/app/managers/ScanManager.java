@@ -1,4 +1,4 @@
-package com.prj.app;
+package com.prj.app.managers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,14 +8,16 @@ import android.location.Location;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 
+import com.prj.app.managers.DatabaseManager;
+
 import java.util.List;
 
-public class WifiScanner {
+public class ScanManager {
     private static WifiManager wifiManager;
     private final DatabaseManager databaseManager;
     private Location location;
 
-    public WifiScanner(Context context) {
+    public ScanManager(Context context) {
 
         wifiManager = (WifiManager)
                 context.getSystemService(Context.WIFI_SERVICE);

@@ -1,4 +1,4 @@
-package com.prj.app;
+package com.prj.app.ui;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -14,6 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.prj.app.managers.DatabaseManager;
+import com.prj.app.R;
+import com.prj.app.util.Scan;
+import com.prj.app.api.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;

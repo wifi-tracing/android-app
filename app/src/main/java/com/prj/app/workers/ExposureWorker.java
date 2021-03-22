@@ -1,10 +1,13 @@
-package com.prj.app;
+package com.prj.app.workers;
 
 import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+
+import com.prj.app.logic.BSSIDMatcher;
+import com.prj.app.managers.DatabaseManager;
 
 import org.jetbrains.annotations.NotNull;
 

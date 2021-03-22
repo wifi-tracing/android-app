@@ -1,8 +1,9 @@
-package com.prj.app;
+package com.prj.app.managers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.prj.app.R;
 import com.yakivmospan.scytale.Crypto;
 import com.yakivmospan.scytale.Options;
 import com.yakivmospan.scytale.Store;

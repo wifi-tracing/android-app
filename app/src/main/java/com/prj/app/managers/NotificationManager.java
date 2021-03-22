@@ -1,4 +1,4 @@
-package com.prj.app;
+package com.prj.app.managers;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -10,6 +10,9 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+
+import com.prj.app.R;
+import com.prj.app.ui.MainActivity;
 
 import org.jetbrains.annotations.NotNull;
 

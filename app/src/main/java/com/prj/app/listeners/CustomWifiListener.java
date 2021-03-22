@@ -1,9 +1,12 @@
-package com.prj.app;
+package com.prj.app.listeners;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
+
+import com.prj.app.managers.NotificationManager;
+import com.prj.app.ui.MainActivity;
 
 public class CustomWifiListener extends BroadcastReceiver {
 

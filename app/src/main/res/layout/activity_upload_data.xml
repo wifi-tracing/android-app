@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:scrollbarStyle="outsideOverlay"
     android:scrollbars="vertical"
-    tools:context=".UploadDataActivity">
+    tools:context=".ui.UploadDataActivity">
 
     <TextView
         android:id="@+id/titleTextView"

@@ -1,4 +1,4 @@
-package com.prj.app;
+package com.prj.app.api;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;

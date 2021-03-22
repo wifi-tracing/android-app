@@ -1,4 +1,4 @@
-package com.prj.app;
+package com.prj.app.logic;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -6,6 +6,11 @@ import android.util.Pair;
 import android.widget.TextView;
 
 import com.android.volley.Request;
+import com.prj.app.util.Scan;
+import com.prj.app.api.CustomJsonArrayRequest;
+import com.prj.app.api.VolleySingleton;
+import com.prj.app.managers.DatabaseManager;
+import com.prj.app.managers.NotificationManager;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;

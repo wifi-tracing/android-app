@@ -17,8 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Prjandroidapp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".UploadDataActivity">
+        <activity android:name=".ui.SettingsActivity" />
+        <activity android:name=".ui.UploadDataActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -33,11 +33,11 @@
         </activity>
 
         <service
-            android:name=".WifiScanningService"
+            android:name=".services.WifiScanningService"
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

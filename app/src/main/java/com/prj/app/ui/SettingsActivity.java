@@ -1,4 +1,4 @@
-package com.prj.app;
+package com.prj.app.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -14,6 +14,12 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
+import com.prj.app.logic.BSSIDMatcher;
+import com.prj.app.api.CustomJsonArrayRequest;
+import com.prj.app.managers.DatabaseManager;
+import com.prj.app.R;
+import com.prj.app.util.Scan;
+import com.prj.app.api.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.prj.app;
+package com.prj.app.workers;
 
 import android.content.Context;
 
@@ -12,6 +12,9 @@ import androidx.work.WorkerParameters;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.prj.app.managers.DatabaseManager;
+import com.prj.app.util.Scan;
+import com.prj.app.api.VolleySingleton;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;

@@ -1,4 +1,4 @@
-package com.prj.app;
+package com.prj.app.util;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;

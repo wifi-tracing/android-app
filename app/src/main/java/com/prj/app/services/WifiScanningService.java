@@ -1,4 +1,4 @@
-package com.prj.app;
+package com.prj.app.services;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -18,13 +18,19 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
+import com.prj.app.listeners.CustomLocationListener;
+import com.prj.app.listeners.CustomWifiListener;
+import com.prj.app.managers.DatabaseManager;
+import com.prj.app.managers.NotificationManager;
+import com.prj.app.managers.ScanManager;
+
 @SuppressLint("StaticFieldLeak")
 public class WifiScanningService extends Service {
     private static final int DELAY_MILLIS = 30001; //only once every 30s as for Android 9+ (four times in a 2 minute period)
     private static final int MINIMUM_ACCURACY = 50; //accuracy in meters needed to log location data
     private static final int FOREGROUND_ID = 10;
     private static HandlerThread handlerThread;
-    private static WifiScanner wifiScanner;
+    private static ScanManager scanManager;
     public Location previousBestLocation = null;
     public LocationManager locationManager;
     public Intent intent;
@@ -51,8 +57,8 @@ public class WifiScanningService extends Service {
             handlerThread.setDaemon(true);
             handlerThread.start();
             Handler handler = new Handler(handlerThread.getLooper());
-            if (wifiScanner == null) {
-                wifiScanner = new WifiScanner(getApplicationContext());
+            if (scanManager == null) {
+                scanManager = new ScanManager(getApplicationContext());
             }
 
             getScanWifiRunnable(handler).run();
@@ -66,7 +72,7 @@ public class WifiScanningService extends Service {
         return new Runnable() {
             @Override
             public void run() {
-                wifiScanner.startScan(previousBestLocation);
+                scanManager.startScan(previousBestLocation);
                 if (!DatabaseManager.getInstance(getApplicationContext()).canSaveHotspotLocation()) {
                     previousBestLocation = null;
                 }
