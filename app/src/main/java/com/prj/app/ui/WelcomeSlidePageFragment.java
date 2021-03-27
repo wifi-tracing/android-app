@@ -1,15 +1,14 @@
 package com.prj.app.ui;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import com.prj.app.R;
 
@@ -43,7 +42,7 @@ public class WelcomeSlidePageFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param title Parameter 1.
+     * @param title   Parameter 1.
      * @param content Parameter 2.
      * @return A new instance of fragment WelcomeSlidePageFragment.
      */
@@ -85,7 +84,7 @@ public class WelcomeSlidePageFragment extends Fragment {
             contentText.setText(content);
             imageView.setImageResource(imageId);
 
-            if(isLast == 1){
+            if (isLast == 1) {
                 nextButton.setText("Finish");
             }
 
