@@ -17,14 +17,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Prjandroidapp"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ui.WelcomeActivity" />
         <activity android:name=".ui.SettingsActivity" />
         <activity android:name=".ui.UploadDataActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
                     android:host="www.prj-android-app.com"
                     android:pathPrefix="/upload"
@@ -40,7 +39,6 @@
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

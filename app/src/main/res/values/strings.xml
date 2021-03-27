@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">6CCS3PRJ</string>
+    <string name="app_name">WiFi Tracing</string>
     <string name="coronavirus_icon">coronavirus icon</string>
     <string name="get_matching_bssids">Check Exposure</string>
     <string name="upload_scans">Upload Scans</string>

@@ -1,10 +1,14 @@
 package com.prj.app.ui;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,7 +34,8 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
-
+    final String welcomeScreenShownPref = "WelcomeScreenShown";
+    SharedPreferences mPrefs;
     private static Intent wifiScanningIntent;
     private static RippleBackground rippleBackground;
 
@@ -51,6 +56,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_main);
+
+        //show welcome screen on first startup
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean welcomeScreenShown = mPrefs.getBoolean(welcomeScreenShownPref, false);
+        if (!welcomeScreenShown) {
+            startActivity(new Intent(this, WelcomeActivity.class));
+            SharedPreferences.Editor editor = mPrefs.edit();
+            editor.putBoolean(welcomeScreenShownPref, true);
+            editor.apply();
+        }
+
+
+
         rippleBackground = findViewById(R.id.rippleBackground);
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
