@@ -103,6 +103,9 @@ Distributed under the MIT License. See `LICENSE` for more information.
 Danilo Del Busso - [@danilo_delbusso](https://twitter.com/danilo_delbusso)
 
 
+### Attributions
+<div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/6CCS3PRJ/android-app.svg?style=for-the-badge
