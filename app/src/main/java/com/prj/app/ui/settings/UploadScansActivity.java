@@ -1,5 +1,6 @@
 package com.prj.app.ui.settings;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -23,12 +24,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-
+@SuppressLint("SetTextI18n")
 public class UploadScansActivity extends AppCompatActivity {
 
     private DatabaseManager databaseManager;
     private BSSIDMatcher bssidMatcher;
-
+    private String uploadedScansString;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +54,6 @@ public class UploadScansActivity extends AppCompatActivity {
         scansCountContent.setText(scansCount);
         apScansCountContent.setText(apScansCount);
     }
-
 
     public void uploadScans(View view) {
         TextView resultTextView = findViewById(R.id.resultTextView);
@@ -90,6 +90,7 @@ public class UploadScansActivity extends AppCompatActivity {
         for (Scan scan : uploadedScans) {
             out.append("\n").append(scan.toString());
         }
+        uploadedScansString = out.toString();
         resultTextView.setText("Uploading " + results.size() + " scans\n" + out.toString());
     }
 
@@ -104,6 +105,7 @@ public class UploadScansActivity extends AppCompatActivity {
 
     private void response(JSONObject jsonObject) {
         TextView resultTextView = findViewById(R.id.resultTextView);
-        resultTextView.setText("Uploaded!");
+        resultTextView.setText("Uploaded scans.\n" + uploadedScansString);
+        uploadedScansString = "";
     }
 }
