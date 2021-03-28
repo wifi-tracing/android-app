@@ -23,14 +23,12 @@ public class WelcomeSlidePageFragment extends Fragment {
     private static final String TITLE_PARAM = "titleParam";
     private static final String CONTENT_PARAM = "contentParam";
     private static final String IMAGE_ID_PARAM = "imageIdParam";
-    private static final String IS_LAST_PARAM = "isLastParam";
 
 
     // TODO: Rename and change types of parameters
     private String title;
     private String content;
     private Integer imageId;
-    private Integer isLast; // 1 is true
 
 
     public WelcomeSlidePageFragment() {
@@ -46,13 +44,12 @@ public class WelcomeSlidePageFragment extends Fragment {
      * @param content Parameter 2.
      * @return A new instance of fragment WelcomeSlidePageFragment.
      */
-    public static WelcomeSlidePageFragment newInstance(String title, String content, Integer imageId, boolean isLast) {
+    public static WelcomeSlidePageFragment newInstance(String title, String content, Integer imageId) {
         WelcomeSlidePageFragment fragment = new WelcomeSlidePageFragment();
         Bundle args = new Bundle();
         args.putString(TITLE_PARAM, title);
         args.putString(CONTENT_PARAM, content);
         args.putInt(IMAGE_ID_PARAM, imageId);
-        args.putInt(IS_LAST_PARAM, isLast ? 1 : 0);
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,21 +69,14 @@ public class WelcomeSlidePageFragment extends Fragment {
             title = getArguments().getString(TITLE_PARAM);
             content = getArguments().getString(CONTENT_PARAM);
             imageId = getArguments().getInt(IMAGE_ID_PARAM);
-            isLast = getArguments().getInt(IS_LAST_PARAM);
 
-
-            TextView titleText = (TextView) view.getRootView().findViewById(R.id.titleText);
-            TextView contentText = (TextView) view.getRootView().findViewById(R.id.contentText);
-            ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
-            Button nextButton = (Button) view.findViewById(R.id.nextButton);
+            TextView titleText = view.getRootView().findViewById(R.id.titleText);
+            TextView contentText = view.getRootView().findViewById(R.id.contentText);
+            ImageView imageView = view.findViewById(R.id.imageView);
 
             titleText.setText(title);
             contentText.setText(content);
             imageView.setImageResource(imageId);
-
-            if (isLast == 1) {
-                nextButton.setText("Finish");
-            }
 
         }
 
