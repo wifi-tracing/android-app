@@ -20,13 +20,13 @@ public class CustomWifiListener extends BroadcastReceiver {
             case WifiManager.WIFI_STATE_DISABLING:
                 notificationManager.setIsScanningVisible(false);
                 notificationManager.updateScanningNotification();
-                MainActivity.updateRippleAnimation(context);
+                MainActivity.updateScanningUI(context);
                 break;
             case WifiManager.WIFI_STATE_ENABLED:
             case WifiManager.WIFI_STATE_ENABLING:
                 notificationManager.setIsScanningVisible(true);
                 notificationManager.updateScanningNotification();
-                MainActivity.updateRippleAnimation(context);
+                MainActivity.updateScanningUI(context);
                 break;
             default:
                 break;

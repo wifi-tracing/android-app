@@ -1,13 +1,17 @@
 package com.prj.app.ui;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -34,16 +38,26 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
     private static Intent wifiScanningIntent;
     private static RippleBackground rippleBackground;
+    private static TextView scanningStatusTextView;
     final String welcomeScreenShownPref = "WelcomeScreenShown";
     SharedPreferences mPrefs;
 
-    public static void updateRippleAnimation(@NotNull Context context) {
+    public static void updateScanningUI(@NotNull Context context) {
         NotificationManager notificationManager = NotificationManager.getInstance(context);
-
+        boolean isScanning = notificationManager.getIsScanningVisible();
+        if (scanningStatusTextView != null) {
+            if (isScanning) {
+                scanningStatusTextView.setText("Scanning");
+                scanningStatusTextView.setTextColor(ContextCompat.getColor(context, R.color.primary));
+            } else {
+                scanningStatusTextView.setText("Not Scanning");
+                scanningStatusTextView.setTextColor(ContextCompat.getColor(context, R.color.secondary));
+            }
+        }
         if (rippleBackground != null) {
-            if (notificationManager.getIsScanningVisible() && !rippleBackground.isRippleAnimationRunning()) {
+            if (isScanning && !rippleBackground.isRippleAnimationRunning()) {
                 rippleBackground.startRippleAnimation();
-            } else if (!notificationManager.getIsScanningVisible() && rippleBackground.isRippleAnimationRunning()) {
+            } else if (!isScanning && rippleBackground.isRippleAnimationRunning()) {
                 rippleBackground.stopRippleAnimation();
             }
         }
@@ -67,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         rippleBackground = findViewById(R.id.rippleBackground);
+        scanningStatusTextView = findViewById(R.id.scanningStatusTextView);
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -88,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             NotificationManager.getInstance(getApplicationContext()).setIsScanningVisible(true);
             ContextCompat.startForegroundService(this, wifiScanningIntent);
         }
-        updateRippleAnimation(getApplicationContext());
+        updateScanningUI(getApplicationContext());
         startExposureWorker();
         startDummyUploadsWorker();
     }
@@ -121,13 +136,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        updateRippleAnimation(getApplicationContext());
+        updateScanningUI(getApplicationContext());
     }
 
     public void onRequestPermissionsResult(int requestCode, String @NotNull [] permissions, int @NotNull [] grantResults) {
         if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
             NotificationManager.getInstance(getApplicationContext()).setIsScanningVisible(false);
-            updateRippleAnimation(getApplicationContext());
+            updateScanningUI(getApplicationContext());
         } else {
             initialiseActivity();
         }

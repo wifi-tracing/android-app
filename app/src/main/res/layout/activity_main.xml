@@ -6,33 +6,68 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
+    <Button
+        android:layout_width="60dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="#00FFFFFF"
+        android:onClick="openDevUtils"
+        app:icon="@drawable/misc_settings"
+        app:iconPadding="10dp"
+        app:iconSize="35dp"
+        app:iconTint="@color/primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/scanningStatusTextView"
+        android:layout_width="244dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="100dp"
+        android:text="Not Scanning"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/secondary"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.skyfishjy.library.RippleBackground
         android:id="@+id/rippleBackground"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="253dp"
+        android:layout_height="246dp"
+        android:layout_marginBottom="345dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scanningStatusTextView"
         app:rb_color="#9000FF00"
         app:rb_duration="3000"
         app:rb_radius="20dp"
         app:rb_rippleAmount="3"
         app:rb_scale="6">
 
-        <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_centerInParent="true"
-            android:contentDescription="@string/coronavirus_icon"
-            android:src="@drawable/ic_coronavirus" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <Button
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="7dp"
-            android:layout_marginEnd="10dp"
-            android:background="#00FFFFFF"
-            android:onClick="openDevUtils"
-            app:icon="@android:drawable/ic_menu_manage"
-            app:iconTint="#6200EE" />
+            <ImageView
+                android:layout_width="88dp"
+                android:layout_height="87dp"
+                android:contentDescription="@string/coronavirus_icon"
+                android:src="@drawable/ic_coronavirus"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_absoluteHeight="64dp"
+                tools:layout_conversion_absoluteWidth="64dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </com.skyfishjy.library.RippleBackground>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

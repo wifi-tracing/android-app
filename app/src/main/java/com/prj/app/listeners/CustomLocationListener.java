@@ -58,13 +58,13 @@ public class CustomLocationListener implements LocationListener {
     public void onProviderDisabled(String provider) {
         notificationManager.setIsScanningVisible(false);
         notificationManager.updateScanningNotification();
-        MainActivity.updateRippleAnimation(context);
+        MainActivity.updateScanningUI(context);
     }
 
     public void onProviderEnabled(String provider) {
         notificationManager.setIsScanningVisible(true);
         notificationManager.updateScanningNotification();
-        MainActivity.updateRippleAnimation(context);
+        MainActivity.updateScanningUI(context);
     }
 
     /**
