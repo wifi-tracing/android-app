@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="0.3.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.prj.app">
 
@@ -17,10 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Prjandroidapp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.CheckExposureActivity"></activity>
+        <activity android:name=".ui.settings.CheckExposureActivity"></activity>
         <activity android:name=".ui.settings.ManageDataActivity" />
         <activity android:name=".ui.settings.UploadScansActivity" />
-        <activity android:name=".ui.PreferencesActivity" />
+        <activity android:name=".ui.fragments.PreferencesActivity" />
         <activity android:name=".ui.WelcomeActivity" />
         <activity android:name=".ui.SettingsActivity" />
         <activity android:name=".ui.UploadDataActivity">
