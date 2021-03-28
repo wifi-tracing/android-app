@@ -22,7 +22,7 @@
             app:iconSpaceReserved="false">
 
             <EditTextPreference
-                android:defaultValue="localhost:4683"
+                android:defaultValue="192.168.1.138:4683"
                 android:key="@string/rest_api_url"
                 android:selectAllOnFocus="true"
                 android:singleLine="true"
