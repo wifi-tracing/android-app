@@ -11,6 +11,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.prj.app.R;
+import com.prj.app.ui.fragments.WelcomeSlidePageFragment;
 
 import org.jetbrains.annotations.NotNull;
 

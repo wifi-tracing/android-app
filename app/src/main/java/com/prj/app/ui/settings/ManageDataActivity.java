@@ -1,4 +1,4 @@
-package com.prj.app.ui;
+package com.prj.app.ui.settings;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;

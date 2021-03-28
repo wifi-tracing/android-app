@@ -1,4 +1,4 @@
-package com.prj.app.ui;
+package com.prj.app.ui.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;

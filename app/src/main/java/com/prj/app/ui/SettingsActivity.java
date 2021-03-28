@@ -2,17 +2,16 @@ package com.prj.app.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.prj.app.R;
 import com.prj.app.logic.BSSIDMatcher;
 import com.prj.app.managers.DatabaseManager;
+import com.prj.app.ui.settings.ManageDataActivity;
+import com.prj.app.ui.settings.UploadScansActivity;
 
 import java.util.Objects;
 

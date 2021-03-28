@@ -17,8 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Prjandroidapp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.ManageDataActivity"></activity>
-        <activity android:name=".ui.UploadScansActivity" />
+        <activity android:name=".ui.CheckExposureActivity"></activity>
+        <activity android:name=".ui.settings.ManageDataActivity" />
+        <activity android:name=".ui.settings.UploadScansActivity" />
         <activity android:name=".ui.PreferencesActivity" />
         <activity android:name=".ui.WelcomeActivity" />
         <activity android:name=".ui.SettingsActivity" />
