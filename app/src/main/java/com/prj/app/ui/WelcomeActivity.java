@@ -18,31 +18,16 @@ import java.util.Objects;
 
 public class WelcomeActivity extends AppCompatActivity {
 
-    /**
-     * The number of pages (wizard steps) to show in this demo.
-     */
     private static final int NUM_PAGES = 6;
-
-    /**
-     * The pager widget, which handles animation and allows swiping horizontally to access previous
-     * and next wizard steps.
-     */
     private ViewPager2 viewPager;
-
-    /**
-     * The pager adapter, which provides the pages to the view pager widget.
-     */
-    private FragmentStateAdapter pagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_welcome);
-
-        // Instantiate a ViewPager2 and a PagerAdapter.
         viewPager = findViewById(R.id.pager);
-        pagerAdapter = new WelcomeSlidePageAdapter(this);
+        FragmentStateAdapter pagerAdapter = new WelcomeSlidePageAdapter(this);
         viewPager.setAdapter(pagerAdapter);
     }
 
@@ -64,10 +49,6 @@ public class WelcomeActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
-     * sequence.
-     */
     private static class WelcomeSlidePageAdapter extends FragmentStateAdapter {
         public WelcomeSlidePageAdapter(@NonNull FragmentActivity fragmentActivity) {
             super(fragmentActivity);
