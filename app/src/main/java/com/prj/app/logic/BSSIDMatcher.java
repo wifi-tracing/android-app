@@ -10,6 +10,7 @@ import com.prj.app.api.CustomJsonArrayRequest;
 import com.prj.app.api.VolleySingleton;
 import com.prj.app.managers.DatabaseManager;
 import com.prj.app.managers.NotificationManager;
+import com.prj.app.managers.PreferencesManager;
 import com.prj.app.util.Scan;
 
 import org.jetbrains.annotations.NotNull;
@@ -35,10 +36,6 @@ public class BSSIDMatcher {
     private final DatabaseManager databaseManager;
     private final TextView resultTextView;
     private final Context context;
-    private double MAX_TIME_DIFFERENCE = 35; //in seconds
-    private double MAX_DISTANCE_DIFFERENCE = 2; //in meters
-    private double MIN_NUMBER_OF_NEAR_HOTSPOTS = 4; //number of hotspots needed to correctly triangulate referential position
-    private double MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS = 4; //number of consecutive timestamps needed to confirm contact
 
     /**
      * Contains functions to fetch and match positive scans with locally stored data
@@ -69,7 +66,7 @@ public class BSSIDMatcher {
         if (resultTextView != null) {
             resultTextView.setText("Checking matching BSSIDs");
         }
-        String URL = VolleySingleton.API_URL + "scans/get/matchBSSID";
+        String URL = VolleySingleton.getApiUrl() + "scans/get/matchBSSID";
         sendMatchingBSSIDsPOST(URL, jsonBody);
     }
 
@@ -133,8 +130,8 @@ public class BSSIDMatcher {
             if (resultTextView != null) {
 
                 resultTextView.setText(
-                        "Found a match! " + positiveResultDates.size() + "/" + MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS +
-                                " consecutive scans of " + MIN_NUMBER_OF_NEAR_HOTSPOTS + " or more matching hotspots.\n\n" + out.toString());
+                        "Found a match! " + positiveResultDates.size() + "/" + PreferencesManager.getInstance(context).getCMin() +
+                                " consecutive scans of " + PreferencesManager.getInstance(context).getHMin() + " or more matching hotspots.\n\n" + out.toString());
             }
 
             NotificationManager.getInstance(context).showExposureNotification();
@@ -167,9 +164,9 @@ public class BSSIDMatcher {
             } else {
                 Date lastTimestamp = dateStorage.get(dateStorage.size() - 1).first;
                 double timeDiff = Math.abs(lastTimestamp.getTime() - timestamp.getTime()) / 1000.0;
-                if (timeDiff <= MAX_TIME_DIFFERENCE) {
+                if (timeDiff <= PreferencesManager.getInstance(context).getTMax()) {
                     dateStorage.add(new Pair<>(timestamp, timeMap.get(timestamp)));
-                    if (dateStorage.size() >= MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS) {
+                    if (dateStorage.size() >= PreferencesManager.getInstance(context).getCMin()) {
                         return dateStorage;
                     }
                 } else {
@@ -179,7 +176,7 @@ public class BSSIDMatcher {
             }
         }
 
-        if (dateStorage.size() <= MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS) {
+        if (dateStorage.size() <= PreferencesManager.getInstance(context).getCMin()) {
             dateStorage.clear();
         }
         return dateStorage;
@@ -204,7 +201,7 @@ public class BSSIDMatcher {
                     List<Scan> list = tempTimeMap.get(scan.getTimestamp());
                     if (list != null) {
                         list.add(scan);
-                        if (list.size() >= MIN_NUMBER_OF_NEAR_HOTSPOTS) {
+                        if (list.size() >= PreferencesManager.getInstance(context).getHMin()) {
                             timeMap.put(scan.getTimestamp(), list);
                         }
                     } else {
@@ -240,9 +237,9 @@ public class BSSIDMatcher {
             for (Scan remoteScan : remoteScans) {
                 if (remoteScan.getBssid().equals(localScan.getBssid())) {
                     double differenceInSeconds = scanTimeDifference(remoteScan, localScan);
-                    if (differenceInSeconds <= MAX_TIME_DIFFERENCE) {
+                    if (differenceInSeconds <= PreferencesManager.getInstance(context).getTMax()) {
                         double differenceInMeters = Math.abs(remoteScan.getDistance() - localScan.getDistance());
-                        if (differenceInMeters <= MAX_DISTANCE_DIFFERENCE) {
+                        if (differenceInMeters <= PreferencesManager.getInstance(context).getDMax()) {
                             if (map.containsKey(localScan)) {
                                 Objects.requireNonNull(map.get(localScan)).add(remoteScan);
                             } else {
@@ -280,10 +277,10 @@ public class BSSIDMatcher {
                         //get last element found for this bssid
                         Scan lastScan = storageList.get(storageList.size() - 1);
 
-                        if (scanTimeDifference(lastScan, current) <= MAX_TIME_DIFFERENCE) {
+                        if (scanTimeDifference(lastScan, current) <= PreferencesManager.getInstance(context).getTMax()) {
                             storageList.add(current);
                         } else {
-                            if (storageList.size() >= MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS) {
+                            if (storageList.size() >= PreferencesManager.getInstance(context).getCMin()) {
                                 validScans.addAll(storageList);
                             }
                             storageList.clear();
@@ -304,7 +301,7 @@ public class BSSIDMatcher {
 
         }
         for (ArrayList<Scan> scans : storage.values()) {
-            if (scans.size() >= MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS) {
+            if (scans.size() >= PreferencesManager.getInstance(context).getCMin()) {
                 validScans.addAll(scans);
             }
         }
@@ -360,36 +357,5 @@ public class BSSIDMatcher {
         return list.parallelStream().anyMatch(o -> o.getBssid().equals(scan.getBssid()));
     }
 
-    public double getMAX_TIME_DIFFERENCE() {
-        return MAX_TIME_DIFFERENCE;
-    }
-
-    public void setMAX_TIME_DIFFERENCE(double MAX_TIME_DIFFERENCE) {
-        this.MAX_TIME_DIFFERENCE = MAX_TIME_DIFFERENCE;
-    }
-
-    public double getMAX_DISTANCE_DIFFERENCE() {
-        return MAX_DISTANCE_DIFFERENCE;
-    }
-
-    public void setMAX_DISTANCE_DIFFERENCE(double MAX_DISTANCE_DIFFERENCE) {
-        this.MAX_DISTANCE_DIFFERENCE = MAX_DISTANCE_DIFFERENCE;
-    }
-
-    public double getMIN_NUMBER_OF_NEAR_HOTSPOTS() {
-        return MIN_NUMBER_OF_NEAR_HOTSPOTS;
-    }
-
-    public void setMIN_NUMBER_OF_NEAR_HOTSPOTS(double MIN_NUMBER_OF_NEAR_HOTSPOTS) {
-        this.MIN_NUMBER_OF_NEAR_HOTSPOTS = MIN_NUMBER_OF_NEAR_HOTSPOTS;
-    }
-
-    public double getMIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS() {
-        return MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS;
-    }
-
-    public void setMIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS(double MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS) {
-        this.MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS = MIN_NUMBER_OF_CONSECUTIVE_TIMESTAMPS;
-    }
 
 }

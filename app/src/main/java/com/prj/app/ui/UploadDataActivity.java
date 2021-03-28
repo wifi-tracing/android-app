@@ -17,6 +17,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.prj.app.R;
 import com.prj.app.api.VolleySingleton;
 import com.prj.app.managers.DatabaseManager;
+import com.prj.app.managers.PreferencesManager;
 import com.prj.app.util.Scan;
 
 import org.json.JSONArray;
@@ -60,7 +61,7 @@ public class UploadDataActivity extends AppCompatActivity {
             return;
         }
 
-        String URL = VolleySingleton.API_URL + "scans/insert/new";
+        String URL = VolleySingleton.getApiUrl() + "scans/insert/new";
         sendPOST(URL, jsonBody);
     }
 

@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Prjandroidapp"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ui.ManageDataActivity"></activity>
+        <activity android:name=".ui.UploadScansActivity" />
+        <activity android:name=".ui.PreferencesActivity" />
         <activity android:name=".ui.WelcomeActivity" />
         <activity android:name=".ui.SettingsActivity" />
         <activity android:name=".ui.UploadDataActivity">
@@ -41,6 +44,7 @@
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

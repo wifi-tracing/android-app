@@ -1,17 +1,21 @@
 package com.prj.app.api;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.prj.app.managers.PreferencesManager;
 
+@SuppressLint("StaticFieldLeak")
 public class VolleySingleton {
-    public static String API_URL = "http://3.8.139.11:4683/api/v1/";
     private static VolleySingleton instance;
     private final RequestQueue requestQueue;
+    private static Context context;
 
     private VolleySingleton(Context context) {
         requestQueue = Volley.newRequestQueue(context.getApplicationContext());
+        VolleySingleton.context =  context;
     }
 
     public static VolleySingleton getInstance(Context context) {
@@ -21,9 +25,8 @@ public class VolleySingleton {
         return instance;
     }
 
-    public static void setAPI_URL(String newUrl) {
-        API_URL = String.format("http://%s/api/v1/", newUrl);
-
+    public static String getApiUrl(){
+        return String.format("http://%s/api/v1/", PreferencesManager.getInstance(context).getApiUrl());
     }
 
     public RequestQueue getRequestQueue() {

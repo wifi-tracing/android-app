@@ -14,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.prj.app.api.VolleySingleton;
 import com.prj.app.managers.DatabaseManager;
+import com.prj.app.managers.PreferencesManager;
 import com.prj.app.util.Scan;
 
 import org.jetbrains.annotations.NotNull;
@@ -55,7 +56,7 @@ public class DummyUploadWorker extends Worker {
         } catch (JSONException ignored) {
         }
 
-        String URL = VolleySingleton.API_URL + "scans/insert/new";
+        String URL = VolleySingleton.getApiUrl() + "scans/insert/new";
         sendPOST(URL, jsonBody);
 
         enqueueNewRequest();

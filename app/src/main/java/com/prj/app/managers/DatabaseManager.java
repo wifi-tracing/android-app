@@ -32,7 +32,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String COLUMN_ID = "ID";
     private static final String COLUMN_TIMESTAMP = "TIMESTAMP";
     private static final String BSSID_SCAN_TAB = "BSSID_SCAN_TAB";
-    private static final String SETTINGS_TAB = "SETTINGS_TAB";
     private static final String LOCATION_TAB = "LOCATION_TAB";
     private static final int COORDINATES_PRECISION = 5;
     private static final String DB_PATH = "prj-app-db.db";
@@ -59,13 +58,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
         db.execSQL(createTableStatement);
         createTableStatement = String.format("CREATE TABLE %s (\n\t ID INTEGER PRIMARY KEY AUTOINCREMENT,\n\t SCAN_RESULT_ID INTEGER NOT NULL,\n\t BSSID TEXT NOT NULL,\n\t DISTANCE NUMERIC NOT NULL\n);", BSSID_SCAN_TAB);
         db.execSQL(createTableStatement);
-        createTableStatement = String.format("CREATE TABLE %s (\n\t NAME TEXT PRIMARY KEY,\n\t VALUE TEXT NOT NULL \n);", SETTINGS_TAB);
-        db.execSQL(createTableStatement);
         createTableStatement = String.format("CREATE TABLE %s (\n\t bssid TEXT PRIMARY KEY,\n\t lat NUMBER NOT NULL, \n\t lng NUMBER NOT NULL \n);", LOCATION_TAB);
         db.execSQL(createTableStatement);
-
-        String insertSettingsQuery = String.format("INSERT INTO %s (NAME, VALUE) VALUES ('SAVE_HOTSPOT_LOCATION', 0)", SETTINGS_TAB);
-        db.execSQL(insertSettingsQuery);
     }
 
     /**
@@ -170,6 +164,36 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return result;
     }
 
+    public int getScansCount(){
+       return getTableCount(SCAN_RESULT_TAB);
+    }
+    public int getAPScansCounts(){
+        return getTableCount(BSSID_SCAN_TAB);
+    }
+
+    /**
+     * Get the number of rows for a given table
+     * @param tableName the name of the table
+     * @return the number of rows, -1 if there is an error
+     */
+    private int getTableCount(String tableName){
+        int result = -1;
+        SQLiteDatabase db = this.getReadableDatabase(CryptoManager.getDatabasePassword(context));
+        String query = "SELECT COUNT(*) FROM " + tableName;
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            try {
+                result = cursor.getInt(0);
+            } catch (Exception e) {
+                return result;
+            }
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return result;
+    }
+
     public List<String> getScanBSSIDs() {
         ArrayList<String> results = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase(CryptoManager.getDatabasePassword(context));
@@ -264,33 +288,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
         }
         cursor.close();
         return results;
-    }
-
-    public void setSaveHotspotLocation(boolean value) {
-        String query = "UPDATE " + SETTINGS_TAB + " SET VALUE = " + value + " WHERE NAME = 'SAVE_HOTSPOT_LOCATION'";
-        SQLiteDatabase db = this.getWritableDatabase(CryptoManager.getDatabasePassword(context));
-        db.execSQL(query);
-    }
-
-    public boolean canSaveHotspotLocation() {
-        ArrayList<Integer> results = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase(CryptoManager.getDatabasePassword(context));
-        String query = "SELECT VALUE FROM SETTINGS_TAB WHERE NAME = 'SAVE_HOTSPOT_LOCATION'";
-        Cursor cursor = db.rawQuery(query, null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            try {
-                results.add(cursor.getInt(0));
-            } catch (Exception e) {
-                Log.d("TAG_NAME", e.getMessage());
-            }
-            cursor.moveToNext();
-        }
-        cursor.close();
-        if (results.size() == 0) {
-            return false;
-        }
-        return results.get(0) == 1;
     }
 
     public double calculateDistance(double signalLevelInDb, double freqInMHz) {

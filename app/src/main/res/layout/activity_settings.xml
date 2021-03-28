@@ -8,6 +8,7 @@
     tools:context=".ui.SettingsActivity">
 
     <Button
+        android:id="@+id/backButton"
         android:layout_width="54dp"
         android:layout_height="49dp"
         android:layout_alignParentTop="true"
@@ -16,167 +17,170 @@
         android:layout_marginEnd="12dp"
         android:background="#00FFFFFF"
         android:onClick="closeActivity"
-        app:icon="?attr/homeAsUpIndicator"
-        app:iconTint="#6200EE"
+        app:icon="@drawable/misc_arrow_back"
+        app:iconTint="@color/primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/getMatchingBSSIDsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="144dp"
-        android:onClick="getMatchingBSSIDs"
-        android:text="@string/get_matching_bssids"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/preferencesButton"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:layout_marginTop="8dp"
+        android:background="@null"
+        android:backgroundTint="@color/white"
+        android:drawableEnd="@drawable/misc_chevron_right"
+        android:drawableTint="@color/primary"
+        android:foregroundTintMode="src_atop"
+        android:onClick="openPreferences"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:text="@string/preferences"
+        android:textAlignment="textStart"
+        android:textColor="@color/primary"
+        app:iconGravity="end"
+        app:iconTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/backButton" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:onClick="uploadScans"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/uploadScansButton"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:layout_marginTop="136dp"
+        android:background="@null"
+        android:backgroundTint="@color/white"
+        android:drawableEnd="@drawable/misc_chevron_right"
+        android:drawableTint="@color/primary"
+        android:foregroundTintMode="src_atop"
+        android:onClick="openUploadScans"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:text="@string/upload_scans"
+        android:textAlignment="textStart"
+        android:textColor="@color/primary"
+        app:iconGravity="end"
+        app:iconTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/backButton" />
 
-    <Button
-        android:id="@+id/deleteDataButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="424dp"
-        android:layout_marginEnd="44dp"
-        android:onClick="deleteData"
-        android:text="@string/delete_data"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/manageDataButton"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:layout_marginTop="196dp"
+        android:background="@null"
+        android:backgroundTint="@color/white"
+        android:drawableEnd="@drawable/misc_chevron_right"
+        android:drawableTint="@color/primary"
+        android:foregroundTintMode="src_atop"
+        android:onClick="openManageData"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:text="@string/manage_data"
+        android:textAlignment="textStart"
+        android:textColor="@color/primary"
+        app:iconGravity="end"
+        app:iconTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/saveConstantsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="424dp"
-        android:onClick="updateSettings"
-        android:text="@string/save"
-        app:layout_constraintEnd_toStartOf="@+id/deleteDataButton"
-        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/backButton" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
-        android:onClick="deleteCollection"
-        android:text="@string/delete_collection"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/checkExposureButton"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:layout_marginTop="256dp"
+        android:background="@null"
+        android:backgroundTint="@color/white"
+        android:drawableEnd="@drawable/misc_chevron_right"
+        android:drawableTint="@color/primary"
+        android:foregroundTintMode="src_atop"
+        android:onClick="openPreferences"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:text="@string/check_exposure"
+        android:textAlignment="textStart"
+        android:textColor="@color/primary"
+        app:iconGravity="end"
+        app:iconTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/backButton" />
 
     <TextView
-        android:id="@+id/resultTextView"
-        android:layout_width="380dp"
-        android:layout_height="300dp"
-        android:background="#61D8D8D8"
-        android:fontFamily="monospace"
-        android:scrollbars="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saveConstantsButton" />
-
-    <Switch
-        android:id="@+id/locationSwitch"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="268dp"
-        android:onClick="toggleLocationSwitch"
-        android:text="@string/enable_location_logging"
+        android:text="@string/developer_options"
+        android:textColor="@color/secondaryVariant"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/divider4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.077"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        app:layout_constraintTop_toBottomOf="@+id/preferencesButton"
+        app:layout_constraintVertical_bias="0.611" />
 
-    <EditText
-        android:id="@+id/maxTimeEditText"
-        android:layout_width="161dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="@string/max_time"
-        android:importantForAutofill="no"
-        android:inputType="numberDecimal"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/maxDistEditText"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/locationSwitch" />
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        android:foregroundTint="@color/primaryVariant"
+        app:layout_constraintBottom_toTopOf="@+id/preferencesButton" />
 
-    <EditText
-        android:id="@+id/apiUrlEditText"
-        android:layout_width="219dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:ems="10"
-        android:hint="@string/api_url"
-        android:importantForAutofill="no"
-        android:inputType="textUri"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/locationSwitch"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/getMatchingBSSIDsButton" />
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        android:foregroundTint="@color/primaryVariant"
+        app:layout_constraintTop_toBottomOf="@+id/preferencesButton" />
 
-    <EditText
-        android:id="@+id/maxDistEditText"
-        android:layout_width="161dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="@string/max_dist"
-        android:importantForAutofill="no"
-        android:inputType="numberDecimal"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/maxTimeEditText"
-        app:layout_constraintTop_toBottomOf="@+id/locationSwitch" />
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="68dp"
+        android:background="?android:attr/listDivider"
+        android:foregroundTint="@color/primaryVariant"
+        app:layout_constraintTop_toBottomOf="@+id/preferencesButton"
+        tools:layout_editor_absoluteX="-12dp" />
 
-    <EditText
-        android:id="@+id/minTimestampsEditText"
-        android:layout_width="161dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="72dp"
-        android:ems="10"
-        android:hint="@string/min_timestamps"
-        android:importantForAutofill="no"
-        android:inputType="numberDecimal"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/minHotspotsEditExt"
-        app:layout_constraintTop_toBottomOf="@+id/locationSwitch" />
+    <View
+        android:id="@+id/divider5"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="128dp"
+        android:background="?android:attr/listDivider"
+        android:foregroundTint="@color/primaryVariant"
+        app:layout_constraintTop_toBottomOf="@+id/preferencesButton"
+        tools:layout_editor_absoluteX="0dp" />
 
-    <EditText
-        android:id="@+id/minHotspotsEditExt"
-        android:layout_width="161dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="72dp"
-        android:ems="10"
-        android:hint="@string/min_hotspots"
-        android:importantForAutofill="no"
-        android:inputType="numberDecimal"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/minTimestampsEditText"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/locationSwitch" />
+    <View
+        android:id="@+id/divider6"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="188dp"
+        android:background="?android:attr/listDivider"
+        android:foregroundTint="@color/primaryVariant"
+        app:layout_constraintTop_toBottomOf="@+id/preferencesButton"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <View
+        android:id="@+id/divider7"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="248dp"
+        android:background="?android:attr/listDivider"
+        android:foregroundTint="@color/primaryVariant"
+        app:layout_constraintTop_toBottomOf="@+id/preferencesButton"
+        tools:layout_editor_absoluteX="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

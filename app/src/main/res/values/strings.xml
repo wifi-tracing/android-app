@@ -2,7 +2,6 @@
     <string name="app_name">WiFi Tracing</string>
     <string name="coronavirus_icon">coronavirus icon</string>
     <string name="get_matching_bssids">Check Exposure</string>
-    <string name="upload_scans">Upload Scans</string>
     <string name="upload_info">By confirming, you will be uploading ALL data collected in the past 14 days. \n\n This means that the provider of this service will be able to see all WiFi signals you\'ve been near in the past 14 days. \n This information could be used to triangulate your location for this period of time. \n\n We kindly ask you to also support the contact tracing effort by uploading location data, which will anonymously inform others of where contagion is spreading.</string>
     <string name="upload_title">Upload All Scan Data</string>
     <string name="upload_location">I also want to upload all my location data</string>
@@ -17,4 +16,32 @@
     <string name="min_timestamps">MIN_TIMESTAMPS</string>
     <string name="min_hotspots">MIN_HOTSPOTS</string>
     <string name="save">Save</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="preferences">Preferences</string>
+    <string name="upload_scans">Upload Scans</string>
+    <string name="developer_options">Developer Options</string>
+    <string name="check_exposure">Check Exposure</string>
+    <string name="manage_data">Manage Data</string>
+    <string name="refresh">Refresh</string>
+    <string name="scans">Scans</string>
+    <string name="ap_scans">AP Scans</string>
+    <string name="can_log_location">LocationLogging</string>
+    <string name="T_max">T_max</string>
+    <string name="D_max">D_max</string>
+    <string name="C_min">C_min</string>
+    <string name="H_min">H_min</string>
+    <string name="rest_api_url">rest_api_url</string>
 </resources>

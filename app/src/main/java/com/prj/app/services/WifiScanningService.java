@@ -22,11 +22,12 @@ import com.prj.app.listeners.CustomLocationListener;
 import com.prj.app.listeners.CustomWifiListener;
 import com.prj.app.managers.DatabaseManager;
 import com.prj.app.managers.NotificationManager;
+import com.prj.app.managers.PreferencesManager;
 import com.prj.app.managers.ScanManager;
 
 @SuppressLint("StaticFieldLeak")
 public class WifiScanningService extends Service {
-    private static final int DELAY_MILLIS = 30001; //only once every 30s as for Android 9+ (four times in a 2 minute period)
+    private static final int DELAY_MILLIS = 5001; //only once every 30s as for Android 9+ (four times in a 2 minute period)
     private static final int MINIMUM_ACCURACY = 50; //accuracy in meters needed to log location data
     private static final int FOREGROUND_ID = 10;
     private static HandlerThread handlerThread;
@@ -73,7 +74,7 @@ public class WifiScanningService extends Service {
             @Override
             public void run() {
                 scanManager.startScan(previousBestLocation);
-                if (!DatabaseManager.getInstance(getApplicationContext()).canSaveHotspotLocation()) {
+                if (!PreferencesManager.getInstance(getApplicationContext()).canLogLocation()) {
                     previousBestLocation = null;
                 }
                 handler.postDelayed(this, DELAY_MILLIS);

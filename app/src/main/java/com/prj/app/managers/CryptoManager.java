@@ -25,9 +25,9 @@ public class CryptoManager {
      */
     public static void generateDatabasePassword(Context context) {
         Store store = new Store(context);
-        SharedPreferences sharedPref = context.getSharedPreferences(
-                context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
+            SharedPreferences sharedPref = context.getSharedPreferences(
+                    context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
         if (!store.hasKey("SQLITE") || sharedPref.getString(PREFERENCE_NAME, null) == null) {
             SecretKey key = store.generateSymmetricKey(STORE_ALIAS, null);
             Crypto crypto = new Crypto(Options.TRANSFORMATION_SYMMETRIC);

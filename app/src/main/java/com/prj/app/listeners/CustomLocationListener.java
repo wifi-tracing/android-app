@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.prj.app.managers.DatabaseManager;
 import com.prj.app.managers.NotificationManager;
+import com.prj.app.managers.PreferencesManager;
 import com.prj.app.services.WifiScanningService;
 import com.prj.app.ui.MainActivity;
 
@@ -17,7 +18,6 @@ public class CustomLocationListener implements LocationListener {
     private final WifiScanningService wifiScanningService;
     private final int minimumAccuracy;
     private final NotificationManager notificationManager;
-    private final DatabaseManager databaseManager;
     private final Context context;
     private final int delayMillis;
 
@@ -33,12 +33,11 @@ public class CustomLocationListener implements LocationListener {
         this.minimumAccuracy = minimumAccuracy;
         this.delayMillis = delayMillis;
         this.context = context;
-        databaseManager = DatabaseManager.getInstance(context);
         notificationManager = NotificationManager.getInstance(context);
     }
 
     public void onLocationChanged(final Location loc) {
-        if (databaseManager.canSaveHotspotLocation()) {
+        if (PreferencesManager.getInstance(context).canLogLocation()) {
             if (isBetterLocation(loc, wifiScanningService.previousBestLocation)) {
                 loc.getLatitude();
                 loc.getLongitude();
