@@ -65,32 +65,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_main);
-
-        //show welcome screen on first startup
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean welcomeScreenShown = mPrefs.getBoolean(welcomeScreenShownPref, false);
-        if (!welcomeScreenShown) {
-            startActivity(new Intent(this, WelcomeActivity.class));
-            SharedPreferences.Editor editor = mPrefs.edit();
-            editor.putBoolean(welcomeScreenShownPref, true);
-            editor.apply();
-        }
-
-
-        rippleBackground = findViewById(R.id.rippleBackground);
-        scanningStatusTextView = findViewById(R.id.scanningStatusTextView);
-        if (ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat
-                    .requestPermissions(
-                            MainActivity.this,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                            100);
-        } else {
-            initialiseActivity();
-        }
     }
 
     private void initialiseActivity() {
@@ -133,6 +107,30 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //show welcome screen on startup
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean welcomeScreenShown = mPrefs.getBoolean(welcomeScreenShownPref, false);
+        if (!welcomeScreenShown) {
+            startActivity(new Intent(this, WelcomeActivity.class));
+            SharedPreferences.Editor editor = mPrefs.edit();
+            editor.putBoolean(welcomeScreenShownPref, true);
+            editor.apply();
+            return;
+        }
+        rippleBackground = findViewById(R.id.rippleBackground);
+        scanningStatusTextView = findViewById(R.id.scanningStatusTextView);
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat
+                    .requestPermissions(
+                            MainActivity.this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            100);
+        } else {
+            initialiseActivity();
+        }
         updateScanningUI(getApplicationContext());
     }
 
