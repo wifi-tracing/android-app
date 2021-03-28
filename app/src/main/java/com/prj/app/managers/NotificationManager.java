@@ -71,7 +71,7 @@ public class NotificationManager {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, EXPOSURE_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_coronavirus)
+                .setSmallIcon(R.drawable.misc_coronavirus)
                 .setContentTitle("You are at risk of exposure!")
                 .setContentText("We have found a possible exposure to SARS-CoV-2. Please contact your GP to get tested as soon as possible.")
                 .setStyle(new NotificationCompat.BigTextStyle()
@@ -92,7 +92,7 @@ public class NotificationManager {
             return new NotificationCompat.Builder(context, SCANNING_CHANNEL_ID)
                     .setContentTitle("Wifi Contact Tracing enabled")
                     .setContentText("Exposure notifications are active")
-                    .setSmallIcon(R.drawable.ic_coronavirus)
+                    .setSmallIcon(R.drawable.misc_coronavirus)
                     .setContentIntent(pendingIntent)
                     .setShowWhen(false)
                     .build();
@@ -102,7 +102,7 @@ public class NotificationManager {
                     .setContentText("Exposure notifications are not active. Enable Location and WiFi services to restore them.")
                     .setStyle(new NotificationCompat.BigTextStyle()
                             .bigText("Exposure notifications are not active. Enable Location and WiFi services to restore them."))
-                    .setSmallIcon(R.drawable.ic_coronavirus)
+                    .setSmallIcon(R.drawable.misc_coronavirus)
                     .setContentIntent(pendingIntent)
                     .setShowWhen(false)
                     .build();
