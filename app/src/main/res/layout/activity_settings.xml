@@ -26,7 +26,7 @@
         android:id="@+id/preferencesButton"
         android:layout_width="match_parent"
         android:layout_height="59dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="28dp"
         android:background="@null"
         android:backgroundTint="@color/white"
         android:drawableEnd="@drawable/misc_chevron_right"
@@ -41,37 +41,14 @@
         app:iconGravity="end"
         app:iconTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backButton" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/uploadScansButton"
-        android:layout_width="match_parent"
-        android:layout_height="59dp"
-        android:layout_marginTop="136dp"
-        android:background="@null"
-        android:backgroundTint="@color/white"
-        android:drawableEnd="@drawable/misc_chevron_right"
-        android:drawableTint="@color/primary"
-        android:foregroundTintMode="src_atop"
-        android:onClick="openUploadScans"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:text="@string/upload_scans"
-        android:textAlignment="textStart"
-        android:textColor="@color/primary"
-        app:iconGravity="end"
-        app:iconTint="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backButton" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/manageDataButton"
         android:layout_width="match_parent"
         android:layout_height="59dp"
-        android:layout_marginTop="196dp"
         android:background="@null"
         android:backgroundTint="@color/white"
         android:drawableEnd="@drawable/misc_chevron_right"
@@ -88,13 +65,60 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/uploadScansButton" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/uploadScansButton"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:layout_marginTop="28dp"
+        android:background="@null"
+        android:backgroundTint="@color/white"
+        android:drawableEnd="@drawable/misc_chevron_right"
+        android:drawableTint="@color/primary"
+        android:foregroundTintMode="src_atop"
+        android:onClick="openUploadScans"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:text="@string/upload_scans"
+        android:textAlignment="textStart"
+        android:textColor="@color/primary"
+        app:iconGravity="end"
+        app:iconTint="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="@string/developer_options"
+        android:textColor="@color/secondaryVariant"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/preferencesButton" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/settings"
+        android:textColor="@color/secondaryVariant"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/backButton" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/checkExposureMenuButton"
         android:layout_width="match_parent"
         android:layout_height="59dp"
-        android:layout_marginTop="256dp"
         android:background="@null"
         android:backgroundTint="@color/white"
         android:drawableEnd="@drawable/misc_chevron_right"
@@ -111,84 +135,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backButton" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/developer_options"
-        android:textColor="@color/secondaryVariant"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="@+id/divider4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.077"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/preferencesButton"
-        app:layout_constraintVertical_bias="0.611" />
-
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
-        android:foregroundTint="@color/primaryVariant"
-        app:layout_constraintBottom_toTopOf="@+id/preferencesButton" />
-
-    <View
-        android:id="@+id/divider3"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
-        android:foregroundTint="@color/primaryVariant"
-        app:layout_constraintTop_toBottomOf="@+id/preferencesButton" />
-
-    <View
-        android:id="@+id/divider4"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="68dp"
-        android:background="?android:attr/listDivider"
-        android:foregroundTint="@color/primaryVariant"
-        app:layout_constraintTop_toBottomOf="@+id/preferencesButton"
-        tools:layout_editor_absoluteX="-12dp" />
-
-    <View
-        android:id="@+id/divider5"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="128dp"
-        android:background="?android:attr/listDivider"
-        android:foregroundTint="@color/primaryVariant"
-        app:layout_constraintTop_toBottomOf="@+id/preferencesButton"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <View
-        android:id="@+id/divider6"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="188dp"
-        android:background="?android:attr/listDivider"
-        android:foregroundTint="@color/primaryVariant"
-        app:layout_constraintTop_toBottomOf="@+id/preferencesButton"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <View
-        android:id="@+id/divider7"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="248dp"
-        android:background="?android:attr/listDivider"
-        android:foregroundTint="@color/primaryVariant"
-        app:layout_constraintTop_toBottomOf="@+id/preferencesButton"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintTop_toBottomOf="@+id/manageDataButton" />
 
     <TextView
         android:id="@+id/iconAttributionsText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
-        android:text="Icons made by Freepik from www.flaticon.com"
+        android:text="@string/icons_made_by_freepik_from_www_flaticon_com"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
