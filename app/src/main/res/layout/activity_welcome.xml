@@ -13,7 +13,7 @@
         android:insetRight="10dp"
         android:insetBottom="10dp"
         android:onClick="onNextPressed"
-        android:text="next"
+        android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

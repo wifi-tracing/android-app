@@ -91,7 +91,7 @@
         app:layout_constraintTop_toBottomOf="@+id/backButton" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/checkExposureButton"
+        android:id="@+id/checkExposureMenuButton"
         android:layout_width="match_parent"
         android:layout_height="59dp"
         android:layout_marginTop="256dp"
@@ -100,7 +100,7 @@
         android:drawableEnd="@drawable/misc_chevron_right"
         android:drawableTint="@color/primary"
         android:foregroundTintMode="src_atop"
-        android:onClick="openPreferences"
+        android:onClick="openCheckExposure"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
         android:text="@string/check_exposure"

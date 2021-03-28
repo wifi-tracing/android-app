@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.PreferencesActivity">
+    tools:context=".ui.fragments.PreferencesActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/preferencesFragment"
-        android:name="com.prj.app.ui.PreferencesFragment"
+        android:name="com.prj.app.ui.fragments.PreferencesFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="2dp"
