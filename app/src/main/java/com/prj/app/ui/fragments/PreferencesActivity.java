@@ -1,4 +1,4 @@
-package com.prj.app.ui;
+package com.prj.app.ui.fragments;
 
 import androidx.appcompat.app.AppCompatActivity;
 

@@ -122,16 +122,17 @@ public class BSSIDMatcher {
 
             for (Pair<Date, List<Scan>> scan : positiveResultDates) {
                 SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-                out.append("\n\n Found group at ").append(formatter.format(scan.second.get(0).getTimestamp()));
+                out.append("\n\n--Found group at ").append(formatter.format(scan.second.get(0).getTimestamp())).append("--");
                 for (Scan hotspot : scan.second) {
                     out.append("\n").append(hotspot.toString());
                 }
             }
+            out.append("\n\n");
             if (resultTextView != null) {
 
                 resultTextView.setText(
-                        "Found a match! " + positiveResultDates.size() + "/" + PreferencesManager.getInstance(context).getCMin() +
-                                " consecutive scans of " + PreferencesManager.getInstance(context).getHMin() + " or more matching hotspots.\n\n" + out.toString());
+                        "Found a match!\n " + positiveResultDates.size() + " out of " + PreferencesManager.getInstance(context).getCMin() +
+                                " consecutive scans of " + PreferencesManager.getInstance(context).getHMin() + " or more matching access points.\n\n" + out.toString());
             }
 
             NotificationManager.getInstance(context).showExposureNotification();
