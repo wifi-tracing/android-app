@@ -1,0 +1,82 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <PreferenceCategory
+        android:title="Location Logging"
+        app:iconSpaceReserved="false">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/can_log_location"
+            android:summary="By ticking, the app will log your location at all times"
+            android:title="@string/enable_location_logging"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:contentDescription="Developer Options"
+        android:title="Developer Options"
+        app:iconSpaceReserved="false">
+
+        <PreferenceCategory
+            android:title="API Settings"
+            app:iconSpaceReserved="false">
+
+            <EditTextPreference
+                android:defaultValue="localhost:4683"
+                android:key="@string/rest_api_url"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:title="URL"
+                app:iconSpaceReserved="false"
+                app:summary="URL and port of the API (e.g. 10.10.10.10:2508)" />
+        </PreferenceCategory>
+        <PreferenceCategory
+            android:title="Risk Analysis"
+            app:iconSpaceReserved="false">
+
+            <EditTextPreference
+                android:defaultValue="35.0"
+                android:key="@string/T_max"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:summary="The maximum time in seconds between scans allowed for them to be considered consecutive (happened one after the other)"
+                android:title="T max"
+                android:inputType="numberDecimal"
+                android:digits="0123456789"
+                app:iconSpaceReserved="false" />
+            <EditTextPreference
+                android:defaultValue="2.0"
+                android:key="@string/D_max"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:summary="The maximum distance in meter between two scans for them to be considered co-located (recorded in the same place)"
+                android:title="D max"
+                android:inputType="numberDecimal"
+                android:digits="0123456789"
+                app:iconSpaceReserved="false" />
+            <EditTextPreference
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:defaultValue="4"
+                android:key="@string/C_min"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:summary="The minimum number of consecutive group of scans (grouped by timestamp) needed for a contact to be considered an exposure to the virus"
+                android:title="C min"
+                android:inputType="number"
+                android:digits="0123456789"
+                app:iconSpaceReserved="false" />
+            <EditTextPreference
+                android:defaultValue="6"
+                android:iconSpaceReserved="false"
+                android:key="@string/H_min"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:summary="The minimum number of Wireless Access Points that need to match for a group of scans to be considered valid for exposure. A higher number increases accuracy."
+                android:title="H min"
+                android:inputType="number"
+                android:digits="0123456789"
+                app:iconSpaceReserved="false" />
+        </PreferenceCategory>
+    </PreferenceCategory>
+</PreferenceScreen>
