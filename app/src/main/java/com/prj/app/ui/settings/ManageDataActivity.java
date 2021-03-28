@@ -8,11 +8,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.prj.app.R;
-import com.prj.app.api.CustomJsonArrayRequest;
 import com.prj.app.api.VolleySingleton;
 import com.prj.app.managers.DatabaseManager;
-import com.prj.app.managers.PreferencesManager;
 import com.prj.app.util.Scan;
 
 import org.json.JSONArray;
@@ -36,8 +35,9 @@ public class ManageDataActivity extends AppCompatActivity {
     }
 
     public void deleteData(View view) {
-        databaseManager.deleteData();
         TextView resultTextView = findViewById(R.id.manageDataTextView);
+        resultTextView.setText("Deleting...");
+        databaseManager.deleteData();
         resultTextView.setText("Data Deleted");
     }
 
@@ -61,16 +61,18 @@ public class ManageDataActivity extends AppCompatActivity {
 
     private void sendPOST(String URL) {
         try {
-            CustomJsonArrayRequest customJsonArrayRequest = new CustomJsonArrayRequest(Request.Method.POST, URL, null, this::response, Throwable::printStackTrace);
+            TextView resultTextView = findViewById(R.id.manageDataTextView);
+            resultTextView.setText("Deleting...");
+            JsonObjectRequest customJsonArrayRequest = new JsonObjectRequest(Request.Method.POST, URL, null, this::response, Throwable::printStackTrace);
             VolleySingleton.getInstance(getApplicationContext()).getRequestQueue().add(customJsonArrayRequest);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void response(JSONArray jsonArray) {
+    private void response(JSONObject jsonObject) {
         TextView resultTextView = findViewById(R.id.manageDataTextView);
-        resultTextView.setText("Collection has been deleted");
+        resultTextView.setText("Collection has been deleted.");
     }
 
 }
