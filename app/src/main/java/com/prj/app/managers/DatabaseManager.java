@@ -164,19 +164,21 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return result;
     }
 
-    public int getScansCount(){
-       return getTableCount(SCAN_RESULT_TAB);
+    public int getScansCount() {
+        return getTableCount(SCAN_RESULT_TAB);
     }
-    public int getAPScansCounts(){
+
+    public int getAPScansCounts() {
         return getTableCount(BSSID_SCAN_TAB);
     }
 
     /**
      * Get the number of rows for a given table
+     *
      * @param tableName the name of the table
      * @return the number of rows, -1 if there is an error
      */
-    private int getTableCount(String tableName){
+    private int getTableCount(String tableName) {
         int result = -1;
         SQLiteDatabase db = this.getReadableDatabase(CryptoManager.getDatabasePassword(context));
         String query = "SELECT COUNT(*) FROM " + tableName;

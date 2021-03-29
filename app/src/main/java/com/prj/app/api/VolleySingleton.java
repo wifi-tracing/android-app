@@ -10,12 +10,12 @@ import com.prj.app.managers.PreferencesManager;
 @SuppressLint("StaticFieldLeak")
 public class VolleySingleton {
     private static VolleySingleton instance;
-    private final RequestQueue requestQueue;
     private static Context context;
+    private final RequestQueue requestQueue;
 
     private VolleySingleton(Context context) {
         requestQueue = Volley.newRequestQueue(context.getApplicationContext());
-        VolleySingleton.context =  context;
+        VolleySingleton.context = context;
     }
 
     public static VolleySingleton getInstance(Context context) {
@@ -25,7 +25,7 @@ public class VolleySingleton {
         return instance;
     }
 
-    public static String getApiUrl(){
+    public static String getApiUrl() {
         return String.format("http://%s/api/v1/", PreferencesManager.getInstance(context).getApiUrl());
     }
 

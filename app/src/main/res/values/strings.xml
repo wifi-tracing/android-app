@@ -44,7 +44,7 @@
     <string name="C_min">C_min</string>
     <string name="H_min">H_min</string>
     <string name="rest_api_url">rest_api_url</string>
-    <string name="risk_analysis_info">The Risk Analysis will use default constants unless specified. <br/>To change these values go to:<br/><br/> <b>Preferences > Developer Options</b></string>
+    <string name="risk_analysis_info">The Risk Analysis will use default constants unless specified. <br />To change these values go to:<br /><br /> <b>Preferences > Developer Options</b></string>
     <string name="next">next</string>
     <string name="settings">Settings</string>
     <string name="icons_made_by_freepik_from_www_flaticon_com">Icons made by Freepik from www.flaticon.com</string>

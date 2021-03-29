@@ -20,7 +20,6 @@ import androidx.core.app.ActivityCompat;
 
 import com.prj.app.listeners.CustomLocationListener;
 import com.prj.app.listeners.CustomWifiListener;
-import com.prj.app.managers.DatabaseManager;
 import com.prj.app.managers.NotificationManager;
 import com.prj.app.managers.PreferencesManager;
 import com.prj.app.managers.ScanManager;

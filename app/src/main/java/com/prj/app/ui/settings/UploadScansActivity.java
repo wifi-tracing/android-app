@@ -24,12 +24,14 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+
 @SuppressLint("SetTextI18n")
 public class UploadScansActivity extends AppCompatActivity {
 
     private DatabaseManager databaseManager;
     private BSSIDMatcher bssidMatcher;
     private String uploadedScansString;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

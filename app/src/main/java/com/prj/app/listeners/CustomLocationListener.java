@@ -6,7 +6,6 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.prj.app.managers.DatabaseManager;
 import com.prj.app.managers.NotificationManager;
 import com.prj.app.managers.PreferencesManager;
 import com.prj.app.services.WifiScanningService;

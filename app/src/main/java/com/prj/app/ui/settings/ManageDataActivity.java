@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Objects;
+
 @SuppressLint("SetTextI18n")
 public class ManageDataActivity extends AppCompatActivity {
     private DatabaseManager databaseManager;

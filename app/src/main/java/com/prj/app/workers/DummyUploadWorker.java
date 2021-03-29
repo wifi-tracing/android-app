@@ -14,7 +14,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.prj.app.api.VolleySingleton;
 import com.prj.app.managers.DatabaseManager;
-import com.prj.app.managers.PreferencesManager;
 import com.prj.app.util.Scan;
 
 import org.jetbrains.annotations.NotNull;
