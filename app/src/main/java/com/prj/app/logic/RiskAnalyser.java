@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 
 @SuppressLint({"UseSwitchCompatOrMaterialCode", "SetTextI18n", "SimpleDateFormat"})
 
-public class BSSIDMatcher {
+public class RiskAnalyser {
     private final DatabaseManager databaseManager;
     private final TextView resultTextView;
     private final Context context;
@@ -44,7 +44,7 @@ public class BSSIDMatcher {
      * @param resultTextView  a TextView object to modify to show user progress and results
      * @param context         application context
      */
-    public BSSIDMatcher(@NotNull DatabaseManager databaseManager, TextView resultTextView, @NotNull Context context) {
+    public RiskAnalyser(@NotNull DatabaseManager databaseManager, TextView resultTextView, @NotNull Context context) {
         this.databaseManager = databaseManager;
         this.resultTextView = resultTextView;
         this.context = context;

@@ -12,7 +12,7 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.prj.app.R;
 import com.prj.app.api.VolleySingleton;
-import com.prj.app.logic.BSSIDMatcher;
+import com.prj.app.logic.RiskAnalyser;
 import com.prj.app.managers.DatabaseManager;
 import com.prj.app.util.Scan;
 
@@ -29,7 +29,7 @@ import java.util.Objects;
 public class UploadScansActivity extends AppCompatActivity {
 
     private DatabaseManager databaseManager;
-    private BSSIDMatcher bssidMatcher;
+    private RiskAnalyser riskAnalyser;
     private String uploadedScansString;
 
     @Override
@@ -40,7 +40,7 @@ public class UploadScansActivity extends AppCompatActivity {
         TextView resultTextView = findViewById(R.id.resultTextView);
 
         databaseManager = DatabaseManager.getInstance(getApplicationContext());
-        bssidMatcher = new BSSIDMatcher(databaseManager,
+        riskAnalyser = new RiskAnalyser(databaseManager,
                 resultTextView,
                 this.getApplicationContext());
         refreshStats(null);
@@ -83,7 +83,7 @@ public class UploadScansActivity extends AppCompatActivity {
         StringBuilder out = new StringBuilder();
         List<Scan> uploadedScans = null;
         try {
-            uploadedScans = bssidMatcher.parseScans(new JSONArray(scans));
+            uploadedScans = riskAnalyser.parseScans(new JSONArray(scans));
         } catch (JSONException e) {
             e.printStackTrace();
         }

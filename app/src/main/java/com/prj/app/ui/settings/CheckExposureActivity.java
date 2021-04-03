@@ -7,13 +7,13 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.prj.app.R;
-import com.prj.app.logic.BSSIDMatcher;
+import com.prj.app.logic.RiskAnalyser;
 import com.prj.app.managers.DatabaseManager;
 
 import java.util.Objects;
 
 public class CheckExposureActivity extends AppCompatActivity {
-    private BSSIDMatcher bssidMatcher;
+    private RiskAnalyser riskAnalyser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +24,12 @@ public class CheckExposureActivity extends AppCompatActivity {
         TextView resultTextView = findViewById(R.id.checkExposureResultTextView);
         resultTextView.setText("");
 
-        bssidMatcher = new BSSIDMatcher(DatabaseManager.getInstance(getApplicationContext()),
+        riskAnalyser = new RiskAnalyser(DatabaseManager.getInstance(getApplicationContext()),
                 resultTextView,
                 this.getApplicationContext());
     }
 
     public void checkExposure(View view) {
-        bssidMatcher.getMatchingBSSIDs();
+        riskAnalyser.getMatchingBSSIDs();
     }
 }
