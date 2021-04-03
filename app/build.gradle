@@ -27,6 +27,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    testOptions {
+        unitTests.returnDefaultValues = false
+    }
 
 
 }
@@ -42,9 +45,6 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    testImplementation 'junit:junit:4.13.1'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.android.volley:volley:1.2.0'
     implementation "net.zetetic:android-database-sqlcipher:4.4.3"
     implementation "androidx.sqlite:sqlite:2.1.0"
@@ -52,4 +52,8 @@ dependencies {
     implementation "androidx.security:security-identity-credential:1.0.0-alpha02"
     implementation 'com.yakivmospan:scytale:1.0.1'
     implementation 'androidx.preference:preference:1.1.1'
+    androidTestImplementation 'org.mockito:mockito-android:3.8.0'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
