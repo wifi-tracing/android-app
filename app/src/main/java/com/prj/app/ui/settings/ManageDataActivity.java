@@ -56,15 +56,15 @@ public class ManageDataActivity extends AppCompatActivity {
             return;
         }
 
-        String URL = VolleySingleton.getApiUrl() + "scans/drop/all";
-        sendPOST(URL);
+        String URL = VolleySingleton.getApiUrl() + "scans/delete/all";
+        sendDELETE(URL);
     }
 
-    private void sendPOST(String URL) {
+    private void sendDELETE(String URL) {
         try {
             TextView resultTextView = findViewById(R.id.manageDataTextView);
             resultTextView.setText("Deleting...");
-            JsonObjectRequest customJsonArrayRequest = new JsonObjectRequest(Request.Method.POST, URL, null, this::response, Throwable::printStackTrace);
+            JsonObjectRequest customJsonArrayRequest = new JsonObjectRequest(Request.Method.DELETE, URL, null, this::response, Throwable::printStackTrace);
             VolleySingleton.getInstance(getApplicationContext()).getRequestQueue().add(customJsonArrayRequest);
         } catch (Exception e) {
             e.printStackTrace();

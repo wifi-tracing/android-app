@@ -77,7 +77,7 @@ public class UploadScansActivity extends AppCompatActivity {
             return;
         }
 
-        String URL = VolleySingleton.getApiUrl() + "scans/insert/new";
+        String URL = VolleySingleton.getApiUrl() + "scans/post/new";
         sendPOST(URL, jsonBody);
 
         StringBuilder out = new StringBuilder();
@@ -98,7 +98,7 @@ public class UploadScansActivity extends AppCompatActivity {
 
     private void sendPOST(String URL, JSONObject jsonBody) {
         try {
-            JsonObjectRequest customJsonArrayRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, this::response, Throwable::printStackTrace);
+            JsonObjectRequest customJsonArrayRequest = new JsonObjectRequest(Request.Method.PATCH, URL, jsonBody, this::response, Throwable::printStackTrace);
             VolleySingleton.getInstance(getApplicationContext()).getRequestQueue().add(customJsonArrayRequest);
         } catch (Exception e) {
             e.printStackTrace();

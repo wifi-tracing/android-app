@@ -60,7 +60,7 @@ public class UploadDataActivity extends AppCompatActivity {
             return;
         }
 
-        String URL = VolleySingleton.getApiUrl() + "scans/insert/new";
+        String URL = VolleySingleton.getApiUrl() + "scans/post/new";
         sendPOST(URL, jsonBody);
     }
 
