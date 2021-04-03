@@ -98,7 +98,7 @@ public class UploadScansActivity extends AppCompatActivity {
 
     private void sendPOST(String URL, JSONObject jsonBody) {
         try {
-            JsonObjectRequest customJsonArrayRequest = new JsonObjectRequest(Request.Method.PATCH, URL, jsonBody, this::response, Throwable::printStackTrace);
+            JsonObjectRequest customJsonArrayRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, this::response, Throwable::printStackTrace);
             VolleySingleton.getInstance(getApplicationContext()).getRequestQueue().add(customJsonArrayRequest);
         } catch (Exception e) {
             e.printStackTrace();
