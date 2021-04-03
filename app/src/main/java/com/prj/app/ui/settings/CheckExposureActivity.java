@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.prj.app.R;
 import com.prj.app.logic.RiskAnalyser;
 import com.prj.app.managers.DatabaseManager;
+import com.prj.app.managers.PreferencesManager;
 
 import java.util.Objects;
 
@@ -25,11 +26,12 @@ public class CheckExposureActivity extends AppCompatActivity {
         resultTextView.setText("");
 
         riskAnalyser = new RiskAnalyser(DatabaseManager.getInstance(getApplicationContext()),
+                PreferencesManager.getInstance(getApplicationContext()),
                 resultTextView,
                 this.getApplicationContext());
     }
 
     public void checkExposure(View view) {
-        riskAnalyser.getMatchingBSSIDs();
+        riskAnalyser.checkExposure();
     }
 }

@@ -8,6 +8,7 @@ import androidx.work.WorkerParameters;
 
 import com.prj.app.logic.RiskAnalyser;
 import com.prj.app.managers.DatabaseManager;
+import com.prj.app.managers.PreferencesManager;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -20,8 +21,11 @@ public class ExposureWorker extends Worker {
 
     @Override
     public @NotNull Result doWork() {
-        RiskAnalyser riskAnalyser = new RiskAnalyser(DatabaseManager.getInstance(getApplicationContext()), null, getApplicationContext());
-        riskAnalyser.getMatchingBSSIDs(); //this will take care of sending a notification
+        RiskAnalyser riskAnalyser = new RiskAnalyser(DatabaseManager.getInstance(getApplicationContext()),
+                PreferencesManager.getInstance(getApplicationContext()),
+                null,
+                getApplicationContext());
+        riskAnalyser.checkExposure(); //this will take care of sending a notification
         return Result.success();
     }
 }

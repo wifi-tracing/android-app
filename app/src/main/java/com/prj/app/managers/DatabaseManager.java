@@ -39,10 +39,12 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     private final Context context;
 
-    private DatabaseManager(@Nullable Context context) {
+    public DatabaseManager(@Nullable Context context) {
         super(context, DB_PATH, null, 1);
         this.context = context;
-        InitializeSQLCipher();
+        if (context != null) {
+            initializeSQLCipher();
+        }
     }
 
     public static DatabaseManager getInstance(Context context) {
@@ -65,7 +67,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     /**
      * Initialise an encrypted SQLite database if it doesn't exist
      */
-    private void InitializeSQLCipher() {
+    private void initializeSQLCipher() {
         CryptoManager.generateDatabasePassword(context);
         SQLiteDatabase.loadLibs(context);
         String databaseFile = context.getDatabasePath(DB_PATH).getPath();

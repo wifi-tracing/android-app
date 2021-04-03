@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 
 public class RiskAnalyser {
     private final DatabaseManager databaseManager;
+    private final PreferencesManager preferencesManager;
     private final TextView resultTextView;
     private final Context context;
 
@@ -44,8 +45,9 @@ public class RiskAnalyser {
      * @param resultTextView  a TextView object to modify to show user progress and results
      * @param context         application context
      */
-    public RiskAnalyser(@NotNull DatabaseManager databaseManager, TextView resultTextView, @NotNull Context context) {
+    public RiskAnalyser(@NotNull DatabaseManager databaseManager, PreferencesManager preferencesManager, TextView resultTextView, @NotNull Context context) {
         this.databaseManager = databaseManager;
+        this.preferencesManager = preferencesManager;
         this.resultTextView = resultTextView;
         this.context = context;
     }
@@ -53,7 +55,7 @@ public class RiskAnalyser {
     /**
      * Get matching BSSIDs and show progress to the global TextView
      */
-    public void getMatchingBSSIDs() {
+    public void checkExposure() {
         List<String> results = databaseManager.getScanBSSIDs();
         JSONObject jsonBody = new JSONObject();
 
@@ -90,20 +92,28 @@ public class RiskAnalyser {
      *
      * @param matchingScans a JSONArray of remote positive scans;
      */
-    private void matchResult(@NotNull JSONArray matchingScans) {
+    public boolean matchResult(@NotNull JSONArray matchingScans) {
         List<Scan> localScans = databaseManager.getScanData();
+        if (localScans.size() < 1) {
+            if (resultTextView != null) {
+                resultTextView.setText("No matches found\n");
+            }
+            return false;
+        }
+
         List<Scan> remoteScans;
+
         try {
             remoteScans = parseScans(matchingScans);
         } catch (JSONException jsonException) {
             jsonException.printStackTrace();
-
             if (resultTextView != null) {
                 resultTextView.setText(
                         "There was an error. Could not parse incoming JSON payload correctly.");
             }
-            return;
+            return false;
         }
+
         localScans = removeUnusedLocalScans(localScans, remoteScans);
         //sort by timestamp
         localScans.sort(Comparator.comparing(Scan::getTimestamp));
@@ -131,11 +141,12 @@ public class RiskAnalyser {
             if (resultTextView != null) {
 
                 resultTextView.setText(
-                        "Found a match!\n " + positiveResultDates.size() + " out of " + PreferencesManager.getInstance(context).getCMin() +
-                                " consecutive scans of " + PreferencesManager.getInstance(context).getHMin() + " or more matching access points.\n\n" + out.toString());
+                        "Found a match!\n " + positiveResultDates.size() + " out of " + preferencesManager.getCMin() +
+                                " consecutive scans of " + preferencesManager.getHMin() + " or more matching access points.\n\n" + out.toString());
             }
 
             NotificationManager.getInstance(context).showExposureNotification();
+            return true;
 
         } else {
             if (resultTextView != null) {
@@ -145,7 +156,7 @@ public class RiskAnalyser {
                                 "No matches found\n");
             }
         }
-
+        return false;
     }
 
 
@@ -156,7 +167,7 @@ public class RiskAnalyser {
      * @param timeMap the timeMap as returned by the getDateMap method
      * @return an array of Date objects, if there are positive contacts, empty if there are none
      */
-    private List<Pair<Date, List<Scan>>> getFirstPositiveResult(@NotNull TreeMap<Date, List<Scan>> timeMap) {
+    public List<Pair<Date, List<Scan>>> getFirstPositiveResult(@NotNull TreeMap<Date, List<Scan>> timeMap) {
         List<Pair<Date, List<Scan>>> dateStorage = new ArrayList<>();
 
         for (Date timestamp : timeMap.keySet()) {
@@ -165,9 +176,9 @@ public class RiskAnalyser {
             } else {
                 Date lastTimestamp = dateStorage.get(dateStorage.size() - 1).first;
                 double timeDiff = Math.abs(lastTimestamp.getTime() - timestamp.getTime()) / 1000.0;
-                if (timeDiff <= PreferencesManager.getInstance(context).getTMax()) {
+                if (timeDiff <= preferencesManager.getTMax()) {
                     dateStorage.add(new Pair<>(timestamp, timeMap.get(timestamp)));
-                    if (dateStorage.size() >= PreferencesManager.getInstance(context).getCMin()) {
+                    if (dateStorage.size() >= preferencesManager.getCMin()) {
                         return dateStorage;
                     }
                 } else {
@@ -177,7 +188,7 @@ public class RiskAnalyser {
             }
         }
 
-        if (dateStorage.size() <= PreferencesManager.getInstance(context).getCMin()) {
+        if (dateStorage.size() <= preferencesManager.getCMin()) {
             dateStorage.clear();
         }
         return dateStorage;
@@ -190,7 +201,7 @@ public class RiskAnalyser {
      * @param map the scan map as returned by getScanMap
      * @return the time map containing timestamps and the number of scan results in it which have positive contacts
      */
-    private TreeMap<Date, List<Scan>> getDateMap(@NotNull Map<Scan, List<Scan>> map) {
+    public TreeMap<Date, List<Scan>> getDateMap(@NotNull Map<Scan, List<Scan>> map) {
         Map<Date, List<Scan>> tempTimeMap = new HashMap<>(); //temporary time map to keep count  of scan results and positive values
         TreeMap<Date, List<Scan>> timeMap = new TreeMap<>();
 
@@ -202,7 +213,7 @@ public class RiskAnalyser {
                     List<Scan> list = tempTimeMap.get(scan.getTimestamp());
                     if (list != null) {
                         list.add(scan);
-                        if (list.size() >= PreferencesManager.getInstance(context).getHMin()) {
+                        if (list.size() >= preferencesManager.getHMin()) {
                             timeMap.put(scan.getTimestamp(), list);
                         }
                     } else {
@@ -238,9 +249,9 @@ public class RiskAnalyser {
             for (Scan remoteScan : remoteScans) {
                 if (remoteScan.getBssid().equals(localScan.getBssid())) {
                     double differenceInSeconds = scanTimeDifference(remoteScan, localScan);
-                    if (differenceInSeconds <= PreferencesManager.getInstance(context).getTMax()) {
+                    if (differenceInSeconds <= preferencesManager.getTMax()) {
                         double differenceInMeters = Math.abs(remoteScan.getDistance() - localScan.getDistance());
-                        if (differenceInMeters <= PreferencesManager.getInstance(context).getDMax()) {
+                        if (differenceInMeters <= preferencesManager.getDMax()) {
                             if (map.containsKey(localScan)) {
                                 Objects.requireNonNull(map.get(localScan)).add(remoteScan);
                             } else {
@@ -278,10 +289,10 @@ public class RiskAnalyser {
                         //get last element found for this bssid
                         Scan lastScan = storageList.get(storageList.size() - 1);
 
-                        if (scanTimeDifference(lastScan, current) <= PreferencesManager.getInstance(context).getTMax()) {
+                        if (scanTimeDifference(lastScan, current) <= preferencesManager.getTMax()) {
                             storageList.add(current);
                         } else {
-                            if (storageList.size() >= PreferencesManager.getInstance(context).getCMin()) {
+                            if (storageList.size() >= preferencesManager.getCMin()) {
                                 validScans.addAll(storageList);
                             }
                             storageList.clear();
@@ -302,7 +313,7 @@ public class RiskAnalyser {
 
         }
         for (ArrayList<Scan> scans : storage.values()) {
-            if (scans.size() >= PreferencesManager.getInstance(context).getCMin()) {
+            if (scans.size() >= preferencesManager.getCMin()) {
                 validScans.addAll(scans);
             }
         }

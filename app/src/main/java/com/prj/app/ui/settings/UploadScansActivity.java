@@ -14,6 +14,7 @@ import com.prj.app.R;
 import com.prj.app.api.VolleySingleton;
 import com.prj.app.logic.RiskAnalyser;
 import com.prj.app.managers.DatabaseManager;
+import com.prj.app.managers.PreferencesManager;
 import com.prj.app.util.Scan;
 
 import org.json.JSONArray;
@@ -41,6 +42,7 @@ public class UploadScansActivity extends AppCompatActivity {
 
         databaseManager = DatabaseManager.getInstance(getApplicationContext());
         riskAnalyser = new RiskAnalyser(databaseManager,
+                PreferencesManager.getInstance(getApplicationContext()),
                 resultTextView,
                 this.getApplicationContext());
         refreshStats(null);
