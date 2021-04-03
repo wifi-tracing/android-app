@@ -1,4 +1,4 @@
-[![Contributors][contributors-shield]][contributors-url]
+[![Release][release-shield]][release-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
@@ -22,29 +22,7 @@
 </p>
 
 
-<!-- TABLE OF CONTENTS -->
-<details open="open">
-  <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ol>
-</details>
-
-
-## About The Project
+# ℹ About The Project
 
 The app scans for WiFi signals around the user every 30 seconds, collecting relative location to WiFi hotspots locally.
 
@@ -63,29 +41,22 @@ Daily, the app downloads a copy of relevant scans from the [ingestion service](h
 
 </p>
 
-<!-- GETTING STARTED -->
-## Getting Started
-
-To get a local copy up and running follow these simple steps.
-
-### Prerequisites
+# 💽 Installation
 
 In order to run a local copy, you'll need to install the following:
 
 * [Android Studio](https://developer.android.com/studio/install)
 
-### Installation
-
-Installation can be done by either building the project, or downloading the APK.
+The Android Application can also be installed using the `app.apk` package found in the [releases](https://github.com/wifi-tracing/android-app/releases), which can be manually installed on an Android Device. [This article from thecustomdroid](https://www.thecustomdroid.com/how-to-install-apk-on-android/) walks through the process in detail.
 
 <!-- ROADMAP -->
-## Roadmap
+# 🗺 Roadmap
 
 See the [open issues](https://github.com/wifi-tracing/android-app/issues) for a list of proposed features (and known issues).
 
 
 <!-- CONTRIBUTING -->
-## Contributing
+# 💁 Contributing
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create.
 
@@ -93,17 +64,17 @@ Contributions are what make the open source community such an amazing place to b
 The repo itself is just used to show the project. It is **NOT** actively maintained. The author suggests forking the project instead of opening new issues.
 
 <!-- LICENSE -->
-## License
+# ⚖ License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
 <!-- CONTACT -->
-## Contact
+# 🐦 Contact
 
 Danilo Del Busso - [@danilo_delbusso](https://twitter.com/danilo_delbusso)
 
 
-### Attributions
+# 🙏 Attributions
 
 Coronavirus icons:
 <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
@@ -113,8 +84,8 @@ Material Icons:
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/wifi-tracing/android-app.svg?style=for-the-badge
-[contributors-url]: https://github.com/wifi-tracing/android-app/graphs/contributors
+[release-shield]: https://img.shields.io/github/v/release/wifi-tracing/android-app?style=for-the-badge
+[release-url]: https://github.com/wifi-tracing/android-app/releases
 [forks-shield]: https://img.shields.io/github/forks/wifi-tracing/android-app.svg?style=for-the-badge
 [forks-url]: https://github.com/wifi-tracing/android-app/network/members
 [stars-shield]: https://img.shields.io/github/stars/wifi-tracing/android-app.svg?style=for-the-badge
