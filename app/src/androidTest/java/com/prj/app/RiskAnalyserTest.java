@@ -53,61 +53,168 @@ public class RiskAnalyserTest {
         appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
 
+    /**
+     * By default, {@link DatabaseManager#getScanData()} returns value of {@link RiskAnalyserTest#getFakeLocalScans()}
+     */
     private void createMockDatabaseManager() {
         databaseManager = mock(DatabaseManager.class);
-        when(databaseManager.getScanBSSIDs()).thenReturn(null);
+        when(databaseManager.getScanData()).thenReturn(getFakeLocalScans());
     }
 
+    /**
+     * Default config is valid for use with the {@link RiskAnalyserTest#getFakeLocalScans()} and {@link RiskAnalyserTest#getFakeRemoteScans()}
+     * generation methods.
+     * <p>
+     * The fake scans are two timestamps (CMin = 2), spaced three seconds apart (TMax = 3.0), 0.5 meters apart (DMax = 0.5).
+     * Each timestamp has 2 separate Access Points (HMin = 2)
+     * <p>
+     * <p>
+     * The default config is
+     * <ul>
+     *     <li>CMin = 2</li>
+     *     <li>DMax = 0.5</li>
+     *     <li>HMin = 2</li>
+     *     <li>TMax = 3.0</li>
+     * </ul>
+     * </p>
+     */
     private void createMockPreferencesManager() {
         preferenceManager = mock(PreferencesManager.class);
+
+        when(preferenceManager.getCMin()).thenReturn(2);
+        when(preferenceManager.getDMax()).thenReturn(0.5);
+        when(preferenceManager.getHMin()).thenReturn(2);
+        when(preferenceManager.getTMax()).thenReturn(3.0);
     }
 
 
     @Test
     public void emptyLocalScans() {
+        when(databaseManager.getScanData()).thenReturn(new ArrayList<>());
+
         RiskAnalyser analyser = new RiskAnalyser(databaseManager, preferenceManager, null, appContext);
         assertFalse(analyser.matchResult(getFakeRemoteScans()));
     }
 
     @Test
-    public void invalidRemoteScans() {
-        when(databaseManager.getScanData()).thenReturn(new ArrayList<>());
+    public void emptyRemoteScans() {
+        RiskAnalyser analyser = new RiskAnalyser(databaseManager, preferenceManager, null, appContext);
+        assertFalse(analyser.matchResult(new JSONArray()));
+    }
+
+    @Test
+    public void nullRemoteScans() {
         RiskAnalyser analyser = new RiskAnalyser(databaseManager, preferenceManager, null, appContext);
         assertFalse(analyser.matchResult(null));
     }
 
     @Test
+    public void nullLocalScans() {
+        when(databaseManager.getScanData()).thenReturn(null);
+
+        RiskAnalyser analyser = new RiskAnalyser(databaseManager, preferenceManager, null, appContext);
+        assertFalse(analyser.matchResult(getFakeRemoteScans()));
+    }
+
+
+    @Test
     public void validMatch() {
-        DatabaseManager databaseManager = mock(DatabaseManager.class);
         when(databaseManager.getScanData()).thenReturn(getFakeLocalScans());
 
-
-        when(preferenceManager.getCMin()).thenReturn(0);
-        when(preferenceManager.getDMax()).thenReturn(0.0);
-        when(preferenceManager.getHMin()).thenReturn(2);
-        when(preferenceManager.getTMax()).thenReturn(3.0);
         RiskAnalyser analyser = new RiskAnalyser(databaseManager, preferenceManager, null, appContext);
         JSONArray array = getFakeRemoteScans();
         assertTrue(analyser.matchResult(array));
     }
 
+    //#region Test Constants
+
+    //#region CMin
     @Test
-    public void inValidMatch() {
-        DatabaseManager databaseManager = mock(DatabaseManager.class);
-        when(databaseManager.getScanData()).thenReturn(getFakeLocalScans());
-        when(preferenceManager.getCMin()).thenReturn(2);
-        when(preferenceManager.getDMax()).thenReturn(100.0);
-        when(preferenceManager.getHMin()).thenReturn(0);
-        when(preferenceManager.getTMax()).thenReturn(3.0);
+    public void invalidCMinTooGreat() {
+        when(preferenceManager.getCMin()).thenReturn(3);
+
         RiskAnalyser analyser = new RiskAnalyser(databaseManager, preferenceManager, null, appContext);
-        JSONArray array = getFakeRemoteScans();
-        assertFalse(analyser.matchResult(array));
+        assertFalse(analyser.matchResult(getFakeRemoteScans()));
     }
 
+
+    @Test
+    public void validCMinTooSmall() {
+        when(preferenceManager.getCMin()).thenReturn(-1);
+
+        RiskAnalyser analyser = new RiskAnalyser(databaseManager, preferenceManager, null, appContext);
+        assertTrue(analyser.matchResult(getFakeRemoteScans()));
+    }
+    //#endregion
+
+    //#region DMax
+    @Test
+    public void invalidDMaxTooSmall() {
+        when(preferenceManager.getDMax()).thenReturn(0.1);
+
+        RiskAnalyser analyser = new RiskAnalyser(databaseManager, preferenceManager, null, appContext);
+        assertFalse(analyser.matchResult(getFakeRemoteScans()));
+    }
+
+    @Test
+    public void validDMaxTooGreat() {
+        when(preferenceManager.getDMax()).thenReturn(1.5);
+
+        RiskAnalyser analyser = new RiskAnalyser(databaseManager, preferenceManager, null, appContext);
+        assertTrue(analyser.matchResult(getFakeRemoteScans()));
+    }
+    //#endregion
+
+    //#region HMin
+    @Test
+    public void validHMinTooSmall() {
+        when(preferenceManager.getHMin()).thenReturn(0);
+
+        RiskAnalyser analyser = new RiskAnalyser(databaseManager, preferenceManager, null, appContext);
+        assertTrue(analyser.matchResult(getFakeRemoteScans()));
+    }
+
+    @Test
+    public void invalidHMinTooGreat() {
+        when(preferenceManager.getHMin()).thenReturn(3);
+
+        RiskAnalyser analyser = new RiskAnalyser(databaseManager, preferenceManager, null, appContext);
+        assertFalse(analyser.matchResult(getFakeRemoteScans()));
+    }
+    //#endregion
+
+    //#region TMax
+    @Test
+    public void invalidTMaxTooSmall() {
+        when(preferenceManager.getTMax()).thenReturn(2.0);
+
+        RiskAnalyser analyser = new RiskAnalyser(databaseManager, preferenceManager, null, appContext);
+        assertFalse(analyser.matchResult(getFakeRemoteScans()));
+    }
+
+    @Test
+    public void validTMaxTooGreat() {
+        when(preferenceManager.getTMax()).thenReturn(3.0);
+
+        RiskAnalyser analyser = new RiskAnalyser(databaseManager, preferenceManager, null, appContext);
+        assertTrue(analyser.matchResult(getFakeRemoteScans()));
+    }
+    //#endregion
+
+    //#endregion
+
+    //#region Auxiliary methods
+
+    /**
+     * Generate a JSONArray of remote scans. Two timestamps groups of two scans each at distance 1.0m, three seconds apart.
+     * They should be valid scans when compared to the remote scans returned by {@link RiskAnalyserTest#getFakeLocalScans()}
+     *
+     * @return a JSONArray of fake remote scans
+     */
     public JSONArray getFakeRemoteScans() {
         JSONArray array = new JSONArray();
 
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
                 JSONObject scan = new JSONObject();
                 try {
@@ -126,12 +233,18 @@ public class RiskAnalyserTest {
         return array;
     }
 
+    /**
+     * Generate a list of local scans. Two timestamps groups of two scans each at distance 1.5m, three seconds apart.
+     * They should be valid scans when compared to the remote scans returned by {@link RiskAnalyserTest#getFakeRemoteScans}
+     *
+     * @return a list of fake local scans
+     */
     public List<Scan> getFakeLocalScans() {
         ArrayList<Scan> result = new ArrayList<>();
         //scan at 1 meter
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                Scan scan = new Scan("aa:bb:cc:dd:e" + j + i + 1, 1.0, getFakeDate(i * 3));
+                Scan scan = new Scan("aa:bb:cc:dd:e" + j + i + 1, 1.5, getFakeDate(i * 3));
                 result.add(scan);
             }
 
@@ -139,6 +252,13 @@ public class RiskAnalyserTest {
         return result;
     }
 
+    /**
+     * Get String representing parseable ISO date. 1st of January 2021 at 01:01:xx.
+     * Returns same date as {@link RiskAnalyserTest#getFakeDate(int)}
+     *
+     * @param offset the positive offset, in seconds, to add to the date
+     * @return a String representing an ISO date.
+     */
     private String getFakeIsoDate(int offset) {
         LocalDateTime dateTime = LocalDateTime.of(2021, Month.JANUARY, 1, 1, 1, offset, 1);
 
@@ -148,8 +268,17 @@ public class RiskAnalyserTest {
         return formatter.format(dateTime.toInstant(ZoneOffset.UTC));
     }
 
+    /**
+     * Get Date 1st of January 2021 at 01:01:xx.
+     * Returns same date as {@link RiskAnalyserTest#getFakeIsoDate(int)}
+     *
+     * @param offset the positive offset, in seconds, to add to the date
+     * @return a UTC Date.
+     */
     private Date getFakeDate(int offset) {
         LocalDateTime dateTime = LocalDateTime.of(2021, Month.JANUARY, 1, 1, 1, offset, 1);
         return Date.from(dateTime.toInstant(ZoneOffset.UTC));
     }
+
+    //#endregion
 }
