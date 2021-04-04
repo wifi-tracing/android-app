@@ -10,7 +10,6 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.android.volley.Request;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.prj.app.api.VolleySingleton;
 import com.prj.app.managers.DatabaseManager;
@@ -79,16 +78,10 @@ public class DummyUploadWorker extends Worker {
 
     private void sendPOST(String URL, JSONObject jsonBody) {
         try {
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, this::response, this::error);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, null, null);
             VolleySingleton.getInstance(getApplicationContext()).getRequestQueue().add(jsonObjectRequest);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void error(VolleyError volleyError) {
-    }
-
-    private void response(JSONObject jsonObject) {
     }
 }

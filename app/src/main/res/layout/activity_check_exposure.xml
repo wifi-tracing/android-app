@@ -43,7 +43,6 @@
         app:layout_constraintVertical_bias="0.862" />
 
     <TextView
-        android:id="@+id/checkExposureInfo"
         android:layout_width="350dp"
         android:layout_height="102dp"
         android:layout_marginBottom="12dp"
@@ -57,7 +56,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/divider9"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="7dp"

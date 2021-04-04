@@ -27,8 +27,6 @@ public class ScanManager {
                         WifiManager.EXTRA_RESULTS_UPDATED, false);
                 if (success) {
                     scanSuccess();
-                } else {
-                    scanFailure();
                 }
             }
         };
@@ -51,11 +49,4 @@ public class ScanManager {
             databaseManager.addLocationData(results, location);
         }
     }
-
-
-    private void scanFailure() {
-
-    }
-
-
 }

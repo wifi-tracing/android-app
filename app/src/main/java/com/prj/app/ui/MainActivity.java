@@ -1,6 +1,7 @@
 package com.prj.app.ui;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,6 +33,7 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+@SuppressLint("StaticFieldLeak")
 public class MainActivity extends AppCompatActivity {
     private static Intent wifiScanningIntent;
     private static RippleBackground rippleBackground;
@@ -44,10 +46,10 @@ public class MainActivity extends AppCompatActivity {
         boolean isScanning = notificationManager.getIsScanningVisible();
         if (scanningStatusTextView != null) {
             if (isScanning) {
-                scanningStatusTextView.setText("Scanning");
+                scanningStatusTextView.setText(R.string.scanning);
                 scanningStatusTextView.setTextColor(ContextCompat.getColor(context, R.color.primary));
             } else {
-                scanningStatusTextView.setText("Not Scanning");
+                scanningStatusTextView.setText(R.string.notscanning);
                 scanningStatusTextView.setTextColor(ContextCompat.getColor(context, R.color.secondary));
             }
         }

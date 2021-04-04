@@ -37,7 +37,6 @@
     </ScrollView>
 
     <View
-        android:id="@+id/divider"
         android:layout_width="409dp"
         android:layout_height="1dp"
         android:layout_marginBottom="3dp"
@@ -74,12 +73,11 @@
         app:layout_constraintVertical_bias="0.777" />
 
     <TextView
-        android:id="@+id/deleteCollectionLabel"
         android:layout_width="329dp"
         android:layout_height="35dp"
         android:layout_marginBottom="8dp"
 
-        android:text="Delete the scans collection"
+        android:text="@string/delete_the_scans_collection"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="15sp"
@@ -89,11 +87,10 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/deleteDataLabel"
         android:layout_width="293dp"
         android:layout_height="31dp"
         android:layout_marginBottom="7dp"
-        android:text="Delete the locally stored scans"
+        android:text="@string/delete_the_locally_stored_scans"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="15sp"

@@ -1,5 +1,6 @@
 package com.prj.app.managers;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -7,6 +8,7 @@ import androidx.preference.PreferenceManager;
 
 import com.prj.app.R;
 
+@SuppressLint("StaticFieldLeak")
 public class PreferencesManager {
 
     private static PreferencesManager instance;

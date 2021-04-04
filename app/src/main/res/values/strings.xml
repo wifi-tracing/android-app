@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">WiFi Tracing</string>
     <string name="coronavirus_icon">coronavirus icon</string>
-    <string name="get_matching_bssids">Check Exposure</string>
     <string name="upload_info">By confirming, you will be uploading ALL data collected in the past 14 days. \n\n This means that the provider of this service will be able to see all WiFi signals you\'ve been near in the past 14 days. \n This information could be used to triangulate your location for this period of time. \n\n We kindly ask you to also support the contact tracing effort by uploading location data, which will anonymously inform others of where contagion is spreading.</string>
     <string name="upload_title">Upload All Scan Data</string>
     <string name="upload_location">I also want to upload all my location data</string>
@@ -10,26 +9,11 @@
     <string name="delete_data">Delete Data</string>
     <string name="delete_collection">Delete Collection</string>
     <string name="enable_location_logging">Enable Location Logging</string>
-    <string name="max_time">MAX_TIME</string>
-    <string name="api_url">API_URL</string>
-    <string name="max_dist">MAX_DIST</string>
-    <string name="min_timestamps">MIN_TIMESTAMPS</string>
-    <string name="min_hotspots">MIN_HOTSPOTS</string>
-    <string name="save">Save</string>
     <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
 
     <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
 
     <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="preferences">Preferences</string>
     <string name="upload_scans">Upload Scans</string>
     <string name="developer_options">Developer Options</string>
@@ -48,4 +32,9 @@
     <string name="next">next</string>
     <string name="settings">Settings</string>
     <string name="icons_made_by_freepik_from_www_flaticon_com">Icons made by Freepik from www.flaticon.com</string>
+    <string name="not_scanning">Not Scanning</string>
+    <string name="delete_the_scans_collection">Delete the scans collection</string>
+    <string name="delete_the_locally_stored_scans">Delete the locally stored scans</string>
+    <string name="scanning">Scanning</string>
+    <string name="notscanning">Not Scanning</string>
 </resources>
