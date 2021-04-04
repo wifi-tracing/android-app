@@ -94,7 +94,7 @@ public class RiskAnalyser {
      */
     public boolean matchResult(@NotNull JSONArray matchingScans) {
         List<Scan> localScans = databaseManager.getScanData();
-        if (localScans.size() < 1) {
+        if (localScans == null || matchingScans == null || localScans.size() < 1) {
             if (resultTextView != null) {
                 resultTextView.setText("No matches found\n");
             }
@@ -178,7 +178,7 @@ public class RiskAnalyser {
                 double timeDiff = Math.abs(lastTimestamp.getTime() - timestamp.getTime()) / 1000.0;
                 if (timeDiff <= preferencesManager.getTMax()) {
                     dateStorage.add(new Pair<>(timestamp, timeMap.get(timestamp)));
-                    if (dateStorage.size() >= preferencesManager.getCMin()) {
+                    if (dateStorage.size() >= preferencesManager.getCMin() - 1 ) {
                         return dateStorage;
                     }
                 } else {
@@ -188,7 +188,7 @@ public class RiskAnalyser {
             }
         }
 
-        if (dateStorage.size() <= preferencesManager.getCMin()) {
+        if (dateStorage.size() <= preferencesManager.getCMin()+  1) {
             dateStorage.clear();
         }
         return dateStorage;
@@ -292,7 +292,7 @@ public class RiskAnalyser {
                         if (scanTimeDifference(lastScan, current) <= preferencesManager.getTMax()) {
                             storageList.add(current);
                         } else {
-                            if (storageList.size() >= preferencesManager.getCMin()) {
+                            if (storageList.size() >= preferencesManager.getCMin() -1 ) {
                                 validScans.addAll(storageList);
                             }
                             storageList.clear();
@@ -313,7 +313,7 @@ public class RiskAnalyser {
 
         }
         for (ArrayList<Scan> scans : storage.values()) {
-            if (scans.size() >= preferencesManager.getCMin()) {
+            if (scans.size() >= preferencesManager.getCMin() - 1) {
                 validScans.addAll(scans);
             }
         }
