@@ -178,7 +178,7 @@ public class RiskAnalyser {
                 double timeDiff = Math.abs(lastTimestamp.getTime() - timestamp.getTime()) / 1000.0;
                 if (timeDiff <= preferencesManager.getTMax()) {
                     dateStorage.add(new Pair<>(timestamp, timeMap.get(timestamp)));
-                    if (dateStorage.size() >= preferencesManager.getCMin() - 1 ) {
+                    if (dateStorage.size() >= preferencesManager.getCMin()) {
                         return dateStorage;
                     }
                 } else {
@@ -188,7 +188,7 @@ public class RiskAnalyser {
             }
         }
 
-        if (dateStorage.size() <= preferencesManager.getCMin()+  1) {
+        if (dateStorage.size() <= preferencesManager.getCMin() + 1) {
             dateStorage.clear();
         }
         return dateStorage;
@@ -292,7 +292,7 @@ public class RiskAnalyser {
                         if (scanTimeDifference(lastScan, current) <= preferencesManager.getTMax()) {
                             storageList.add(current);
                         } else {
-                            if (storageList.size() >= preferencesManager.getCMin() -1 ) {
+                            if (storageList.size() >= preferencesManager.getCMin() - 1) {
                                 validScans.addAll(storageList);
                             }
                             storageList.clear();
